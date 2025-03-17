@@ -5,11 +5,14 @@ import {PositionData} from "../../models/positionData.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import AddPositionDialog from "@/components/forms/position/AddPositionDialog.tsx";
 import '@/components/forms/styles.css'
+import EditPositionDialog from "@/components/forms/position/EditPositionDialog.tsx";
 
 const Position = () => {
     const navigate = useNavigate();
     const {data: positions, loading, error, fetchPositions} = useFetchPositions();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
+    const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+    const [selectedPosition, setSelectedPosition] = useState<PositionData | null>(null);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -28,8 +31,9 @@ const Position = () => {
         }
     };
 
-    const handleEdit = (id: number | undefined) => {
-        navigate(`/position/edit/${id}`);
+    const handleEdit = (position: PositionData) => {
+        setSelectedPosition(position);
+        setShowEditDialog(true);
     };
 
     const handleAdd = () => {
@@ -43,6 +47,16 @@ const Position = () => {
             setShowAddDialog(false);
         } catch (error) {
             console.error('Error deleting position', error);
+        }
+    };
+
+    const handleUpdatePosition = async (updatedPosition: PositionData) => {
+        try {
+            await api.put(`/api/v1/position/${updatedPosition.id}`, updatedPosition);
+            await fetchPositions();
+            setShowEditDialog(false);
+        } catch (error) {
+            console.error("Error updating position:", error);
         }
     };
 
@@ -69,7 +83,7 @@ const Position = () => {
                         <td>{position.positionName}</td>
                         <td>{position.yearsOfExperience}</td>
                         <td>
-                            <button onClick={() => handleEdit(position.id)}>Edit</button>
+                            <button onClick={() => handleEdit(position)}>Edit</button>
                             <button onClick={() => handleDelete(position.id)}>Delete</button>
                         </td>
                     </tr>
@@ -82,6 +96,15 @@ const Position = () => {
                 onHide={() => setShowAddDialog(false)}
                 onAdd={handleAddPosition}
             />
+
+            {selectedPosition && (
+                <EditPositionDialog
+                    visible={showEditDialog}
+                    position={selectedPosition}
+                    onHide={() => setShowEditDialog(false)}
+                    onUpdate={handleUpdatePosition}
+                />
+            )};
         </div>
     );
 };

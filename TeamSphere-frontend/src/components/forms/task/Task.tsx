@@ -5,11 +5,14 @@ import {TaskData} from "../../models/taskData.ts";
 import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import AddTaskDialog from "@/components/forms/task/AddTaskDialog.tsx";
 import '@/components/forms/styles.css'
+import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
 
 const Task = () => {
     const navigate = useNavigate();
     const {data: tasks, loading, error, fetchTasks} = useFetchTasks();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
+    const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+    const [selectedTask, setSelectedTask] = useState<TaskData | null>(null);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -28,8 +31,9 @@ const Task = () => {
         }
     };
 
-    const handleEdit = (id: number | undefined) => {
-        navigate(`/task/edit/${id}`);
+    const handleEdit = (task: TaskData) => {
+        setSelectedTask(task);
+        setShowEditDialog(true);
     };
 
     const handleAdd = () => {
@@ -43,6 +47,16 @@ const Task = () => {
             setShowAddDialog(false);
         } catch (error) {
             console.error('Error deleting task:', error);
+        }
+    };
+
+    const handleUpdateTask = async (updatedTask: TaskData) => {
+        try {
+            await api.put(`/api/v1/task/${updatedTask.id}`, updatedTask);
+            await fetchTasks();
+            setShowEditDialog(false);
+        } catch (error) {
+            console.error("Error updating task:", error);
         }
     };
 
@@ -71,7 +85,7 @@ const Task = () => {
                         <td>{task.taskDescription}</td>
                         <td>{task.role}</td>
                         <td>
-                            <button onClick={() => handleEdit(task.id)}>Edit</button>
+                            <button onClick={() => handleEdit(task)}>Edit</button>
                             <button onClick={() => handleDelete(task.id)}>Delete</button>
                         </td>
                     </tr>
@@ -84,6 +98,15 @@ const Task = () => {
                 onHide={() => setShowAddDialog(false)}
                 onAdd={handleAddTask}
             />
+
+            {selectedTask && (
+                <EditTaskDialog
+                    visible={showEditDialog}
+                    task={selectedTask}
+                    onHide={() => setShowEditDialog(false)}
+                    onUpdate={handleUpdateTask}
+                />
+            )};
         </div>
     );
 };

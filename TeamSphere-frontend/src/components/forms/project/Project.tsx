@@ -5,11 +5,14 @@ import {ProjectData} from "../../models/projectData.ts";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import AddProjectDialog from "@/components/forms/project/AddProjectDialog.tsx";
 import '@/components/forms/styles.css'
+import EditProjectDialog from "@/components/forms/project/EditProjectDialog.tsx";
 
 const Project = () => {
     const navigate = useNavigate();
     const {data: projects, loading, error, fetchProjects} = useFetchProjects();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
+    const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+    const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -28,8 +31,9 @@ const Project = () => {
         }
     };
 
-    const handleEdit = (id: number | undefined) => {
-        navigate(`/project/edit/${id}`);
+    const handleEdit = (project: ProjectData) => {
+        setSelectedProject(project);
+        setShowEditDialog(true);
     };
 
     const handleAdd = () => {
@@ -43,6 +47,16 @@ const Project = () => {
             setShowAddDialog(false);
         } catch (error) {
             console.error('Error deleting project:', error);
+        }
+    };
+
+    const handleUpdateProject = async (updatedProject: ProjectData) => {
+        try {
+            await api.put(`/api/v1/project/${updatedProject.id}`, updatedProject);
+            await fetchProjects();
+            setShowEditDialog(false);
+        } catch (error) {
+            console.error("Error updating project:", error);
         }
     };
 
@@ -77,7 +91,7 @@ const Project = () => {
                         <td>{project.status}</td>
                         <td>{project.companyName}</td>
                         <td>
-                            <button onClick={() => handleEdit(project.id)}>Edit</button>
+                            <button onClick={() => handleEdit(project)}>Edit</button>
                             <button onClick={() => handleDelete(project.id)}>Delete</button>
                         </td>
                     </tr>
@@ -90,6 +104,15 @@ const Project = () => {
                 onHide={() => setShowAddDialog(false)}
                 onAdd={handleAddProject}
             />
+
+            {selectedProject && (
+                <EditProjectDialog
+                    visible={showEditDialog}
+                    project={selectedProject}
+                    onHide={() => setShowEditDialog(false)}
+                    onUpdate={handleUpdateProject}
+                />
+            )};
         </div>
     );
 };

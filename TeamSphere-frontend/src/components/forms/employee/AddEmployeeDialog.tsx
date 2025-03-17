@@ -25,8 +25,8 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
         email: '',
         departmentId: 0,
         positionId: 0,
-        taskIds: [0],
-        projectIds: [0]
+        tasks: [],
+        projects: []
     });
 
     const {data: tasks, loading: tasksLoading, error: tasksError} = useFetchTasks();
@@ -67,8 +67,8 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
             email: '',
             departmentId: 0,
             positionId: 0,
-            taskIds: [0],
-            projectIds: [0]
+            tasks: [],
+            projects: []
         });
     };
 
@@ -169,7 +169,7 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
                     <MultiSelect
                         id="taskIds"
                         name="taskIds"
-                        value={employee.taskIds}
+                        value={employee.tasks}
                         options={tasks.map((task) => ({label: task.taskDescription, value: task.id}))}
                         onChange={handleNumberArrayChange("taskIds")}
                         placeholder="Choose task"
@@ -182,7 +182,7 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
                     <MultiSelect
                         id="projectIds"
                         name="projectIds"
-                        value={employee.projectIds}
+                        value={employee.projects}
                         options={projects.map((project) => ({label: project.name, value: project.id}))}
                         onChange={handleNumberArrayChange("projectIds")}
                         placeholder="Choose project"

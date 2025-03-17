@@ -5,11 +5,14 @@ import api from '../../../api/api.ts';
 import AddCompanyDialog from "./AddCompanyDialog.tsx";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
 import '@/components/forms/styles.css'
+import EditCompanyDialog from "@/components/forms/company/EditCompanyDialog.tsx";
 
 const Company = () => {
     const navigate = useNavigate();
     const {data: companies, loading, error, fetchCompanies} = useFetchCompanies();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
+    const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+    const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -28,8 +31,9 @@ const Company = () => {
         }
     };
 
-    const handleEdit = (id?: number) => {
-        navigate(`/company/edit/${id}`);
+    const handleEdit = (company: CompanyData) => {
+        setSelectedCompany(company);
+        setShowEditDialog(true);
     };
 
     const handleAdd = () => {
@@ -43,6 +47,16 @@ const Company = () => {
             setShowAddDialog(false);
         } catch (error) {
             console.error("Error adding company:", error);
+        }
+    };
+
+    const handleUpdateCompany = async (updatedCompany: CompanyData) => {
+        try {
+            await api.put(`/api/v1/company/${updatedCompany.id}`, updatedCompany);
+            await fetchCompanies();
+            setShowEditDialog(false);
+        } catch (error) {
+            console.error("Error updating company:", error);
         }
     };
 
@@ -73,7 +87,7 @@ const Company = () => {
                         <td>{company.address}</td>
                         <td>{company.email}</td>
                         <td>
-                            <button onClick={() => handleEdit(company.id)}>Edit</button>
+                            <button onClick={() => handleEdit(company)}>Edit</button>
                             <button onClick={() => handleDelete(company.id)}>Delete</button>
                         </td>
                     </tr>
@@ -86,6 +100,15 @@ const Company = () => {
                 onHide={() => setShowAddDialog(false)}
                 onAdd={handleAddCompany}
             />
+
+            {selectedCompany && (
+                <EditCompanyDialog
+                    visible={showEditDialog}
+                    company={selectedCompany}
+                    onHide={() => setShowEditDialog(false)}
+                    onUpdate={handleUpdateCompany}
+                />
+            )};
         </div>
     );
 };

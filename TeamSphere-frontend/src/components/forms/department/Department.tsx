@@ -1,15 +1,18 @@
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
 import api from "../../../api/api.ts";
 import {DepartmentData} from "../../models/departmentData.ts";
 import AddDepartmentDialog from "./AddDepartmentDialog.tsx";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts"
 import '@/components/forms/styles.css'
+import EditDepartmentDialog from "@/components/forms/department/EditDepartmentDialog.tsx";
+import {useState} from "react";
 
 const Department = () => {
     const navigate = useNavigate();
     const {data: departments, loading, error, fetchDepartments} = useFetchDepartments();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
+    const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
+    const [selectedDepartment, setSelectedDepartment] = useState<DepartmentData | null>(null);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -28,8 +31,9 @@ const Department = () => {
         }
     };
 
-    const handleEdit = (id: number | undefined) => {
-        navigate(`/department/edit/${id}`);
+    const handleEdit = (department: DepartmentData) => {
+        setSelectedDepartment(department);
+        setShowEditDialog(true);
     };
 
     const handleAdd = () => {
@@ -43,6 +47,16 @@ const Department = () => {
             setShowAddDialog(false);
         } catch (error) {
             console.error('Error deleting department:', error);
+        }
+    };
+
+    const handleUpdateDepartment = async (updatedDepartment: DepartmentData) => {
+        try {
+            await api.put(`/api/v1/department/${updatedDepartment.id}`, updatedDepartment);
+            await fetchDepartments();
+            setShowEditDialog(false);
+        } catch (error) {
+            console.error("Error updating department:", error);
         }
     };
 
@@ -69,7 +83,7 @@ const Department = () => {
                         <td>{department.departmentName}</td>
                         <td>{department.description}</td>
                         <td>
-                            <button onClick={() => handleEdit(department.id)}>Edit</button>
+                            <button onClick={() => handleEdit(department)}>Edit</button>
                             <button onClick={() => handleDelete(department.id)}>Delete</button>
                         </td>
                     </tr>
@@ -82,6 +96,15 @@ const Department = () => {
                 onHide={() => setShowAddDialog(false)}
                 onAdd={handleAddDepartment}
             />
+
+            {selectedDepartment && (
+                <EditDepartmentDialog
+                    visible={showEditDialog}
+                    department={selectedDepartment}
+                    onHide={() => setShowEditDialog(false)}
+                    onUpdate={handleUpdateDepartment}
+                />
+            )};
         </div>
     );
 };
