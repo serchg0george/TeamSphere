@@ -40,4 +40,6 @@ public class ProjectDto extends BaseDto {
     @Positive(message = "Id must be a positive number")
     @Min(value = 1, message = "Id cannot be lower than 1")
     private Long companyId;
+
+    private String companyName;
 }

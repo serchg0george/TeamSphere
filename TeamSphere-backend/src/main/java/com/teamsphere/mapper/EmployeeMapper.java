@@ -1,6 +1,8 @@
 package com.teamsphere.mapper;
 
 import com.teamsphere.dto.employee.EmployeeDto;
+import com.teamsphere.dto.employee.ProjectInfo;
+import com.teamsphere.dto.employee.TaskInfo;
 import com.teamsphere.entity.*;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.mapper.base.BaseMapper;
@@ -11,9 +13,11 @@ import com.teamsphere.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -35,11 +39,13 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .address(entity.getAddress())
                 .departmentId(entity.getDepartment().getId())
                 .positionId(entity.getPosition().getId())
-                .taskIds(entity.getTasks().stream()
-                        .map(TaskEntity::getId)
+                .departmentName(entity.getDepartment().getDepartmentName())
+                .positionName(entity.getPosition().getPositionName())
+                .tasks(entity.getTasks().stream()
+                        .map(task -> new TaskInfo(task.getId(), task.getTaskDescription()))
                         .toList())
-                .projectIds(entity.getProjects().stream()
-                        .map(ProjectEntity::getId)
+                .projects(entity.getProjects().stream()
+                        .map(project -> new ProjectInfo(project.getId(), project.getName()))
                         .toList())
                 .build();
     }
@@ -47,8 +53,21 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     @Override
     public EmployeeEntity toEntity(EmployeeDto dto) {
         EmployeeEntity employee = buildBasicEmployee(dto);
-        employee.setProjects(getProjectsByIds(dto.getProjectIds()));
-        employee.setTasks(getTasksByIds(dto.getTaskIds(), employee));
+
+        LinkedHashSet<TaskEntity> tasks = dto.getTasks().stream()
+                .map(taskInfo -> {
+                    TaskEntity task = findTaskById(taskInfo.id());
+                    task.setEmployee(employee);
+                    return task;
+                })
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        LinkedHashSet<ProjectEntity> projects = dto.getProjects().stream()
+                .map(projectInfo -> findProjectById(projectInfo.id()))
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+
+        employee.setProjects(projects);
+        employee.setTasks(tasks);
         return employee;
     }
 
@@ -70,20 +89,9 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .address(dto.getAddress())
                 .department(findDepartmentById(dto.getDepartmentId()))
                 .position(findPositionById(dto.getPositionId()))
-                .projects(new ArrayList<>())
-                .tasks(new ArrayList<>())
+                .projects(new LinkedHashSet<>())
+                .tasks(new LinkedHashSet<>())
                 .build();
-    }
-
-    private List<TaskEntity> getTasksByIds(List<Long> taskIds, EmployeeEntity employee) {
-        if (taskIds == null) return Collections.emptyList();
-        return taskIds.stream()
-                .map(id -> {
-                    TaskEntity task = findTaskById(id);
-                    task.setEmployee(employee);
-                    return task;
-                })
-                .toList();
     }
 
     private void updateBasicFields(EmployeeDto dto, EmployeeEntity entity) {
@@ -107,33 +115,31 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     }
 
     private void updateProjects(EmployeeDto dto, EmployeeEntity entity) {
-        if (dto.getProjectIds() != null) {
+        if (dto.getProjects() != null) {
             entity.getProjects().clear();
-            entity.getProjects().addAll(getProjectsByIds(dto.getProjectIds()));
+            entity.getProjects().addAll(getProjectsByIds(dto.getProjects()));
         }
     }
 
     private void updateTasks(EmployeeDto dto, EmployeeEntity entity) {
-        if (dto.getTaskIds() == null) return;
+        if (dto.getTasks() == null) return;
 
-        List<Long> existingTaskIds = entity.getTasks().stream()
-                .map(TaskEntity::getId)
-                .toList();
+        Set<Long> newTaskIds = dto.getTasks().stream().map(TaskInfo::id).collect(Collectors.toSet());
+        Set<Long> existingTaskIds = entity.getTasks().stream().map(TaskEntity::getId).collect(Collectors.toSet());
 
-        entity.getTasks().removeIf(task -> !dto.getTaskIds().contains(task.getId()));
+        entity.getTasks().removeIf(task -> !newTaskIds.contains(task.getId()));
 
-        for (Long taskId : dto.getTaskIds()) {
-            if (!existingTaskIds.contains(taskId)) {
-                TaskEntity task = findTaskById(taskId);
-                task.setEmployee(entity);
-                entity.getTasks().add(task);
-            }
+        newTaskIds.removeAll(existingTaskIds);
+        for (Long id : newTaskIds) {
+            TaskEntity task = findTaskById(id);
+            task.setEmployee(entity);
+            entity.getTasks().add(task);
         }
     }
 
-    private List<ProjectEntity> getProjectsByIds(List<Long> ids) {
+    private List<ProjectEntity> getProjectsByIds(List<ProjectInfo> ids) {
         return ids != null
-                ? ids.stream().map(this::findProjectById).toList()
+                ? ids.stream().map(project -> findProjectById(project.id())).toList()
                 : Collections.emptyList();
     }
 

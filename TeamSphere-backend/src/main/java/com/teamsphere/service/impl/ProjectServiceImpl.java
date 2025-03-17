@@ -17,6 +17,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +46,12 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
     @Override
     public JpaRepository<ProjectEntity, Long> getRepository() {
         return projectRepository;
+    }
+
+    @Override
+    public Page<ProjectDto> getAll(Pageable page) {
+        List<ProjectEntity> projects = projectRepository.findAllWithCompanies();
+        return new PageImpl<>(projects.stream().map(projectMapper::toDto).toList(), page, projects.size());
     }
 
     @Override

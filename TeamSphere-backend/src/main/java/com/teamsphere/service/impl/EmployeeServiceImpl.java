@@ -16,6 +16,9 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +44,11 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
         return peopleRepository;
     }
 
+    @Override
+    public Page<EmployeeDto> getAll(Pageable page) {
+        List<EmployeeEntity> employees = peopleRepository.findAllWithRelations();
+        return new PageImpl<>(employees.stream().map(employeeMapper::toDto).toList(), page, employees.size());
+    }
 
     @Override
     public EmployeeSearchResponse findEmployee(final EmployeeSearchRequest request) {

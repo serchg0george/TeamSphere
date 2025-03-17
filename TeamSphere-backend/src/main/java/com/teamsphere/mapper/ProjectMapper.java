@@ -35,12 +35,12 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .finishDate(finishDate)
                 .status(entity.getStatus().toString())
                 .companyId(entity.getCompany().getId())
+                .companyName(entity.getCompany().getName())
                 .build();
     }
 
     public ProjectEntity toEntity(ProjectDto dto) {
-        CompanyEntity company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new NotFoundException(dto.getCompanyId()));
+        CompanyEntity company = findCompanyById(dto);
 
         return ProjectEntity.builder()
                 .name(dto.getName())
@@ -54,8 +54,7 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
 
     @Override
     public void updateFromDto(ProjectDto dto, ProjectEntity entity) {
-        CompanyEntity company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new NotFoundException(dto.getCompanyId()));
+        CompanyEntity company = findCompanyById(dto);
 
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
@@ -63,5 +62,10 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
         entity.setFinishDate(LocalDate.parse(dto.getFinishDate()));
         entity.setStatus(ProjectStatus.valueOf(dto.getStatus()));
         entity.setCompany(company);
+    }
+
+    private CompanyEntity findCompanyById(ProjectDto dto) {
+        return companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new NotFoundException(dto.getCompanyId()));
     }
 }

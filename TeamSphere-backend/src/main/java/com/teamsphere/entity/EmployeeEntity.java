@@ -7,8 +7,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -43,13 +43,15 @@ public class EmployeeEntity extends BaseEntity {
     private String email;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "department_id")
     private DepartmentEntity department;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "position_id")
     private PositionEntity position;
 
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<TaskEntity> tasks;
+    private Set<TaskEntity> tasks;
 
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     @JoinTable(
@@ -57,7 +59,7 @@ public class EmployeeEntity extends BaseEntity {
             joinColumns = {@JoinColumn(name = "employee_id")},
             inverseJoinColumns = {@JoinColumn(name = "project_id")}
     )
-    private List<ProjectEntity> projects;
+    private Set<ProjectEntity> projects;
 
     @Override
     public final boolean equals(Object o) {

@@ -2,7 +2,10 @@ package com.teamsphere.dto.employee;
 
 import com.teamsphere.dto.BaseDto;
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -47,18 +50,12 @@ public class EmployeeDto extends BaseDto {
     @Min(value = 1, message = "Id cannot be lower than 1")
     private Long positionId;
 
-    @NotNull(message = "projectIds cannot be null")
-    private List<
-            @NotNull(message = "Id cannot be null")
-            @Positive(message = "Id must be a positive number")
-            @Min(value = 1, message = "Id cannot be lower than 1")
-                    Long> taskIds;
+    private String departmentName;
 
-    @NotNull(message = "projectIds cannot be null")
-    private List<
-            @NotNull(message = "Id cannot be null")
-            @Positive(message = "Id must be a positive number")
-            @Min(value = 1, message = "Id cannot be lower than 1")
-                    Long> projectIds;
+    private String positionName;
+
+    private List<TaskInfo> tasks;
+
+    private List<ProjectInfo> projects;
 
 }

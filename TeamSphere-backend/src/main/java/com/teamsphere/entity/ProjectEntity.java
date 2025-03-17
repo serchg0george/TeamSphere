@@ -34,6 +34,7 @@ public class ProjectEntity extends BaseEntity {
     private ProjectStatus status;
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "company_id", nullable = false)
     private CompanyEntity company;
 
     @Override
