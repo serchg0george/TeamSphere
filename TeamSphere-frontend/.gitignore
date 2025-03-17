@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Custom
+src/TODO.ts
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
