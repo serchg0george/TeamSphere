@@ -63,10 +63,10 @@ const Employee = () => {
                     <th>Last Name</th>
                     <th>Pin</th>
                     <th>Address</th>
-                    <th>Department ID</th>
-                    <th>Position ID</th>
-                    <th>Task ID</th>
-                    <th>Project Ids</th>
+                    <th>Department</th>
+                    <th>Position</th>
+                    <th>Tasks</th>
+                    <th>Projects</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -78,10 +78,18 @@ const Employee = () => {
                         <td>{employee.pin}</td>
                         <td>{employee.address}</td>
                         <td>{employee.email}</td>
-                        <td>{employee.departmentId}</td>
-                        <td>{employee.positionId}</td>
-                        <td>{employee.taskIds}</td>
-                        <td>{employee.projectIds}</td>
+                        <td>{employee.departmentName}</td>
+                        <td>{employee.positionName}</td>
+                        <td>
+                            {employee.tasks?.length
+                                ? employee.tasks.map((task) => task.description).join(", ")
+                                : "No tasks"}
+                        </td>
+                        <td>
+                            {employee.projects?.length
+                                ? employee.projects.map((project) => project.name).join(", ")
+                                : "No projects"}
+                        </td>
                         <td>
                             <button onClick={() => handleEdit(employee.id)}>Edit</button>
                             <button onClick={() => handleDelete(employee.id)}>Delete</button>

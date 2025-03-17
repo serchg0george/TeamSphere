@@ -3,8 +3,8 @@ import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {ProjectData} from "@/components/models/projectData.ts";
-import {InputNumber} from "primereact/inputnumber";
 import {Dropdown} from "primereact/dropdown";
+import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
 
 interface AddProjectDialogProps {
     visible: boolean;
@@ -22,6 +22,8 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
         companyId: 0
     });
 
+    const {data: companies, loading: companiesLoading, error: companiesError} = useFetchCompanies();
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setProject({
             ...project,
@@ -29,11 +31,11 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
         });
     };
 
-    const handleNumberChange = (e: { value: number | null }) => {
-        setProject({
-            ...project,
-            companyId: e.value ?? 0
-        });
+    const handleNumberChange = (key: keyof typeof project) => (e: { value: number | null }) => {
+        setProject((prev) => ({
+            ...prev,
+            [key]: e.value ?? 0
+        }));
     };
 
     const handleAdd = () => {
@@ -121,13 +123,17 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="companyId">Years of experience</label>
-                    <InputNumber
+                    <label htmlFor="companyId">Company</label>
+                    <Dropdown
                         id="companyId"
                         name="companyId"
                         value={project.companyId}
-                        onChange={handleNumberChange}
+                        options={companies.map((company) => ({label : company.name, value: company.id}))}
+                        onChange={handleNumberChange("companyId")}
+                        placeholder="Choose company"
+                        loading={companiesLoading}
                     />
+                    {companiesError && <p className="error">{companiesError}</p>}
                 </div>
 
             </div>

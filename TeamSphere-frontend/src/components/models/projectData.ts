@@ -5,5 +5,6 @@ export interface ProjectData {
     startDate: string;
     finishDate: string;
     status: string;
-    companyId: number;
+    companyId?: number;
+    companyName?: string;
 }

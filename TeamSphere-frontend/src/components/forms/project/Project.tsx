@@ -63,7 +63,7 @@ const Project = () => {
                     <th>Start Date</th>
                     <th>Finish Date</th>
                     <th>Status</th>
-                    <th>Company ID</th>
+                    <th>Company</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -75,7 +75,7 @@ const Project = () => {
                         <td>{project.startDate}</td>
                         <td>{project.finishDate}</td>
                         <td>{project.status}</td>
-                        <td>{project.companyId}</td>
+                        <td>{project.companyName}</td>
                         <td>
                             <button onClick={() => handleEdit(project.id)}>Edit</button>
                             <button onClick={() => handleDelete(project.id)}>Delete</button>
