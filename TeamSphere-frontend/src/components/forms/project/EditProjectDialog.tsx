@@ -5,6 +5,7 @@ import {InputText} from "primereact/inputtext";
 import {ProjectData} from "@/components/models/projectData.ts";
 import {Dropdown} from "primereact/dropdown";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
+import {projectStatuses} from "@/components/models/projectStatuses.ts";
 
 interface EditProjectDialogProps {
     visible: boolean;
@@ -34,11 +35,6 @@ const EditProjectDialog = ({visible, project, onHide, onUpdate}: EditProjectDial
             [key]: e.value ?? 0
         }));
     };
-
-    const projectStatuses = [
-        {label: "IN_PROGRESS", value: "IN_PROGRESS"},
-        {label: "FINISHED", value: "FINISHED"}
-    ];
 
     const handleUpdate = () => {
         onUpdate(editedProject);

@@ -5,6 +5,7 @@ import {Button} from "primereact/button";
 import {ProjectData} from "@/components/models/projectData.ts";
 import {Dropdown} from "primereact/dropdown";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
+import {projectStatuses} from "@/components/models/projectStatuses.ts";
 
 interface AddProjectDialogProps {
     visible: boolean;
@@ -49,11 +50,6 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
             companyId: 0
         });
     };
-
-    const projectStatuses = [
-        {label: "IN_PROGRESS", value: "IN_PROGRESS"},
-        {label: "FINISHED", value: "FINISHED"}
-    ];
 
     const footer = (
         <div>
