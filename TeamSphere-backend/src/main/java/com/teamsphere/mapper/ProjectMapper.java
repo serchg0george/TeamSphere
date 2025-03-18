@@ -18,6 +18,7 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
 
     private final CompanyRepository companyRepository;
 
+    @Override
     public ProjectDto toDto(ProjectEntity entity) {
 
         LocalDate finishDateEntity = entity.getFinishDate();
@@ -39,14 +40,17 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .build();
     }
 
+    @Override
     public ProjectEntity toEntity(ProjectDto dto) {
         CompanyEntity company = findCompanyById(dto);
+
+        LocalDate finishDate = (dto.getFinishDate() != null) ? LocalDate.parse(dto.getFinishDate()) : null;
 
         return ProjectEntity.builder()
                 .name(dto.getName())
                 .description(dto.getDescription())
                 .startDate(LocalDate.parse(dto.getStartDate()))
-                .finishDate(LocalDate.parse(dto.getFinishDate()))
+                .finishDate(finishDate)
                 .status(ProjectStatus.valueOf(dto.getStatus()))
                 .company(company)
                 .build();
@@ -56,10 +60,12 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
     public void updateFromDto(ProjectDto dto, ProjectEntity entity) {
         CompanyEntity company = findCompanyById(dto);
 
+        LocalDate finishDate = (dto.getFinishDate() != null) ? LocalDate.parse(dto.getFinishDate()) : null;
+
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
         entity.setStartDate(LocalDate.parse(dto.getStartDate()));
-        entity.setFinishDate(LocalDate.parse(dto.getFinishDate()));
+        entity.setFinishDate(finishDate);
         entity.setStatus(ProjectStatus.valueOf(dto.getStatus()));
         entity.setCompany(company);
     }
