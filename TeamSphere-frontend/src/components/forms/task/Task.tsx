@@ -74,7 +74,7 @@ const Task = () => {
                 <tr>
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
-                    <th>Role</th>
+                    <th>Task №</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -83,7 +83,7 @@ const Task = () => {
                     <tr key={task.id}>
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
-                        <td>{task.role}</td>
+                        <td>{task.taskNumber}</td>
                         <td>
                             <button onClick={() => handleEdit(task)}>Edit</button>
                             <button onClick={() => handleDelete(task.id)}>Delete</button>

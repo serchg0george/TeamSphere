@@ -65,7 +65,7 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="taskDescription">Description</label>
+                    <label htmlFor="taskDescription">Task Description</label>
                     <InputText
                         id="taskDescription"
                         name="taskDescription"
@@ -74,11 +74,11 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="role">Role</label>
+                    <label htmlFor="taskNumber">Task №</label>
                     <InputText
-                        id="role"
-                        name="role"
-                        value={editedTask.role}
+                        id="taskNumber"
+                        name="taskNumber"
+                        value={editedTask.taskNumber}
                         onChange={handleInputChange}
                     />
                 </div>

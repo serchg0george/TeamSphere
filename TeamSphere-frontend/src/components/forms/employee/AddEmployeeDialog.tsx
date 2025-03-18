@@ -170,7 +170,7 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
                         id="taskIds"
                         name="taskIds"
                         value={employee.tasks}
-                        options={tasks.map((task) => ({label: task.taskDescription, value: task.id}))}
+                        options={tasks.map((task) => ({label: task.taskNumber, value: task.id}))}
                         onChange={handleNumberArrayChange("taskIds")}
                         placeholder="Choose task"
                         loading={tasksLoading}

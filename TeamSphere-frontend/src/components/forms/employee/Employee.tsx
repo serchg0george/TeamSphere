@@ -96,7 +96,7 @@ const Employee = () => {
                         <td>{employee.positionName}</td>
                         <td>
                             {employee.tasks?.length
-                                ? employee.tasks.map((task) => task.description).join(", ")
+                                ? employee.tasks.map((task) => task.taskNumber).join(", ")
                                 : "No tasks"}
                         </td>
                         <td>

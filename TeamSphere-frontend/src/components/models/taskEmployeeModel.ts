@@ -1,4 +1,4 @@
 export interface TaskEmployeeModel {
     id: number;
-    description: string;
+    taskNumber: string;
 }

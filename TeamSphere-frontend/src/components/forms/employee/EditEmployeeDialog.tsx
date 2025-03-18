@@ -128,7 +128,7 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
                         name="tasks"
                         value={editedEmployee.tasks?.map(task => task.id) || []}
                         options={tasks.map((task) => ({
-                            label: task.taskDescription,
+                            label: task.taskNumber,
                             value: task.id
                         }))}
                         onChange={handleNumberArrayChange("tasks")}

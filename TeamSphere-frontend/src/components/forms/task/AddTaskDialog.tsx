@@ -15,7 +15,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
     const [task, setTask] = useState<TaskData>({
         timeSpentMinutes: 0,
         taskDescription: '',
-        role: ''
+        taskNumber: ''
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +37,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
         setTask({
             timeSpentMinutes: 0,
             taskDescription: '',
-            role: ''
+            taskNumber: ''
         });
     };
 
@@ -69,7 +69,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="taskDescription">Description</label>
+                    <label htmlFor="taskDescription">Task Description</label>
                     <InputText
                         id="taskDescription"
                         name="taskDescription"
@@ -78,11 +78,11 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="role">Role</label>
+                    <label htmlFor="taskNumber">Task №</label>
                     <InputText
-                        id="role"
-                        name="role"
-                        value={task.role}
+                        id="taskNumber"
+                        name="taskNumber"
+                        value={task.taskNumber}
                         onChange={handleInputChange}
                     />
                 </div>
