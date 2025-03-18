@@ -104,7 +104,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
             log.warn("Failed to parse date: {}", query, e);
         }
 
-        Predicate status = null;
+        Predicate status;
         if (!isDateQuery) {
             try {
                 ProjectStatus projectStatus = ProjectStatus.valueOf(query.toUpperCase());
