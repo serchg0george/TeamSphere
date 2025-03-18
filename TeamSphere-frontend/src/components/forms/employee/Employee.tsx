@@ -72,11 +72,11 @@ const Employee = () => {
             <table>
                 <thead>
                 <tr>
-                    <th>Employee Name</th>
                     <th>First Name</th>
                     <th>Last Name</th>
                     <th>Pin</th>
                     <th>Address</th>
+                    <th>Email</th>
                     <th>Department</th>
                     <th>Position</th>
                     <th>Tasks</th>
