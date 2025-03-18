@@ -72,6 +72,7 @@ const Task = () => {
             <table>
                 <thead>
                 <tr>
+                    <th>Status</th>
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
                     <th>Task №</th>
@@ -81,6 +82,7 @@ const Task = () => {
                 <tbody>
                 {tasks.map((task) => (
                     <tr key={task.id}>
+                        <td>{task.taskStatus}</td>
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
                         <td>{task.taskNumber}</td>

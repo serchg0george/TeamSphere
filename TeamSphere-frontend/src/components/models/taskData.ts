@@ -1,6 +1,7 @@
 export interface TaskData {
     id?: number;
-    timeSpentMinutes: number;
+    taskStatus: string;
+    timeSpentMinutes?: number;
     taskDescription: string;
     taskNumber: string;
 }

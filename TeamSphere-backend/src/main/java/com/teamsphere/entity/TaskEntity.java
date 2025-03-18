@@ -1,9 +1,7 @@
 package com.teamsphere.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import com.teamsphere.entity.enums.TaskStatus;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -18,7 +16,11 @@ import java.util.Objects;
 @Table(name = "t_tasks")
 public class TaskEntity extends BaseEntity {
 
-    @Column(name = "time_spent_minutes", nullable = false, length = 10)
+    @Column(name = "task_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TaskStatus taskStatus;
+
+    @Column(name = "time_spent_minutes", length = 10)
     private Integer timeSpentMinutes;
 
     @Column(name = "task_description", nullable = false, length = 150)

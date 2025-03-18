@@ -4,6 +4,8 @@ import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
 import {TaskData} from "@/components/models/taskData.ts";
+import {Dropdown} from "primereact/dropdown";
+import {taskStatuses} from "@/components/models/taskStatuses.ts";
 
 interface AddTaskDialogProps {
     visible: boolean;
@@ -13,6 +15,7 @@ interface AddTaskDialogProps {
 
 const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
     const [task, setTask] = useState<TaskData>({
+        taskStatus: '',
         timeSpentMinutes: 0,
         taskDescription: '',
         taskNumber: ''
@@ -35,6 +38,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
     const handleAdd = () => {
         onAdd(task);
         setTask({
+            taskStatus: '',
             timeSpentMinutes: 0,
             taskDescription: '',
             taskNumber: ''
@@ -59,6 +63,17 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
             className="full-screen-dialog"
         >
             <div className="p-fluid">
+                <div className="p-field">
+                    <label htmlFor="taskStatus">Status</label>
+                    <Dropdown
+                        id="taskStatus"
+                        name="taskStatus"
+                        value={task.taskStatus}
+                        options={taskStatuses}
+                        onChange={(e) => setTask({...task, taskStatus: e.value})}
+                        placeholder="Select a status"
+                    />
+                </div>
                 <div className="p-field">
                     <label htmlFor="timeSpentMinutes">Spent time (min)</label>
                     <InputNumber

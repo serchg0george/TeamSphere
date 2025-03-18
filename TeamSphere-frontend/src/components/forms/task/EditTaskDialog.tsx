@@ -4,6 +4,8 @@ import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {InputNumber} from "primereact/inputnumber";
 import {TaskData} from "@/components/models/taskData.ts";
+import {Dropdown} from "primereact/dropdown";
+import {taskStatuses} from "@/components/models/taskStatuses.ts";
 
 interface EditTaskDialogProps {
     visible: boolean;
@@ -55,6 +57,17 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
             className="full-screen-dialog"
         >
             <div className="p-fluid">
+                <div className="p-field">
+                    <label htmlFor="taskStatus">Status</label>
+                    <Dropdown
+                        id="taskStatus"
+                        name="taskStatus"
+                        value={editedTask.taskStatus}
+                        options={taskStatuses}
+                        onChange={(e) => setEditedTask({...task, taskStatus: e.value})}
+                        placeholder="Select a status"
+                    />
+                </div>
                 <div className="p-field">
                     <label htmlFor="timeSpentMinutes">Spent time (min)</label>
                     <InputNumber

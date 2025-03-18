@@ -15,6 +15,11 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class TaskDto extends BaseDto {
 
+    @NotBlank
+    @NotNull
+    @Size(max = 20)
+    private String taskStatus;
+
     @NotNull
     @Min(value = 0, message = "Time can't be negative")
     @Max(value = 480, message = "Value can't be greater than 10 digits")
