@@ -9,6 +9,8 @@ import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
+import {TaskEmployeeModel} from "@/components/models/taskEmployeeModel.ts";
+import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
 
 interface EditEmployeeDialogProps {
     visible: boolean;
@@ -42,10 +44,33 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
         }));
     };
 
-    const handleNumberArrayChange = (key: "tasks" | "projects") => (e: { value: number[] }) => {
-        setEditedEmployee((prev) => ({
+    const handleTasksChange = (e: { value: number[] }) => {
+        const selectedTasks: TaskEmployeeModel[] = e.value.map(taskId => {
+            const task = tasks.find(t => t.id === taskId);
+            return {
+                id: taskId,
+                taskNumber: task ? task.taskNumber : ''
+            };
+        });
+
+        setEditedEmployee(prev => ({
             ...prev,
-            [key]: e.value
+            tasks: selectedTasks
+        }));
+    };
+
+    const handleProjectsChange = (e: { value: number[] }) => {
+        const selectedProjects: ProjectEmployeeModel[] = e.value.map(projectId => {
+            const project = projects.find(p => p.id === projectId);
+            return {
+                id: projectId,
+                name: project ? project.name : ''
+            };
+        });
+
+        setEditedEmployee(prev => ({
+            ...prev,
+            projects: selectedProjects
         }));
     };
 
@@ -59,6 +84,17 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
             <Button label="Cancel" icon="pi pi-times" onClick={onHide} className="p-button-secondary"/>
         </div>
     );
+
+    // Safely extract the IDs from the employee tasks/projects arrays
+    const getTaskIds = () => {
+        if (!editedEmployee.tasks) return [];
+        return editedEmployee.tasks.map(task => task.id);
+    };
+
+    const getProjectIds = () => {
+        if (!editedEmployee.projects) return [];
+        return editedEmployee.projects.map(project => project.id);
+    };
 
     return (
         <Dialog
@@ -126,12 +162,12 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
                     <MultiSelect
                         id="tasks"
                         name="tasks"
-                        value={editedEmployee.tasks?.map(task => task.id) || []}
+                        value={getTaskIds()}
                         options={tasks.map((task) => ({
                             label: task.taskNumber,
                             value: task.id
                         }))}
-                        onChange={handleNumberArrayChange("tasks")}
+                        onChange={handleTasksChange}
                         placeholder="Choose tasks"
                     />
                 </div>
@@ -140,12 +176,12 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
                     <MultiSelect
                         id="projects"
                         name="projects"
-                        value={editedEmployee.projects?.map(project => project.id) || []}
+                        value={getProjectIds()}
                         options={projects.map((project) => ({
                             label: project.name,
                             value: project.id
                         }))}
-                        onChange={handleNumberArrayChange("projects")}
+                        onChange={handleProjectsChange}
                         placeholder="Choose projects"
                     />
                 </div>

@@ -9,6 +9,8 @@ import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {Dropdown} from "primereact/dropdown";
+import {TaskEmployeeModel} from "@/components/models/taskEmployeeModel.ts";
+import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
 
 interface AddEmployeeDialogProps {
     visible: boolean;
@@ -48,14 +50,35 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
         }));
     };
 
+    const handleTasksChange = (e: { value: number[] }) => {
+        const selectedTasks: TaskEmployeeModel[] = e.value.map(taskId => {
+            const task = tasks.find(t => t.id === taskId);
+            return {
+                id: taskId,
+                taskNumber: task ? task.taskNumber : ''
+            };
+        });
 
-    const handleNumberArrayChange = (key: "taskIds" | "projectIds") => (e: { value: number[] }) => {
-        setEmployee((prev) => ({
+        setEmployee(prev => ({
             ...prev,
-            [key]: e.value
+            tasks: selectedTasks
         }));
     };
 
+    const handleProjectsChange = (e: { value: number[] }) => {
+        const selectedProjects: ProjectEmployeeModel[] = e.value.map(projectId => {
+            const project = projects.find(p => p.id === projectId);
+            return {
+                id: projectId,
+                name: project ? project.name : ''
+            };
+        });
+
+        setEmployee(prev => ({
+            ...prev,
+            projects: selectedProjects
+        }));
+    };
 
     const handleAdd = () => {
         onAdd(employee);
@@ -78,6 +101,14 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
             <Button label="Cancel" icon="pi pi-times" onClick={onHide} className="p-button-secondary"/>
         </div>
     );
+
+    const getTaskIds = () => {
+        return employee.tasks?.map(task => task.id) || [];
+    };
+
+    const getProjectIds = () => {
+        return employee.projects?.map(project => project.id) || [];
+    };
 
     return (
         <Dialog
@@ -165,27 +196,33 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
                     {positionsError && <p className="error">{positionsError}</p>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="taskIds">Tasks</label>
+                    <label htmlFor="tasks">Tasks</label>
                     <MultiSelect
-                        id="taskIds"
-                        name="taskIds"
-                        value={employee.tasks}
-                        options={tasks.map((task) => ({label: task.taskNumber, value: task.id}))}
-                        onChange={handleNumberArrayChange("taskIds")}
-                        placeholder="Choose task"
+                        id="tasks"
+                        name="tasks"
+                        value={getTaskIds()}
+                        options={tasks.map((task) => ({
+                            label: task.taskNumber,
+                            value: task.id
+                        }))}
+                        onChange={handleTasksChange}
+                        placeholder="Choose tasks"
                         loading={tasksLoading}
                     />
                     {tasksError && <p className="error">{tasksError}</p>}
                 </div>
                 <div className="p-field">
-                    <label htmlFor="projectIds">Projects</label>
+                    <label htmlFor="projects">Projects</label>
                     <MultiSelect
-                        id="projectIds"
-                        name="projectIds"
-                        value={employee.projects}
-                        options={projects.map((project) => ({label: project.name, value: project.id}))}
-                        onChange={handleNumberArrayChange("projectIds")}
-                        placeholder="Choose project"
+                        id="projects"
+                        name="projects"
+                        value={getProjectIds()}
+                        options={projects.map((project) => ({
+                            label: project.name,
+                            value: project.id
+                        }))}
+                        onChange={handleProjectsChange}
+                        placeholder="Choose projects"
                         loading={projectsLoading}
                     />
                     {projectsError && <p className="error">{projectsError}</p>}
