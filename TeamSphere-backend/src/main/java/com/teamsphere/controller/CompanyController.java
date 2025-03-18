@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.company.CompanyDto;
 import com.teamsphere.dto.company.CompanySearchRequest;
-import com.teamsphere.dto.company.CompanySearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.CompanyService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping("/search")
-    public ResponseEntity<CompanySearchResponse> searchCompany(@RequestBody CompanySearchRequest findCompany) {
-        return ResponseEntity.ok(companyService.findCompany(findCompany));
+    public ResponseEntity<Page<CompanyDto>> searchCompany(@RequestBody CompanySearchRequest findCompany,
+                                                          Pageable pageable) {
+        return ResponseEntity.ok(companyService.findCompany(findCompany, pageable));
     }
 
     @PostMapping

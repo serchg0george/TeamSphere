@@ -2,7 +2,6 @@ package com.teamsphere.service.impl;
 
 import com.teamsphere.dto.company.CompanyDto;
 import com.teamsphere.dto.company.CompanySearchRequest;
-import com.teamsphere.dto.company.CompanySearchResponse;
 import com.teamsphere.entity.CompanyEntity;
 import com.teamsphere.mapper.CompanyMapper;
 import com.teamsphere.mapper.base.BaseMapper;
@@ -16,10 +15,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,34 +41,50 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
     }
 
     @Override
-    public CompanySearchResponse findCompany(final CompanySearchRequest request) {
+    public Page<CompanyDto> findCompany(final CompanySearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<CompanyEntity> criteriaQuery = criteriaBuilder.createQuery(CompanyEntity.class);
-        List<Predicate> predicates = new ArrayList<>();
         Root<CompanyEntity> root = criteriaQuery.from(CompanyEntity.class);
 
         String query = "%" + request.query() + "%";
-        Predicate name = criteriaBuilder.like(root.get("name"), query);
-        Predicate industry = criteriaBuilder.like(root.get("industry"), query);
-        Predicate address = criteriaBuilder.like(root.get("address"), query);
-        Predicate email = criteriaBuilder.like(root.get("email"), query);
+        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root);
+        criteriaQuery.where(mainPredicate);
 
-        predicates.add(criteriaBuilder.or(name, industry, address, email));
+        TypedQuery<CompanyEntity> tQuery = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
 
-        criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
+        List<CompanyEntity> resultList = tQuery.getResultList();
+        List<CompanyDto> dtoList = resultList.stream()
+                .map(companyMapper::toDto)
+                .toList();
 
-        TypedQuery<CompanyEntity> tQuery = entityManager.createQuery(criteriaQuery);
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<CompanyEntity> countRoot = countQuery.from(CompanyEntity.class);
+        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot);
 
-        CompanySearchResponse response = new CompanySearchResponse();
+        countQuery.select(criteriaBuilder.count(countRoot))
+                .where(countPredicate);
 
-        var companies = tQuery.getResultList().stream().map(companyMapper::toDto).toList();
+        Long totalCount = entityManager.createQuery(countQuery).getSingleResult();
 
-        response.setCompanies(companies);
-        response.setCompanyCount(companies.size());
+        Pageable sorted = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id"))
+        );
 
-        log.debug("Found {} projects for query '{}'", response.getCompanyCount(), request.query());
+        log.debug("Found {} projects for query '{}'", resultList.size(), request.query());
 
-        return response;
+        return new PageImpl<>(dtoList, sorted, totalCount);
     }
+
+    private Predicate buildPredicates(CriteriaBuilder criteriaBuilder, String query, Root<CompanyEntity> countRoot) {
+        Predicate nameCount = criteriaBuilder.like(countRoot.get("name"), query);
+        Predicate industryCount = criteriaBuilder.like(countRoot.get("industry"), query);
+        Predicate addressCount = criteriaBuilder.like(countRoot.get("address"), query);
+        Predicate emailCount = criteriaBuilder.like(countRoot.get("email"), query);
+        return criteriaBuilder.or(nameCount, industryCount, addressCount, emailCount);
+    }
+
 }

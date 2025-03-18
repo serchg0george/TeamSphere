@@ -2,7 +2,6 @@ package com.teamsphere.service.impl;
 
 import com.teamsphere.dto.employee.EmployeeDto;
 import com.teamsphere.dto.employee.EmployeeSearchRequest;
-import com.teamsphere.dto.employee.EmployeeSearchResponse;
 import com.teamsphere.entity.EmployeeEntity;
 import com.teamsphere.mapper.EmployeeMapper;
 import com.teamsphere.mapper.base.BaseMapper;
@@ -16,13 +15,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -51,43 +47,55 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
     }
 
     @Override
-    public EmployeeSearchResponse findEmployee(final EmployeeSearchRequest request) {
+    public Page<EmployeeDto> findEmployee(final EmployeeSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<EmployeeEntity> criteriaQuery = criteriaBuilder.createQuery(EmployeeEntity.class);
-        List<Predicate> predicates = new ArrayList<>();
         Root<EmployeeEntity> root = criteriaQuery.from(EmployeeEntity.class);
 
-
         String query = "%" + request.query() + "%";
+        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root);
+        criteriaQuery.where(mainPredicate);
+
+        TypedQuery<EmployeeEntity> tQuery = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        List<EmployeeEntity> resultList = tQuery.getResultList();
+        List<EmployeeDto> dtoList = resultList.stream()
+                .map(employeeMapper::toDto)
+                .toList();
+
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<EmployeeEntity> countRoot = countQuery.from(EmployeeEntity.class);
+        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot);
+
+        countQuery.select(criteriaBuilder.count(countRoot))
+                .where(countPredicate);
+
+        Long totalCount = entityManager.createQuery(countQuery).getSingleResult();
+
+        Pageable sorted = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id")));
+
+        log.debug("Found {} employees for query '{}'", resultList.size(), request.query());
+
+        return new PageImpl<>(dtoList, sorted, totalCount);
+    }
+
+    private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<EmployeeEntity> root) {
         Predicate firstName = criteriaBuilder.like(root.get("firstName"), query);
         Predicate lastName = criteriaBuilder.like(root.get("lastName"), query);
         Predicate email = criteriaBuilder.like(root.get("email"), query);
-
         try {
-            Integer pinQuery = Integer.parseInt(request.query());
+            Integer pinQuery = Integer.parseInt(query);
             Predicate pin = criteriaBuilder.equal(root.get("pin"), pinQuery);
-            predicates.add(criteriaBuilder.or(firstName, lastName, email, pin));
+            return criteriaBuilder.and(firstName, lastName, email, pin);
         } catch (NumberFormatException e) {
             log.info("Query '{}' is not a valid pin", e.getMessage());
         }
 
-        predicates.add(criteriaBuilder.or(firstName, lastName, email));
-
-
-        criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
-
-        TypedQuery<EmployeeEntity> tQuery = entityManager.createQuery(criteriaQuery);
-
-        EmployeeSearchResponse response = new EmployeeSearchResponse();
-
-        var employees = tQuery.getResultList().stream().map(employeeMapper::toDto).toList();
-
-        response.setEmployees(employees);
-        response.setEmployeeCount(employees.size());
-
-        log.debug("Found {} projects for query '{}'", response.getEmployeeCount(), request.query());
-
-        return response;
+        return criteriaBuilder.and(firstName, lastName, email);
     }
 }

@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.department.DepartmentDto;
 import com.teamsphere.dto.department.DepartmentSearchRequest;
-import com.teamsphere.dto.department.DepartmentSearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.DepartmentService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class DepartmentController {
     private final DepartmentService departmentService;
 
     @PostMapping("/search")
-    public ResponseEntity<DepartmentSearchResponse> searchDepartment(@RequestBody DepartmentSearchRequest findDepartment) {
-        return ResponseEntity.ok(departmentService.findDepartment(findDepartment));
+    public ResponseEntity<Page<DepartmentDto>> searchDepartment(@RequestBody DepartmentSearchRequest findDepartment,
+                                                                Pageable pageable) {
+        return ResponseEntity.ok(departmentService.findDepartment(findDepartment, pageable));
     }
 
     @PostMapping

@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.employee.EmployeeDto;
 import com.teamsphere.dto.employee.EmployeeSearchRequest;
-import com.teamsphere.dto.employee.EmployeeSearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.EmployeeService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @PostMapping("/search")
-    public ResponseEntity<EmployeeSearchResponse> searchEmployeeByCriteria(@RequestBody EmployeeSearchRequest findEmployee) {
-        return ResponseEntity.ok(employeeService.findEmployee(findEmployee));
+    public ResponseEntity<Page<EmployeeDto>> searchEmployeeByCriteria(@RequestBody EmployeeSearchRequest findEmployee,
+                                                                      Pageable pageable) {
+        return ResponseEntity.ok(employeeService.findEmployee(findEmployee, pageable));
     }
 
     @PostMapping
