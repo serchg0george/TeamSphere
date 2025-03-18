@@ -137,27 +137,27 @@ VALUES (1, 'FirstName 1', 'LastName 1', '1000000001', 'Address 1', 'employee1@ex
 -----------------------------------------------------------
 -- Seeding the timesheets table (t_timesheets)
 -----------------------------------------------------------
-INSERT INTO t_tasks (id, time_spent_minutes, task_description, employee_id, role)
-VALUES (1, 40, 'Task 1', 1, 'Role 1'),
-       (2, 50, 'Task 2', 2, 'Role 2'),
-       (3, 60, 'Task 3', 3, 'Role 3'),
-       (4, 70, 'Task 4', 4, 'Role 4'),
-       (5, 80, 'Task 5', 5, 'Role 5'),
-       (6, 90, 'Task 6', 6, 'Role 6'),
-       (7, 100, 'Task 7', 7, 'Role 7'),
-       (8, 110, 'Task 8', 8, 'Role 8'),
-       (9, 120, 'Task 9', 9, 'Role 9'),
-       (10, 130, 'Task 10', 10, 'Role 10'),
-       (11, 140, 'Task 11', 11, 'Role 11'),
-       (12, 150, 'Task 12', 12, 'Role 12'),
-       (13, 160, 'Task 13', 13, 'Role 13'),
-       (14, 170, 'Task 14', 14, 'Role 14'),
-       (15, 180, 'Task 15', 15, 'Role 15'),
-       (16, 190, 'Task 16', 16, 'Role 16'),
-       (17, 200, 'Task 17', 17, 'Role 17'),
-       (18, 210, 'Task 18', 18, 'Role 18'),
-       (19, 220, 'Task 19', 19, 'Role 19'),
-       (20, 230, 'Task 20', 20, 'Role 20');
+INSERT INTO t_tasks (id, time_spent_minutes, task_description, employee_id, task_number)
+VALUES (1, 40, 'Task 1', 1, 'Number 1'),
+       (2, 50, 'Task 2', 2, 'Number 2'),
+       (3, 60, 'Task 3', 3, 'Number 3'),
+       (4, 70, 'Task 4', 4, 'Number 4'),
+       (5, 80, 'Task 5', 5, 'Number 5'),
+       (6, 90, 'Task 6', 6, 'Number 6'),
+       (7, 100, 'Task 7', 7, 'Number 7'),
+       (8, 110, 'Task 8', 8, 'Number 8'),
+       (9, 120, 'Task 9', 9, 'Number 9'),
+       (10, 130, 'Task 10', 10, 'Number 10'),
+       (11, 140, 'Task 11', 11, 'Number 11'),
+       (12, 150, 'Task 12', 12, 'Number 12'),
+       (13, 160, 'Task 13', 13, 'Number 13'),
+       (14, 170, 'Task 14', 14, 'Number 14'),
+       (15, 180, 'Task 15', 15, 'Number 15'),
+       (16, 190, 'Task 16', 16, 'Number 16'),
+       (17, 200, 'Task 17', 17, 'Number 17'),
+       (18, 210, 'Task 18', 18, 'Number 18'),
+       (19, 220, 'Task 19', 19, 'Number 19'),
+       (20, 230, 'Task 20', 20, 'Number 20');
 
 -----------------------------------------------------------
 -- Seeding the projects_employees join table (t_projects_employees)

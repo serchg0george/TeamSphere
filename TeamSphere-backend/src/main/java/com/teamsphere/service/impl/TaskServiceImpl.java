@@ -50,14 +50,16 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
 
         String query = "%" + request.query() + "%";
         Predicate taskDescription = criteriaBuilder.like(root.get("taskDescription"), query);
+        Predicate taskNumber = criteriaBuilder.like(root.get("taskNumber"), query);
         try {
             Integer timeSpentMinutesQuery = Integer.parseInt(request.query());
             Predicate timeSpentMinutes = criteriaBuilder.equal(root.get("timeSpentMinutes"), timeSpentMinutesQuery);
-            predicates.add(criteriaBuilder.or(timeSpentMinutes, taskDescription));
+            predicates.add(criteriaBuilder.or(timeSpentMinutes, taskDescription, taskNumber));
         } catch (NumberFormatException e) {
             log.info("Query '{}' is not a valid number", e.getMessage());
         }
         predicates.add(taskDescription);
+        predicates.add(taskNumber);
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
 

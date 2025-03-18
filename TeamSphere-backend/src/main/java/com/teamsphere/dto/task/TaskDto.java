@@ -27,7 +27,7 @@ public class TaskDto extends BaseDto {
 
     @NotBlank
     @NotNull
-    @Size(max = 100)
-    private String role;
+    @Size(max = 20)
+    private String taskNumber;
 
 }

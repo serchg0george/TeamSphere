@@ -24,8 +24,8 @@ public class TaskEntity extends BaseEntity {
     @Column(name = "task_description", nullable = false, length = 150)
     private String taskDescription;
 
-    @Column(name = "role", nullable = false, length = 100)
-    private String role;
+    @Column(name = "task_number", nullable = false, length = 20)
+    private String taskNumber;
 
     @ManyToOne
     private EmployeeEntity employee;
