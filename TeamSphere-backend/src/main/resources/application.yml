@@ -17,9 +17,9 @@ spring:
         format_sql: true
         show_sql: true
 
-  sql:
-    init:
-      mode: always
+#  sql:
+#    init:
+#      mode: always # UNCOMMENT IF YOU NEED TO AUTO SEED SOME SAMPLES OF DATA
 
 jwt:
   secret: ${SECRET_KEY}
