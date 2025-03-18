@@ -3,7 +3,7 @@ export interface ProjectData {
     name: string;
     description: string;
     startDate: string;
-    finishDate: string;
+    finishDate: string | null;
     status: string;
     companyId?: number;
     companyName?: string;

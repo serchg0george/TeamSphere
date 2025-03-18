@@ -40,7 +40,10 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
     };
 
     const handleAdd = () => {
-        onAdd(project);
+        onAdd({
+            ...project,
+            finishDate: project.finishDate?.trim() === '' ? null : project.finishDate,
+        });
         setProject({
             name: '',
             description: '',
@@ -124,7 +127,7 @@ const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
                         id="companyId"
                         name="companyId"
                         value={project.companyId}
-                        options={companies.map((company) => ({label : company.name, value: company.id}))}
+                        options={companies.map((company) => ({label: company.name, value: company.id}))}
                         onChange={handleNumberChange("companyId")}
                         placeholder="Choose company"
                         loading={companiesLoading}
