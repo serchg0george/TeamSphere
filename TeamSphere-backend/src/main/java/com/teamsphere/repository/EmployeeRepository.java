@@ -12,7 +12,7 @@ import java.util.List;
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Long> {
 
     @EntityGraph(attributePaths = {"tasks", "projects", "department", "position"})
-    @Query("SELECT e FROM EmployeeEntity e")
+    @Query("SELECT e FROM EmployeeEntity e ORDER BY e.id DESC")
     List<EmployeeEntity> findAllWithRelations();
 
 }

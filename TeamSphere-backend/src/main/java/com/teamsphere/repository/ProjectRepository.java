@@ -12,6 +12,6 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<ProjectEntity, Long> {
 
     @EntityGraph(attributePaths = {"company"})
-    @Query("SELECT p FROM ProjectEntity p")
+    @Query("SELECT p FROM ProjectEntity p ORDER BY p.id DESC")
     List<ProjectEntity> findAllWithCompanies();
 }

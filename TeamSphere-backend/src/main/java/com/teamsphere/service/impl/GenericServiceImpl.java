@@ -7,7 +7,9 @@ import com.teamsphere.mapper.base.BaseMapper;
 import com.teamsphere.service.GenericService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto> implements GenericService<E, D> {
@@ -17,7 +19,14 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
 
     @Override
     public Page<D> getAll(Pageable pageable) {
-        return getRepository().findAll(pageable)
+
+        Pageable sorted = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id"))
+        );
+
+        return getRepository().findAll(sorted)
                 .map(entity -> getMapper().toDto(entity));
     }
 
