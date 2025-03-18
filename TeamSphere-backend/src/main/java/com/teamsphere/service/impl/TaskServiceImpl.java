@@ -62,6 +62,7 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
         predicates.add(taskNumber);
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<TaskEntity> tQuery = entityManager.createQuery(criteriaQuery);
 

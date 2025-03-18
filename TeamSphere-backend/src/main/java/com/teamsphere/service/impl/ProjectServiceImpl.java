@@ -98,6 +98,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
 
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<ProjectEntity> tQuery = entityManager.createQuery(criteriaQuery);
 

@@ -75,6 +75,7 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
 
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<EmployeeEntity> tQuery = entityManager.createQuery(criteriaQuery);
 

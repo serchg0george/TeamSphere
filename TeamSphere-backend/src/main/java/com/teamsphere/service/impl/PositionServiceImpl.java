@@ -62,6 +62,7 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
 
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<PositionEntity> tQuery = entityManager.createQuery(criteriaQuery);
 

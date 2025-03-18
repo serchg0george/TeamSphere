@@ -55,6 +55,7 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
         predicates.add(criteriaBuilder.or(departmentName, description));
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<DepartmentEntity> tQuery = entityManager.createQuery(criteriaQuery);
 

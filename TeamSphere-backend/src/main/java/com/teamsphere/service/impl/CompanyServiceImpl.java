@@ -57,6 +57,7 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
         predicates.add(criteriaBuilder.or(name, industry, address, email));
 
         criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
+        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
 
         TypedQuery<CompanyEntity> tQuery = entityManager.createQuery(criteriaQuery);
 
