@@ -91,11 +91,11 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
         try {
             Integer pinQuery = Integer.parseInt(query);
             Predicate pin = criteriaBuilder.equal(root.get("pin"), pinQuery);
-            return criteriaBuilder.and(firstName, lastName, email, pin);
+            return criteriaBuilder.or(firstName, lastName, email, pin);
         } catch (NumberFormatException e) {
             log.info("Query '{}' is not a valid pin", e.getMessage());
         }
 
-        return criteriaBuilder.and(firstName, lastName, email);
+        return criteriaBuilder.or(firstName, lastName, email);
     }
 }

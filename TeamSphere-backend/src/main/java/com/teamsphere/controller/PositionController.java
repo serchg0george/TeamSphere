@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.position.PositionDto;
 import com.teamsphere.dto.position.PositionSearchRequest;
-import com.teamsphere.dto.position.PositionSearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.PositionService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class PositionController {
     private final PositionService positionService;
 
     @PostMapping("/search")
-    public ResponseEntity<PositionSearchResponse> searchPosition(@RequestBody PositionSearchRequest findPosition) {
-        return ResponseEntity.ok(positionService.findPosition(findPosition));
+    public ResponseEntity<Page<PositionDto>> searchPosition(@RequestBody PositionSearchRequest findPosition,
+                                                            Pageable pageable) {
+        return ResponseEntity.ok(positionService.findPosition(findPosition, pageable));
     }
 
     @PostMapping

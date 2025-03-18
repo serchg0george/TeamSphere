@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.task.TaskDto;
 import com.teamsphere.dto.task.TaskSearchRequest;
-import com.teamsphere.dto.task.TaskSearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.TaskService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping("/search")
-    public ResponseEntity<TaskSearchResponse> searchTask(@RequestBody TaskSearchRequest findTask) {
-        return ResponseEntity.ok(taskService.findTask(findTask));
+    public ResponseEntity<Page<TaskDto>> searchTask(@RequestBody TaskSearchRequest findTask,
+                                                    Pageable pageable) {
+        return ResponseEntity.ok(taskService.findTask(findTask, pageable));
     }
 
     @PostMapping

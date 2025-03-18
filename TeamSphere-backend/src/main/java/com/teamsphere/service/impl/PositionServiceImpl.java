@@ -2,7 +2,6 @@ package com.teamsphere.service.impl;
 
 import com.teamsphere.dto.position.PositionDto;
 import com.teamsphere.dto.position.PositionSearchRequest;
-import com.teamsphere.dto.position.PositionSearchResponse;
 import com.teamsphere.entity.PositionEntity;
 import com.teamsphere.mapper.PositionMapper;
 import com.teamsphere.mapper.base.BaseMapper;
@@ -16,10 +15,10 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -42,39 +41,53 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
     }
 
     @Override
-    public PositionSearchResponse findPosition(final PositionSearchRequest request) {
+    public Page<PositionDto> findPosition(final PositionSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PositionEntity> criteriaQuery = criteriaBuilder.createQuery(PositionEntity.class);
-        List<Predicate> predicates = new ArrayList<>();
         Root<PositionEntity> root = criteriaQuery.from(PositionEntity.class);
 
-
         String query = "%" + request.query() + "%";
+        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root);
+        criteriaQuery.where(mainPredicate);
+
+        TypedQuery<PositionEntity> tQuery = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        List<PositionEntity> resultList = tQuery.getResultList();
+        List<PositionDto> dtoList = resultList.stream()
+                .map(positionMapper::toDto)
+                .toList();
+
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<PositionEntity> countRoot = countQuery.from(PositionEntity.class);
+        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot);
+
+        countQuery.select(criteriaBuilder.count(countRoot))
+                .where(countPredicate);
+
+        Long totalCount = entityManager.createQuery(countQuery).getSingleResult();
+
+        Pageable sorted = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id")));
+
+        log.debug("Found {} positions for query '{}'", resultList.size(), request.query());
+
+        return new PageImpl<>(dtoList, sorted, totalCount);
+    }
+
+    private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<PositionEntity> root) {
         Predicate roleName = criteriaBuilder.like(root.get("positionName"), query);
 
         try {
-            Integer yearsOfExperienceQuery = Integer.parseInt(request.query());
+            Integer yearsOfExperienceQuery = Integer.parseInt(query);
             Predicate yearsOfExperience = criteriaBuilder.equal(root.get("yearsOfExperience"), yearsOfExperienceQuery);
-            predicates.add(criteriaBuilder.or(roleName, yearsOfExperience));
+            return criteriaBuilder.or(roleName, yearsOfExperience);
         } catch (NumberFormatException e) {
-            predicates.add(roleName);
+            log.info("Query '{} is not a valid year of experience", e.getMessage());
         }
-
-
-        criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
-
-        TypedQuery<PositionEntity> tQuery = entityManager.createQuery(criteriaQuery);
-
-        PositionSearchResponse response = new PositionSearchResponse();
-
-        var positions = tQuery.getResultList().stream().map(positionMapper::toDto).toList();
-
-        response.setPositions(positions);
-        response.setPositionCount(positions.size());
-
-        log.debug("Found {} projects for query '{}'", response.getPositionCount(), request.query());
-
-        return response;
+        return criteriaBuilder.or(roleName);
     }
 }

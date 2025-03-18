@@ -2,7 +2,6 @@ package com.teamsphere.controller;
 
 import com.teamsphere.dto.project.ProjectDto;
 import com.teamsphere.dto.project.ProjectSearchRequest;
-import com.teamsphere.dto.project.ProjectSearchResponse;
 import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.service.ProjectService;
 import jakarta.validation.Valid;
@@ -24,8 +23,9 @@ public class ProjectController {
     private final ProjectService projectService;
 
     @PostMapping("/search")
-    public ResponseEntity<ProjectSearchResponse> searchProject(@RequestBody ProjectSearchRequest findProject) {
-        return ResponseEntity.ok(projectService.findProject(findProject));
+    public ResponseEntity<Page<ProjectDto>> searchProject(@RequestBody ProjectSearchRequest findProject,
+                                                          Pageable pageable) {
+        return ResponseEntity.ok(projectService.findProject(findProject, pageable));
     }
 
     @PostMapping

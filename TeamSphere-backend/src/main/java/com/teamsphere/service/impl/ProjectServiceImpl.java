@@ -2,7 +2,6 @@ package com.teamsphere.service.impl;
 
 import com.teamsphere.dto.project.ProjectDto;
 import com.teamsphere.dto.project.ProjectSearchRequest;
-import com.teamsphere.dto.project.ProjectSearchResponse;
 import com.teamsphere.entity.ProjectEntity;
 import com.teamsphere.entity.enums.ProjectStatus;
 import com.teamsphere.mapper.ProjectMapper;
@@ -17,9 +16,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
@@ -55,62 +52,69 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
     }
 
     @Override
-    public ProjectSearchResponse findProject(final ProjectSearchRequest request) {
+    public Page<ProjectDto> findProject(final ProjectSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<ProjectEntity> criteriaQuery = criteriaBuilder.createQuery(ProjectEntity.class);
-        List<Predicate> predicates = new ArrayList<>();
         Root<ProjectEntity> root = criteriaQuery.from(ProjectEntity.class);
 
         String query = "%" + request.query() + "%";
+        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root);
+        criteriaQuery.where(mainPredicate);
+
+        TypedQuery<ProjectEntity> tQuery = entityManager.createQuery(criteriaQuery)
+                .setFirstResult((int) pageable.getOffset())
+                .setMaxResults(pageable.getPageSize());
+
+        List<ProjectEntity> resultList = tQuery.getResultList();
+        List<ProjectDto> dtoList = resultList.stream()
+                .map(projectMapper::toDto)
+                .toList();
+
+        CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
+        Root<ProjectEntity> countRoot = countQuery.from(ProjectEntity.class);
+        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot);
+
+        countQuery.select(criteriaBuilder.count(countRoot))
+                .where(countPredicate);
+
+        Long totalCount = entityManager.createQuery(countQuery).getSingleResult();
+
+        Pageable sorted = PageRequest.of(
+                pageable.getPageNumber(),
+                pageable.getPageSize(),
+                pageable.getSortOr(Sort.by(Sort.Direction.DESC, "id")));
+
+        log.debug("Found {} projects for query '{}'", resultList.size(), request.query());
+
+        return new PageImpl<>(dtoList, sorted, totalCount);
+    }
+
+    private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<ProjectEntity> root) {
         Predicate name = criteriaBuilder.like(root.get("name"), query);
         Predicate description = criteriaBuilder.like(root.get("description"), query);
 
         List<Predicate> datePredicates = new ArrayList<>();
         boolean isDateQuery = false;
         try {
-            LocalDate queryDate = LocalDate.parse(request.query(), DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate queryDate = LocalDate.parse(query, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             datePredicates.add(criteriaBuilder.equal(root.get("startDate"), queryDate));
             datePredicates.add(criteriaBuilder.equal(root.get("finishDate"), queryDate));
             isDateQuery = true;
         } catch (DateTimeParseException e) {
-            log.warn("Failed to parse date: {}", request.query(), e);
+            log.warn("Failed to parse date: {}", query, e);
         }
 
         Predicate status = null;
         if (!isDateQuery) {
             try {
-                ProjectStatus projectStatus = ProjectStatus.valueOf(request.query().toUpperCase());
+                ProjectStatus projectStatus = ProjectStatus.valueOf(query.toUpperCase());
                 status = criteriaBuilder.equal(root.get("status"), projectStatus);
+                return criteriaBuilder.or(name, description, datePredicates.getFirst(), datePredicates.getLast(), status);
             } catch (IllegalArgumentException e) {
-                log.info("Query '{}' is not a valid project status", request.query());
+                log.info("Query '{}' is not a valid project status", query);
             }
         }
 
-        List<Predicate> allPredicates = new ArrayList<>();
-        allPredicates.add(name);
-        allPredicates.add(description);
-        allPredicates.addAll(datePredicates);
-        if (status != null) {
-            allPredicates.add(status);
-        }
-
-        predicates.add(criteriaBuilder.or(allPredicates.toArray(new Predicate[0])));
-
-
-        criteriaQuery.where(criteriaBuilder.or(predicates.toArray(new Predicate[0])));
-        criteriaQuery.orderBy(criteriaBuilder.asc(root.get("id")));
-
-        TypedQuery<ProjectEntity> tQuery = entityManager.createQuery(criteriaQuery);
-
-        ProjectSearchResponse response = new ProjectSearchResponse();
-
-        var projects = tQuery.getResultList().stream().map(projectMapper::toDto).toList();
-
-        response.setProjects(projects);
-        response.setProjectCount(projects.size());
-
-        log.debug("Found {} projects for query '{}'", response.getProjectCount(), request.query());
-
-        return response;
+        return criteriaBuilder.or(name, description);
     }
 }
