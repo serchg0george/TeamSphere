@@ -25,7 +25,7 @@ public class EmployeeController {
     @PostMapping("/search")
     public ResponseEntity<Page<EmployeeDto>> searchEmployeeByCriteria(@RequestBody EmployeeSearchRequest findEmployee,
                                                                       Pageable pageable) {
-        return ResponseEntity.ok(employeeService.findEmployee(findEmployee, pageable));
+        return ResponseEntity.ok(employeeService.find(findEmployee, pageable));
     }
 
     @PostMapping

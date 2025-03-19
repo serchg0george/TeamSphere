@@ -41,7 +41,7 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
     }
 
     @Override
-    public Page<PositionDto> findPosition(final PositionSearchRequest request, Pageable pageable) {
+    public Page<PositionDto> find(final PositionSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<PositionEntity> criteriaQuery = criteriaBuilder.createQuery(PositionEntity.class);
         Root<PositionEntity> root = criteriaQuery.from(PositionEntity.class);

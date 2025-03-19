@@ -41,7 +41,7 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
     }
 
     @Override
-    public Page<DepartmentDto> findDepartment(final DepartmentSearchRequest request, Pageable pageable) {
+    public Page<DepartmentDto> find(final DepartmentSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<DepartmentEntity> criteriaQuery = criteriaBuilder.createQuery(DepartmentEntity.class);
         Root<DepartmentEntity> root = criteriaQuery.from(DepartmentEntity.class);

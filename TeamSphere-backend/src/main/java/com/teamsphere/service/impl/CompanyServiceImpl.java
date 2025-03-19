@@ -41,7 +41,7 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
     }
 
     @Override
-    public Page<CompanyDto> findCompany(final CompanySearchRequest request, Pageable pageable) {
+    public Page<CompanyDto> find(final CompanySearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<CompanyEntity> criteriaQuery = criteriaBuilder.createQuery(CompanyEntity.class);
         Root<CompanyEntity> root = criteriaQuery.from(CompanyEntity.class);

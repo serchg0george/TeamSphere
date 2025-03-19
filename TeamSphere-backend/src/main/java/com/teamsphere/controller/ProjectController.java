@@ -25,7 +25,7 @@ public class ProjectController {
     @PostMapping("/search")
     public ResponseEntity<Page<ProjectDto>> searchProject(@RequestBody ProjectSearchRequest findProject,
                                                           Pageable pageable) {
-        return ResponseEntity.ok(projectService.findProject(findProject, pageable));
+        return ResponseEntity.ok(projectService.find(findProject, pageable));
     }
 
     @PostMapping

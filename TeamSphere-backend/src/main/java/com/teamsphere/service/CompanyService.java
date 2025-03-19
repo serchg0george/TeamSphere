@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface CompanyService extends GenericService<CompanyEntity, CompanyDto> {
 
-    Page<CompanyDto> findCompany(CompanySearchRequest request, Pageable pageable);
+    Page<CompanyDto> find(CompanySearchRequest request, Pageable pageable);
 
 }

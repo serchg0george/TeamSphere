@@ -25,7 +25,7 @@ public class PositionController {
     @PostMapping("/search")
     public ResponseEntity<Page<PositionDto>> searchPosition(@RequestBody PositionSearchRequest findPosition,
                                                             Pageable pageable) {
-        return ResponseEntity.ok(positionService.findPosition(findPosition, pageable));
+        return ResponseEntity.ok(positionService.find(findPosition, pageable));
     }
 
     @PostMapping

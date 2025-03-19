@@ -25,7 +25,7 @@ public class CompanyController {
     @PostMapping("/search")
     public ResponseEntity<Page<CompanyDto>> searchCompany(@RequestBody CompanySearchRequest findCompany,
                                                           Pageable pageable) {
-        return ResponseEntity.ok(companyService.findCompany(findCompany, pageable));
+        return ResponseEntity.ok(companyService.find(findCompany, pageable));
     }
 
     @PostMapping

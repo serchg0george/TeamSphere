@@ -52,7 +52,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
     }
 
     @Override
-    public Page<ProjectDto> findProject(final ProjectSearchRequest request, Pageable pageable) {
+    public Page<ProjectDto> find(final ProjectSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<ProjectEntity> criteriaQuery = criteriaBuilder.createQuery(ProjectEntity.class);
         Root<ProjectEntity> root = criteriaQuery.from(ProjectEntity.class);

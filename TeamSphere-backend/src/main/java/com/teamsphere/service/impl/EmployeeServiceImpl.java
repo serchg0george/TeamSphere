@@ -47,7 +47,7 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
     }
 
     @Override
-    public Page<EmployeeDto> findEmployee(final EmployeeSearchRequest request, Pageable pageable) {
+    public Page<EmployeeDto> find(final EmployeeSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<EmployeeEntity> criteriaQuery = criteriaBuilder.createQuery(EmployeeEntity.class);
         Root<EmployeeEntity> root = criteriaQuery.from(EmployeeEntity.class);

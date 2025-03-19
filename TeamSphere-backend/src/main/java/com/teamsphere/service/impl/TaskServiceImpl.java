@@ -41,7 +41,7 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
     }
 
     @Override
-    public Page<TaskDto> findTask(final TaskSearchRequest request, Pageable pageable) {
+    public Page<TaskDto> find(final TaskSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<TaskEntity> criteriaQuery = criteriaBuilder.createQuery(TaskEntity.class);
         Root<TaskEntity> root = criteriaQuery.from(TaskEntity.class);

@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface PositionService extends GenericService<PositionEntity, PositionDto> {
 
-    Page<PositionDto> findPosition(PositionSearchRequest searchRequest, Pageable pageable);
+    Page<PositionDto> find(PositionSearchRequest searchRequest, Pageable pageable);
 
 }

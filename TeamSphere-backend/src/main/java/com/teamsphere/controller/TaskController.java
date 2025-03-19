@@ -25,7 +25,7 @@ public class TaskController {
     @PostMapping("/search")
     public ResponseEntity<Page<TaskDto>> searchTask(@RequestBody TaskSearchRequest findTask,
                                                     Pageable pageable) {
-        return ResponseEntity.ok(taskService.findTask(findTask, pageable));
+        return ResponseEntity.ok(taskService.find(findTask, pageable));
     }
 
     @PostMapping

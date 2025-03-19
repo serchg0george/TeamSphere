@@ -25,7 +25,7 @@ public class DepartmentController {
     @PostMapping("/search")
     public ResponseEntity<Page<DepartmentDto>> searchDepartment(@RequestBody DepartmentSearchRequest findDepartment,
                                                                 Pageable pageable) {
-        return ResponseEntity.ok(departmentService.findDepartment(findDepartment, pageable));
+        return ResponseEntity.ok(departmentService.find(findDepartment, pageable));
     }
 
     @PostMapping

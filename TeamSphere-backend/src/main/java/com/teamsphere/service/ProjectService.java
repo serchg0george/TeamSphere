@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface ProjectService extends GenericService<ProjectEntity, ProjectDto> {
 
-    Page<ProjectDto> findProject(ProjectSearchRequest request, Pageable pageable);
+    Page<ProjectDto> find(ProjectSearchRequest request, Pageable pageable);
 
 }

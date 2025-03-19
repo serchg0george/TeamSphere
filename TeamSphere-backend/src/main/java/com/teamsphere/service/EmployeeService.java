@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface EmployeeService extends GenericService<EmployeeEntity, EmployeeDto> {
 
-    Page<EmployeeDto> findEmployee(EmployeeSearchRequest request, Pageable pageable);
+    Page<EmployeeDto> find(EmployeeSearchRequest request, Pageable pageable);
 
 }

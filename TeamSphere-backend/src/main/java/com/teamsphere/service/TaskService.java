@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface TaskService extends GenericService<TaskEntity, TaskDto> {
 
-    Page<TaskDto> findTask(TaskSearchRequest request, Pageable pageable);
+    Page<TaskDto> find(TaskSearchRequest request, Pageable pageable);
 
 }

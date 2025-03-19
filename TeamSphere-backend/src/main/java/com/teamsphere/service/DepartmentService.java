@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 public interface DepartmentService extends GenericService<DepartmentEntity, DepartmentDto> {
 
-    Page<DepartmentDto> findDepartment(DepartmentSearchRequest request, Pageable pageable);
+    Page<DepartmentDto> find(DepartmentSearchRequest request, Pageable pageable);
 
 }
