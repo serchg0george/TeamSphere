@@ -6,6 +6,7 @@ import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import AddPositionDialog from "@/components/forms/position/AddPositionDialog.tsx";
 import '@/components/forms/styles.css'
 import EditPositionDialog from "@/components/forms/position/EditPositionDialog.tsx";
+import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
 
 const Position = () => {
     const navigate = useNavigate();
@@ -84,8 +85,8 @@ const Position = () => {
                     <tr key={position.id}>
                         <td>{position.positionName}</td>
                         <td>{position.yearsOfExperience}</td>
-                        <td>{position.createdAt}</td>
-                        <td>{position.updatedAt}</td>
+                        <td>{useFormattedDate(position.createdAt)}</td>
+                        <td>{useFormattedDate(position.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(position)}>Edit</button>
                             <button onClick={() => handleDelete(position.id)}>Delete</button>

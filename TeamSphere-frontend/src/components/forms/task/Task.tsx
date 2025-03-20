@@ -6,6 +6,7 @@ import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import AddTaskDialog from "@/components/forms/task/AddTaskDialog.tsx";
 import '@/components/forms/styles.css'
 import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
+import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
 
 const Task = () => {
     const navigate = useNavigate();
@@ -88,8 +89,8 @@ const Task = () => {
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
                         <td>{task.taskNumber}</td>
-                        <td>{task.createdAt}</td>
-                        <td>{task.updatedAt}</td>
+                        <td>{useFormattedDate(task.createdAt)}</td>
+                        <td>{useFormattedDate(task.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(task)}>Edit</button>
                             <button onClick={() => handleDelete(task.id)}>Delete</button>

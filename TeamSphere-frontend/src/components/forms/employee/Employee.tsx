@@ -6,6 +6,7 @@ import {EmployeeData} from "@/components/models/employeeData.ts";
 import AddEmployeeDialog from "@/components/forms/employee/AddEmployeeDialog.tsx";
 import '@/components/forms/styles.css'
 import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.tsx";
+import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
 
 const Employee = () => {
     const navigate = useNavigate();
@@ -106,8 +107,8 @@ const Employee = () => {
                                 ? employee.projects.map((project) => project.name).join(", ")
                                 : "No projects"}
                         </td>
-                        <td>{employee.createdAt}</td>
-                        <td>{employee.updatedAt}</td>
+                        <td>{useFormattedDate(employee.createdAt)}</td>
+                        <td>{useFormattedDate(employee.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(employee)}>Edit</button>
                             <button onClick={() => handleDelete(employee.id)}>Delete</button>

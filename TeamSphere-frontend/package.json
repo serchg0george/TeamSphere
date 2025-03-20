@@ -12,6 +12,7 @@
   "dependencies": {
     "@types/node": "^22.13.9",
     "axios": "^1.8.1",
+    "date-fns": "^4.1.0",
     "primeflex": "^4.0.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.3",

@@ -6,6 +6,7 @@ import AddCompanyDialog from "./AddCompanyDialog.tsx";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
 import '@/components/forms/styles.css'
 import EditCompanyDialog from "@/components/forms/company/EditCompanyDialog.tsx";
+import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
 
 const Company = () => {
     const navigate = useNavigate();
@@ -88,8 +89,8 @@ const Company = () => {
                         <td>{company.industry}</td>
                         <td>{company.address}</td>
                         <td>{company.email}</td>
-                        <td>{company.createdAt}</td>
-                        <td>{company.updatedAt}</td>
+                        <td>{useFormattedDate(company.createdAt)}</td>
+                        <td>{useFormattedDate(company.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(company)}>Edit</button>
                             <button onClick={() => handleDelete(company.id)}>Delete</button>
