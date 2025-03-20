@@ -30,9 +30,16 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
 
     const handleNumberChange = (e: { value: number | null }) => {
         setEditedTask({
-            ...task,
+            ...editedTask,
             timeSpentMinutes: e.value ?? 0
         });
+    };
+
+    const handleStatusChange = (e: { value: string }) => {
+        setEditedTask(prevTask => ({
+            ...prevTask,
+            taskStatus: e.value
+        }));
     };
 
     const handleUpdate = () => {
@@ -64,7 +71,7 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                         name="taskStatus"
                         value={editedTask.taskStatus}
                         options={taskStatuses}
-                        onChange={(e) => setEditedTask({...task, taskStatus: e.value})}
+                        onChange={handleStatusChange}
                         placeholder="Select a status"
                     />
                 </div>
