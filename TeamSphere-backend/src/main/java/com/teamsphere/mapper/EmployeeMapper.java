@@ -43,7 +43,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .departmentName(entity.getDepartment().getDepartmentName())
                 .positionName(entity.getPosition().getPositionName())
                 .tasks(entity.getTasks().stream()
-                        .map(task -> new TaskInfo(task.getId(), task.getTaskNumber(), task.getTaskStatus().toString()))
+                        .map(task -> new TaskInfo(task.getId(), task.getTaskNumber(), task.getTaskStatus().toString(), task.getTaskDescription(), task.getTimeSpentMinutes()))
                         .toList())
                 .projects(entity.getProjects().stream()
                         .map(project -> new ProjectInfo(project.getId(), project.getName()))
