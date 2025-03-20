@@ -12,6 +12,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
+
 public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto> implements GenericService<E, D> {
     public abstract BaseMapper<E, D> getMapper();
 
@@ -34,6 +36,7 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
     @Transactional
     public D save(D dto) {
         E entityForSave = getRepository().save(getMapper().toEntity(dto));
+        entityForSave.setCreatedAt(LocalDateTime.now());
         return getMapper().toDto(entityForSave);
     }
 
@@ -57,6 +60,7 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
     public D update(D dto, Long id) {
         E entityDb = getRepository().findById(id).orElseThrow(() -> new NotFoundException(id));
         getMapper().updateFromDto(dto, entityDb);
+        entityDb.setUpdatedAt(LocalDateTime.now());
         return getMapper().toDto(getRepository().save(entityDb));
     }
 }

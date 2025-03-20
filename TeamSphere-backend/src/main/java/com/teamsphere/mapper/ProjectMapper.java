@@ -37,6 +37,8 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .status(entity.getStatus().toString())
                 .companyId(entity.getCompany().getId())
                 .companyName(entity.getCompany().getName())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

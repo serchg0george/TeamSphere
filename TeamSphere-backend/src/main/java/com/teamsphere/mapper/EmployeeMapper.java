@@ -47,6 +47,8 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .projects(entity.getProjects().stream()
                         .map(project -> new ProjectInfo(project.getId(), project.getName()))
                         .toList())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

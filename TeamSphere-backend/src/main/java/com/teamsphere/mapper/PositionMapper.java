@@ -15,6 +15,8 @@ public class PositionMapper implements BaseMapper<PositionEntity, PositionDto> {
                 .id(entity.getId())
                 .positionName(entity.getPositionName())
                 .yearsOfExperience(entity.getYearsOfExperience())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

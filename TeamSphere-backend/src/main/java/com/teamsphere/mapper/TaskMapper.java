@@ -20,6 +20,8 @@ public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
                 .timeSpentMinutes(entity.getTimeSpentMinutes())
                 .taskDescription(entity.getTaskDescription())
                 .taskNumber(entity.getTaskNumber())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

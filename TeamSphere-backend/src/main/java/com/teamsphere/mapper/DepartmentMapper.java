@@ -15,6 +15,8 @@ public class DepartmentMapper implements BaseMapper<DepartmentEntity, Department
                 .id(entity.getId())
                 .departmentName(entity.getDepartmentName())
                 .description(entity.getDescription())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

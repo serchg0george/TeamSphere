@@ -18,6 +18,8 @@ public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
                 .industry(entity.getIndustry())
                 .address(entity.getAddress())
                 .email(entity.getEmail())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 
