@@ -6,7 +6,7 @@ import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import AddProjectDialog from "@/components/forms/project/AddProjectDialog.tsx";
 import '@/components/forms/styles.css'
 import EditProjectDialog from "@/components/forms/project/EditProjectDialog.tsx";
-import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
+import {formattingDate} from "@/hooks/formattingDate.ts";
 
 const Project = () => {
     const navigate = useNavigate();
@@ -93,8 +93,8 @@ const Project = () => {
                         <td>{project.finishDate}</td>
                         <td>{project.status}</td>
                         <td>{project.companyName}</td>
-                        <td>{useFormattedDate(project.createdAt)}</td>
-                        <td>{useFormattedDate(project.updatedAt)}</td>
+                        <td>{formattingDate(project.createdAt)}</td>
+                        <td>{formattingDate(project.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(project)}>Edit</button>
                             <button onClick={() => handleDelete(project.id)}>Delete</button>

@@ -6,7 +6,7 @@ import useFetchDepartments from "@/hooks/useFetchDepartments.ts"
 import '@/components/forms/styles.css'
 import EditDepartmentDialog from "@/components/forms/department/EditDepartmentDialog.tsx";
 import {useState} from "react";
-import {useFormattedDate} from "@/hooks/useFormattedDate.ts";
+import {formattingDate} from "@/hooks/formattingDate.ts";
 
 const Department = () => {
     const navigate = useNavigate();
@@ -85,8 +85,8 @@ const Department = () => {
                     <tr key={department.id}>
                         <td>{department.departmentName}</td>
                         <td>{department.description}</td>
-                        <td>{useFormattedDate(department.createdAt)}</td>
-                        <td>{useFormattedDate(department.updatedAt)}</td>
+                        <td>{formattingDate(department.createdAt)}</td>
+                        <td>{formattingDate(department.updatedAt)}</td>
                         <td>
                             <button onClick={() => handleEdit(department)}>Edit</button>
                             <button onClick={() => handleDelete(department.id)}>Delete</button>
