@@ -6,6 +6,8 @@ import com.teamsphere.mapper.base.BaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
@@ -30,6 +32,8 @@ public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
                 .industry(dto.getIndustry())
                 .address(dto.getAddress())
                 .email(dto.getEmail())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

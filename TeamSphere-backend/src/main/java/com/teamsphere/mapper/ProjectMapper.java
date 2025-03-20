@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 @RequiredArgsConstructor
@@ -55,6 +56,8 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .finishDate(finishDate)
                 .status(ProjectStatus.valueOf(dto.getStatus()))
                 .company(company)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

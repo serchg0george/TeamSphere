@@ -13,6 +13,7 @@ import com.teamsphere.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -93,6 +94,8 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .position(findPositionById(dto.getPositionId()))
                 .projects(new LinkedHashSet<>())
                 .tasks(new LinkedHashSet<>())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

@@ -6,6 +6,8 @@ import com.teamsphere.mapper.base.BaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class DepartmentMapper implements BaseMapper<DepartmentEntity, DepartmentDto> {
@@ -25,6 +27,8 @@ public class DepartmentMapper implements BaseMapper<DepartmentEntity, Department
         return DepartmentEntity.builder()
                 .departmentName(dto.getDepartmentName())
                 .description(dto.getDescription())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

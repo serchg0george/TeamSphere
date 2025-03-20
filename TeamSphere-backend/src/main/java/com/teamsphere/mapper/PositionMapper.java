@@ -6,6 +6,8 @@ import com.teamsphere.mapper.base.BaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class PositionMapper implements BaseMapper<PositionEntity, PositionDto> {
@@ -25,6 +27,8 @@ public class PositionMapper implements BaseMapper<PositionEntity, PositionDto> {
         return PositionEntity.builder()
                 .positionName(dto.getPositionName())
                 .yearsOfExperience(dto.getYearsOfExperience())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 

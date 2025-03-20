@@ -7,6 +7,8 @@ import com.teamsphere.mapper.base.BaseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @RequiredArgsConstructor
 public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
@@ -33,6 +35,8 @@ public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
                 .timeSpentMinutes(dto.getTimeSpentMinutes())
                 .taskDescription(dto.getTaskDescription())
                 .taskNumber(dto.getTaskNumber())
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
     }
 
