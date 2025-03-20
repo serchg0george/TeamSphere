@@ -1,5 +1,6 @@
-export interface ProjectData {
-    id?: number;
+import {BaseData} from "@/components/models/base/baseData.ts";
+
+export interface ProjectData extends BaseData {
     name: string;
     description: string;
     startDate: string;

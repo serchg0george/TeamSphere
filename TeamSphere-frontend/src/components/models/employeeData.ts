@@ -1,8 +1,8 @@
 import {TaskEmployeeModel} from "@/components/models/taskEmployeeModel.ts";
 import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
+import {BaseData} from "@/components/models/base/baseData.ts";
 
-export interface EmployeeData {
-    id?: number;
+export interface EmployeeData extends BaseData {
     firstName: string;
     lastName: string;
     pin: string;

@@ -1,5 +1,6 @@
-export interface CompanyData {
-    id?: number;
+import {BaseData} from "@/components/models/base/baseData.ts";
+
+export interface CompanyData extends BaseData {
     name: string;
     industry: string;
     address: string;

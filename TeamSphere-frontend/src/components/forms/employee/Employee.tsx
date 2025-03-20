@@ -66,7 +66,7 @@ const Employee = () => {
 
     return (
         <div>
-            <h1>Employee List</h1>
+            <h1>Employees</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Employee</button>
             <table>
@@ -81,6 +81,8 @@ const Employee = () => {
                     <th>Position</th>
                     <th>Tasks</th>
                     <th>Projects</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -104,6 +106,8 @@ const Employee = () => {
                                 ? employee.projects.map((project) => project.name).join(", ")
                                 : "No projects"}
                         </td>
+                        <td>{employee.createdAt}</td>
+                        <td>{employee.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(employee)}>Edit</button>
                             <button onClick={() => handleDelete(employee.id)}>Delete</button>

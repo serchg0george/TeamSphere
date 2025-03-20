@@ -66,7 +66,7 @@ const Company = () => {
 
     return (
         <div>
-            <h1>Company List</h1>
+            <h1>Companies</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Company</button>
             <table>
@@ -76,6 +76,8 @@ const Company = () => {
                     <th>Industry</th>
                     <th>Address</th>
                     <th>Email</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -86,6 +88,8 @@ const Company = () => {
                         <td>{company.industry}</td>
                         <td>{company.address}</td>
                         <td>{company.email}</td>
+                        <td>{company.createdAt}</td>
+                        <td>{company.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(company)}>Edit</button>
                             <button onClick={() => handleDelete(company.id)}>Delete</button>

@@ -66,7 +66,7 @@ const Task = () => {
 
     return (
         <div>
-            <h1>Task List</h1>
+            <h1>Tasks</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Task</button>
             <table>
@@ -76,6 +76,8 @@ const Task = () => {
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
                     <th>Task №</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -86,6 +88,8 @@ const Task = () => {
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
                         <td>{task.taskNumber}</td>
+                        <td>{task.createdAt}</td>
+                        <td>{task.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(task)}>Edit</button>
                             <button onClick={() => handleDelete(task.id)}>Delete</button>

@@ -66,7 +66,7 @@ const Project = () => {
 
     return (
         <div>
-            <h1>Project List</h1>
+            <h1>Projects</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Project</button>
             <table>
@@ -78,6 +78,8 @@ const Project = () => {
                     <th>Finish Date</th>
                     <th>Status</th>
                     <th>Company</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -90,6 +92,8 @@ const Project = () => {
                         <td>{project.finishDate}</td>
                         <td>{project.status}</td>
                         <td>{project.companyName}</td>
+                        <td>{project.createdAt}</td>
+                        <td>{project.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(project)}>Edit</button>
                             <button onClick={() => handleDelete(project.id)}>Delete</button>

@@ -66,7 +66,7 @@ const Position = () => {
 
     return (
         <div>
-            <h1>Position List</h1>
+            <h1>Positions</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Position</button>
             <table>
@@ -74,6 +74,8 @@ const Position = () => {
                 <tr>
                     <th>Position Name</th>
                     <th>Years of Experience</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -82,6 +84,8 @@ const Position = () => {
                     <tr key={position.id}>
                         <td>{position.positionName}</td>
                         <td>{position.yearsOfExperience}</td>
+                        <td>{position.createdAt}</td>
+                        <td>{position.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(position)}>Edit</button>
                             <button onClick={() => handleDelete(position.id)}>Delete</button>

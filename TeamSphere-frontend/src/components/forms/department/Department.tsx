@@ -66,7 +66,7 @@ const Department = () => {
 
     return (
         <div>
-            <h1>Department List</h1>
+            <h1>Departments</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button onClick={handleAdd}>Add Department</button>
             <table>
@@ -74,6 +74,8 @@ const Department = () => {
                 <tr>
                     <th>Department Name</th>
                     <th>Description</th>
+                    <th>Created at</th>
+                    <th>Last update</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -82,6 +84,8 @@ const Department = () => {
                     <tr key={department.id}>
                         <td>{department.departmentName}</td>
                         <td>{department.description}</td>
+                        <td>{department.createdAt}</td>
+                        <td>{department.updatedAt}</td>
                         <td>
                             <button onClick={() => handleEdit(department)}>Edit</button>
                             <button onClick={() => handleDelete(department.id)}>Delete</button>
