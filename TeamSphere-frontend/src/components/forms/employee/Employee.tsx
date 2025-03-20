@@ -7,6 +7,7 @@ import AddEmployeeDialog from "@/components/forms/employee/AddEmployeeDialog.tsx
 import '@/components/forms/styles.css'
 import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
+import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
 
 const Employee = () => {
     const navigate = useNavigate();
@@ -98,9 +99,7 @@ const Employee = () => {
                         <td>{employee.departmentName}</td>
                         <td>{employee.positionName}</td>
                         <td>
-                            {employee.tasks?.length
-                                ? employee.tasks.map((task) => task.taskNumber).join(", ")
-                                : "No tasks"}
+                            <EmployeeTaskList tasks={employee.tasks ?? []}/>
                         </td>
                         <td>
                             {employee.projects?.length
