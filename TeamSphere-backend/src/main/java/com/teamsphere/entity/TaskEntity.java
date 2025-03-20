@@ -27,7 +27,7 @@ public class TaskEntity extends BaseEntity {
     @Column(name = "time_spent_minutes", length = 10)
     private Integer timeSpentMinutes;
 
-    @Column(name = "task_description", nullable = false, length = 150)
+    @Column(name = "task_description", nullable = false, length = 1000)
     private String taskDescription;
 
     @Column(name = "task_number", nullable = false, length = 20)
