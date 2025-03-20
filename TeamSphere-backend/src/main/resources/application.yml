@@ -4,9 +4,9 @@ server:
 
 spring:
   datasource:
-    username: postgres
-    password: root
-    url: jdbc:postgresql://localhost:5432/team_sphere_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    url: ${DB_CONNECTION_URL}
 
   jpa:
     open-in-view: false
