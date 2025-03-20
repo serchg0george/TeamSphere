@@ -55,7 +55,8 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
             const task = tasks.find(t => t.id === taskId);
             return {
                 id: taskId,
-                taskNumber: task ? task.taskNumber : ''
+                taskNumber: task ? task.taskNumber : '',
+                taskStatus: task ? task.taskStatus : ''
             };
         });
 

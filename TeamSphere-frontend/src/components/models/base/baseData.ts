@@ -1,5 +1,5 @@
 export interface BaseData {
     id?: number;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: string;
+    updatedAt?: string;
 }

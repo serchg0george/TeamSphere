@@ -8,6 +8,7 @@ import '@/components/forms/styles.css'
 import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
+import {TaskData} from "@/components/models/taskData.ts";
 
 const Employee = () => {
     const navigate = useNavigate();
@@ -62,6 +63,15 @@ const Employee = () => {
         }
     }
 
+    const handleUpdateTask = async (updatedTask: TaskData) => {
+        try {
+            await api.put(`/api/v1/task/${updatedTask.id}`, updatedTask);
+            await fetchEmployees(); // Обновляем задачи у сотрудников
+        } catch (error) {
+            console.error("Error updating task:", error);
+        }
+    };
+
     const handleBackToNav = () => {
         navigate('/main');
     }
@@ -99,7 +109,7 @@ const Employee = () => {
                         <td>{employee.departmentName}</td>
                         <td>{employee.positionName}</td>
                         <td>
-                            <EmployeeTaskList tasks={employee.tasks ?? []}/>
+                            <EmployeeTaskList tasks={employee.tasks ?? []} onUpdateTask={handleUpdateTask}/>
                         </td>
                         <td>
                             {employee.projects?.length
