@@ -9,6 +9,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/team_sphere_db
 
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: update
     properties:
