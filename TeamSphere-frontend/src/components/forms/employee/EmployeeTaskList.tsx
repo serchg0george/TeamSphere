@@ -18,17 +18,31 @@ const EmployeeTaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask }) => {
     };
 
     const handleUpdateTask = (updatedTask: TaskData) => {
-        onUpdateTask(updatedTask); // Передаем обновленную задачу в родительский компонент
+        onUpdateTask(updatedTask);
         setShowEditDialog(false);
     };
 
+    const sortedTasks = [...tasks].sort((a, b) => {
+        const statusOrder = {
+            "ACTIVE": 1,
+            "PENDING": 2,
+            "FINISHED": 3,
+            undefined: 4
+        } as const;
+
+        const aStatus = a.taskStatus?.trim() as keyof typeof statusOrder;
+        const bStatus = b.taskStatus?.trim() as keyof typeof statusOrder;
+
+        return statusOrder[aStatus] - statusOrder[bStatus];
+    });
+
     return (
         <div className="task-list-container" style={{ width: "250px", height: "200px", overflowY: "auto", border: "1px solid #ccc", padding: "10px" }}>
-            {tasks.length === 0 ? (
+            {sortedTasks.length === 0 ? (
                 <span>No tasks</span>
             ) : (
                 <ul style={{ listStyleType: "none", padding: 0, margin: 0 }}>
-                    {tasks.map((task) => (
+                    {sortedTasks.map((task) => (
                         <li
                             key={task.id}
                             style={{ padding: "5px 0", borderBottom: "1px solid #eee", cursor: "pointer" }}
