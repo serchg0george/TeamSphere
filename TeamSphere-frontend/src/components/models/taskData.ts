@@ -1,8 +1,8 @@
 import {BaseData} from "@/components/models/base/baseData.ts";
 
 export interface TaskData extends BaseData {
-    taskStatus: string;
+    taskStatus?: string;
     timeSpentMinutes?: number;
-    taskDescription: string;
+    taskDescription?: string;
     taskNumber: string;
 }
