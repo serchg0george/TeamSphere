@@ -110,7 +110,7 @@ const Position = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdatePosition}
                 />
-            )};
+            )}
         </div>
     );
 };

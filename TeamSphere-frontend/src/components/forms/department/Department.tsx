@@ -110,7 +110,7 @@ const Department = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdateDepartment}
                 />
-            )};
+            )}
         </div>
     );
 };

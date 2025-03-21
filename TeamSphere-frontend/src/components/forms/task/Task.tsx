@@ -113,7 +113,7 @@ const Task = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdateTask}
                 />
-            )};
+            )}
         </div>
     );
 };

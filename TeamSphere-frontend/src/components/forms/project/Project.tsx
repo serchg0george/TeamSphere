@@ -117,7 +117,7 @@ const Project = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdateProject}
                 />
-            )};
+            )}
         </div>
     );
 };

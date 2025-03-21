@@ -144,7 +144,7 @@ const Employee = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdateEmployee}
                 />
-            )};
+            )}
         </div>
     );
 };

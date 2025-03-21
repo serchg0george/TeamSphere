@@ -114,7 +114,7 @@ const Company = () => {
                     onHide={() => setShowEditDialog(false)}
                     onUpdate={handleUpdateCompany}
                 />
-            )};
+            )}
         </div>
     );
 };
