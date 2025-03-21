@@ -9,6 +9,7 @@ import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.t
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
 import {TaskData} from "@/components/models/taskData.ts";
+import '@/styles/EmployeeStyles.css';
 
 const Employee = () => {
     const navigate = useNavigate();
@@ -78,9 +79,9 @@ const Employee = () => {
 
     return (
         <div>
-            <h1>Employees</h1>
+            <h1 className= "employee-header" >Employees</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
-            <button onClick={handleAdd}>Add Employee</button>
+            <button className="add-button" onClick={handleAdd}>Add Employee</button>
             <table>
                 <thead>
                 <tr>
@@ -119,8 +120,8 @@ const Employee = () => {
                         <td>{formattingDate(employee.createdAt)}</td>
                         <td>{formattingDate(employee.updatedAt)}</td>
                         <td>
-                            <button onClick={() => handleEdit(employee)}>Edit</button>
-                            <button onClick={() => handleDelete(employee.id)}>Delete</button>
+                            <button className="edit-button"  onClick={() => handleEdit(employee)}>Edit</button>
+                            <button className="delete-button" onClick={() => handleDelete(employee.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}

@@ -11,6 +11,7 @@ import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {Dropdown} from "primereact/dropdown";
 import {TaskEmployeeModel} from "@/components/models/taskEmployeeModel.ts";
 import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
+import '@/styles/EmployeeStyles.css';
 
 interface AddEmployeeDialogProps {
     visible: boolean;

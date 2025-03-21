@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TaskData } from "@/components/models/taskData.ts";
 import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
+import '@/styles/EmployeeStyles.css';
 
 type TaskListProps = {
     tasks: TaskData[];

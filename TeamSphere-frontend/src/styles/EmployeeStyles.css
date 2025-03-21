@@ -1,0 +1,252 @@
+.employee-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.p-dialog {
+    max-width: 600px;
+    width: 90% !important;
+    margin: 1rem;
+}
+
+.p-dialog .p-fluid {
+    padding: 1rem;
+}
+
+.p-field {
+    margin-bottom: 1.5rem;
+}
+
+.p-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.p-inputtext,
+.p-dropdown,
+.p-multiselect {
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.task-list-container {
+    max-width: 300px;
+    background: rgba(47, 41, 40, 0);
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.task-list-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list-container li {
+    padding: 0.5rem;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.task-list-container li:hover {
+    background-color: rgba(48, 132, 215, 0.53);
+}
+
+@media (max-width: 768px) {
+    .employee-table {
+        display: block;
+        overflow-x: auto;
+    }
+
+    .employee-table th,
+    .employee-table td {
+        padding: 0.5rem;
+        font-size: 0.9rem;
+    }
+
+    .p-dialog {
+        width: 95% !important;
+        min-width: 300px !important;
+    }
+
+    .task-list-container {
+        width: 200px;
+    }
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+.p-button {
+    margin: 0.25rem;
+}
+
+.p-button-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.p-button-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+/*.employee-table tr:nth-child(even) {*/
+/*    background-color: #f8f9fa;*/
+/*}*/
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+}
+
+.employee-heading {
+    text-align: center;
+    flex-grow: 1;
+    color: #2c3e50;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.add-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.add-button:hover {
+    background-color: #0056b3;
+}
+
+.edit-button {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    margin-right: 0.5rem;
+}
+
+.edit-button:hover {
+    background-color: #218838;
+}
+
+.delete-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-button:hover {
+    background-color: #c82333;
+}
+
+.employee-table th,
+.employee-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+}
+
+.employee-container {
+    padding: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.employee-heading {
+    color: #FFFFFF;
+    font-size: 2rem;
+    margin: 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.employee-table-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+}
+
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    margin: 1rem 0;
+}
+
+.employee-table th {
+    font-weight: 600;
+}
+
+/* Dialog centering */
+.p-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 600px;
+    width: 90% !important;
+    margin: 0;
+}
