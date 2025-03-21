@@ -202,7 +202,7 @@
 
 .employee-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     margin-bottom: 1.5rem;
     padding: 0 1rem;
@@ -250,3 +250,5 @@
     width: 90% !important;
     margin: 0;
 }
+
+.employee-hea

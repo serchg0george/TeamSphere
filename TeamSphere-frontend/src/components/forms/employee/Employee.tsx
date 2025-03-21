@@ -79,7 +79,9 @@ const Employee = () => {
 
     return (
         <div>
-            <h1 className= "employee-header" >Employees</h1>
+            <div className= "employee-header">
+                <h1>Employees</h1>
+            </div>
             <button onClick={handleBackToNav}>Back to navigation</button>
             <button className="add-button" onClick={handleAdd}>Add Employee</button>
             <table>
