@@ -7,6 +7,7 @@ import AddPositionDialog from "@/components/forms/position/AddPositionDialog.tsx
 import '@/components/forms/styles.css'
 import EditPositionDialog from "@/components/forms/position/EditPositionDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
+import '@/styles/ButtonStyles.css';
 
 const Position = () => {
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ const Position = () => {
         <div>
             <h1>Positions</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
-            <button onClick={handleAdd}>Add Position</button>
+            <button className= "add-button" onClick={handleAdd}>Add Position</button>
             <table>
                 <thead>
                 <tr>
@@ -88,8 +89,8 @@ const Position = () => {
                         <td>{formattingDate(position.createdAt)}</td>
                         <td>{formattingDate(position.updatedAt)}</td>
                         <td>
-                            <button onClick={() => handleEdit(position)}>Edit</button>
-                            <button onClick={() => handleDelete(position.id)}>Delete</button>
+                            <button className= "edit-button" onClick={() => handleEdit(position)}>Edit</button>
+                            <button className= "delete-button" onClick={() => handleDelete(position.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}

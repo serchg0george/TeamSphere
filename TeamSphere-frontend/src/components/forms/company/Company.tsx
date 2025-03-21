@@ -7,6 +7,7 @@ import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
 import '@/components/forms/styles.css'
 import EditCompanyDialog from "@/components/forms/company/EditCompanyDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
+import '@/styles/ButtonStyles.css';
 
 const Company = () => {
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ const Company = () => {
         <div>
             <h1>Companies</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
-            <button onClick={handleAdd}>Add Company</button>
+            <button className="add-button" onClick={handleAdd}>Add Company</button>
             <table>
                 <thead>
                 <tr>
@@ -92,8 +93,8 @@ const Company = () => {
                         <td>{formattingDate(company.createdAt)}</td>
                         <td>{formattingDate(company.updatedAt)}</td>
                         <td>
-                            <button onClick={() => handleEdit(company)}>Edit</button>
-                            <button onClick={() => handleDelete(company.id)}>Delete</button>
+                            <button className = "edit-button" onClick={() => handleEdit(company)}>Edit</button>
+                            <button className = "delete-button" onClick={() => handleDelete(company.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}

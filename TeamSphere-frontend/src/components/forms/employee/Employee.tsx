@@ -10,6 +10,7 @@ import {formattingDate} from "@/hooks/formattingDate.ts";
 import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
 import {TaskData} from "@/components/models/taskData.ts";
 import '@/styles/EmployeeStyles.css';
+import '@/styles/ButtonStyles.css';
 
 const Employee = () => {
     const navigate = useNavigate();

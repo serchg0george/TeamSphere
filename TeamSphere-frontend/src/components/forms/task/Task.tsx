@@ -69,7 +69,7 @@ const Task = () => {
         <div>
             <h1>Tasks</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
-            <button onClick={handleAdd}>Add Task</button>
+            <button className = "add-button" onClick={handleAdd}>Add Task</button>
             <table>
                 <thead>
                 <tr>
@@ -92,8 +92,8 @@ const Task = () => {
                         <td>{formattingDate(task.createdAt)}</td>
                         <td>{formattingDate(task.updatedAt)}</td>
                         <td>
-                            <button onClick={() => handleEdit(task)}>Edit</button>
-                            <button onClick={() => handleDelete(task.id)}>Delete</button>
+                            <button className = "edit-button" onClick={() => handleEdit(task)}>Edit</button>
+                            <button className = "delete-button" onClick={() => handleDelete(task.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}

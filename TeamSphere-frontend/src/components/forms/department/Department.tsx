@@ -7,6 +7,7 @@ import '@/components/forms/styles.css'
 import EditDepartmentDialog from "@/components/forms/department/EditDepartmentDialog.tsx";
 import {useState} from "react";
 import {formattingDate} from "@/hooks/formattingDate.ts";
+import '@/styles/ButtonStyles.css';
 
 const Department = () => {
     const navigate = useNavigate();
@@ -69,7 +70,7 @@ const Department = () => {
         <div>
             <h1>Departments</h1>
             <button onClick={handleBackToNav}>Back to navigation</button>
-            <button onClick={handleAdd}>Add Department</button>
+            <button className = "add-button" onClick={handleAdd}>Add Department</button>
             <table>
                 <thead>
                 <tr>
@@ -88,8 +89,8 @@ const Department = () => {
                         <td>{formattingDate(department.createdAt)}</td>
                         <td>{formattingDate(department.updatedAt)}</td>
                         <td>
-                            <button onClick={() => handleEdit(department)}>Edit</button>
-                            <button onClick={() => handleDelete(department.id)}>Delete</button>
+                            <button className = "edit-button" onClick={() => handleEdit(department)}>Edit</button>
+                            <button className = "delete-button" onClick={() => handleDelete(department.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
