@@ -11,10 +11,22 @@ import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
 import {TaskData} from "@/components/models/taskData.ts";
 import '@/styles/EmployeeStyles.css';
 import '@/styles/ButtonStyles.css';
+import "@/styles/PaginatorStyles.css"
+import {Paginator} from "primereact/paginator";
 
 const Employee = () => {
     const navigate = useNavigate();
-    const {data: employees, loading, error, fetchEmployees} = useFetchEmployees();
+    const {
+        data: employees,
+        loading,
+        error,
+        fetchEmployees,
+        totalRecords,
+        page,
+        rows,
+        setPage,
+        setRows
+    }  = useFetchEmployees();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedEmployee, setSelectedEmployee] = useState<EmployeeData | null>(null);
@@ -74,16 +86,18 @@ const Employee = () => {
         }
     };
 
-    const handleBackToNav = () => {
-        navigate('/main');
-    }
+    const handlePageChange = (event: { first: number; rows: number; page: number }) => {
+        setPage(event.page);
+        setRows(event.rows);
+        fetchEmployees(event.page, event.rows);
+    };
 
     return (
         <div>
             <div className= "employee-header">
                 <h1>Employees</h1>
             </div>
-            <button onClick={handleBackToNav}>Back to navigation</button>
+            <button onClick={() => navigate("/main")}>Back to navigation</button>
             <button className="add-button" onClick={handleAdd}>Add Employee</button>
             <table>
                 <thead>
@@ -145,6 +159,15 @@ const Employee = () => {
                     onUpdate={handleUpdateEmployee}
                 />
             )}
+
+            <Paginator
+                className="custom-paginator"
+                first={page * rows}
+                rows={rows}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[10, 30, 50]}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

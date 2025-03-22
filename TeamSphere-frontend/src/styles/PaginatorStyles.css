@@ -1,0 +1,46 @@
+.custom-paginator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background: rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    width: auto;
+    height: auto;
+    align-self: center;
+    max-width: 400px;
+}
+
+.custom-paginator button {
+    background-color: rgba(17, 103, 234, 0.55);
+    color: #ffffff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.custom-paginator button:hover {
+    background-color: #0056b3;
+}
+
+.custom-paginator button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.custom-paginator .p-dropdown {
+    background-color: rgba(51, 51, 51, 0);
+    color: #ffffff;
+    border-radius: 6px;
+    border: transparent;
+}
+
+.custom-paginator .p-dropdown-label {
+    color: #fff
+}

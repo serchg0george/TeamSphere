@@ -6,11 +6,14 @@ const useFetchEmployees = () => {
     const [data, setData] = useState<EmployeeData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [page, setPage] = useState<number>(0);
+    const [rows, setRows] = useState<number>(10);
 
-    const fetchEmployees = async () => {
+    const fetchEmployees = async (pageNumber = 0, pageSize = 10) => {
         try {
             setLoading(true);
-            const response = await api.get("/api/v1/employee");
+            const response = await api.get(`/api/v1/employee?page=${pageNumber}&size=${pageSize}`);
             const employeesData = response.data.content;
 
             if (!Array.isArray(employeesData)) {
@@ -18,6 +21,9 @@ const useFetchEmployees = () => {
             }
 
             setData(employeesData);
+            setTotalRecords(response.data.totalElements);
+            setPage(response.data.pageable.pageNumber);
+            setRows(response.data.pageable.pageSize);
             setError("");
         } catch (error) {
             console.error("Error fetching employees:", error);
@@ -32,7 +38,7 @@ const useFetchEmployees = () => {
         fetchEmployees();
     }, []);
 
-    return {data, loading, error, fetchEmployees};
+    return {data, loading, error, fetchEmployees, totalRecords, page, rows, setPage, setRows};
 };
 
 export default useFetchEmployees;

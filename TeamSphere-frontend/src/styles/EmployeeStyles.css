@@ -115,10 +115,6 @@
     border-color: #6c757d;
 }
 
-/*.employee-table tr:nth-child(even) {*/
-/*    background-color: #f8f9fa;*/
-/*}*/
-
 .employee-header {
     display: flex;
     justify-content: space-between;
@@ -197,7 +193,6 @@
     font-weight: 600;
 }
 
-/* Dialog centering */
 .p-dialog {
     position: fixed;
     top: 50%;

@@ -8,10 +8,22 @@ import EditDepartmentDialog from "@/components/forms/department/EditDepartmentDi
 import {useState} from "react";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import '@/styles/ButtonStyles.css';
+import "@/styles/PaginatorStyles.css"
+import {Paginator} from "primereact/paginator";
 
 const Department = () => {
     const navigate = useNavigate();
-    const {data: departments, loading, error, fetchDepartments} = useFetchDepartments();
+    const {
+        data: departments,
+        loading,
+        error,
+        fetchDepartments,
+        totalRecords,
+        page,
+        rows,
+        setPage,
+        setRows
+    } = useFetchDepartments();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedDepartment, setSelectedDepartment] = useState<DepartmentData | null>(null);
@@ -62,15 +74,17 @@ const Department = () => {
         }
     };
 
-    const handleBackToNav = () => {
-        navigate('/main');
+    const handlePageChange = (event: { first: number; rows: number; page: number }) => {
+        setPage(event.page);
+        setRows(event.rows);
+        fetchDepartments(event.page, event.rows);
     };
 
     return (
         <div>
             <h1>Departments</h1>
-            <button onClick={handleBackToNav}>Back to navigation</button>
-            <button className = "add-button" onClick={handleAdd}>Add Department</button>
+            <button onClick={() => navigate('/main')}>Back to navigation</button>
+            <button className="add-button" onClick={handleAdd}>Add Department</button>
             <table>
                 <thead>
                 <tr>
@@ -89,8 +103,9 @@ const Department = () => {
                         <td>{formattingDate(department.createdAt)}</td>
                         <td>{formattingDate(department.updatedAt)}</td>
                         <td>
-                            <button className = "edit-button" onClick={() => handleEdit(department)}>Edit</button>
-                            <button className = "delete-button" onClick={() => handleDelete(department.id)}>Delete</button>
+                            <button className="edit-button" onClick={() => handleEdit(department)}>Edit</button>
+                            <button className="delete-button" onClick={() => handleDelete(department.id)}>Delete
+                            </button>
                         </td>
                     </tr>
                 ))}
@@ -111,6 +126,15 @@ const Department = () => {
                     onUpdate={handleUpdateDepartment}
                 />
             )}
+
+            <Paginator
+                className="custom-paginator"
+                first={page * rows}
+                rows={rows}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[10, 30, 50]}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

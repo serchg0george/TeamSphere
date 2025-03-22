@@ -6,11 +6,14 @@ const useFetchProjects = () => {
     const [data, setData] = useState<ProjectData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [page, setPage] = useState<number>(0);
+    const [rows, setRows] = useState<number>(10);
 
-    const fetchProjects = async () => {
+    const fetchProjects = async (pageNumber = 0, pageSize = 10) => {
         try {
             setLoading(true);
-            const response = await api.get("/api/v1/project");
+            const response = await api.get(`/api/v1/project?page=${pageNumber}&size=${pageSize}`);
             const projectsData = response.data.content;
 
             if (!Array.isArray(projectsData)) {
@@ -18,6 +21,9 @@ const useFetchProjects = () => {
             }
 
             setData(projectsData);
+            setTotalRecords(response.data.totalElements);
+            setPage(response.data.pageable.pageNumber);
+            setRows(response.data.pageable.pageSize);
             setError("");
         } catch (error) {
             console.error("Error fetching projects:", error);
@@ -32,7 +38,7 @@ const useFetchProjects = () => {
         fetchProjects();
     }, []);
 
-    return {data, loading, error, fetchProjects};
+    return {data, loading, error, fetchProjects, totalRecords, page, rows, setPage, setRows};
 };
 
 export default useFetchProjects;

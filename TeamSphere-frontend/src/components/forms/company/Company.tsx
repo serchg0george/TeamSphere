@@ -1,17 +1,29 @@
 import {useState} from "react";
-import {useNavigate} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 import {CompanyData} from "@/components/models/companyData.ts";
-import api from '../../../api/api.ts';
+import api from "../../../api/api.ts";
 import AddCompanyDialog from "./AddCompanyDialog.tsx";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
-import '@/components/forms/styles.css'
+import "@/components/forms/styles.css";
 import EditCompanyDialog from "@/components/forms/company/EditCompanyDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
-import '@/styles/ButtonStyles.css';
+import "@/styles/ButtonStyles.css";
+import {Paginator} from "primereact/paginator";
+import "@/styles/PaginatorStyles.css"
 
 const Company = () => {
     const navigate = useNavigate();
-    const {data: companies, loading, error, fetchCompanies} = useFetchCompanies();
+    const {
+        data: companies,
+        loading,
+        error,
+        fetchCompanies,
+        totalRecords,
+        page,
+        rows,
+        setPage,
+        setRows
+    } = useFetchCompanies();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedCompany, setSelectedCompany] = useState<CompanyData | null>(null);
@@ -27,7 +39,7 @@ const Company = () => {
     const handleDelete = async (id?: number) => {
         try {
             await api.delete(`/api/v1/company/${id}`);
-            await fetchCompanies();
+            await fetchCompanies(page, rows);
         } catch (error) {
             console.error("Error deleting company:", error);
         }
@@ -45,7 +57,7 @@ const Company = () => {
     const handleAddCompany = async (newCompany: CompanyData) => {
         try {
             await api.post("/api/v1/company", newCompany);
-            await fetchCompanies();
+            await fetchCompanies(page, rows);
             setShowAddDialog(false);
         } catch (error) {
             console.error("Error adding company:", error);
@@ -55,21 +67,23 @@ const Company = () => {
     const handleUpdateCompany = async (updatedCompany: CompanyData) => {
         try {
             await api.put(`/api/v1/company/${updatedCompany.id}`, updatedCompany);
-            await fetchCompanies();
+            await fetchCompanies(page, rows);
             setShowEditDialog(false);
         } catch (error) {
             console.error("Error updating company:", error);
         }
     };
 
-    const handleBackToNav = () => {
-        navigate("/main");
+    const handlePageChange = (event: { first: number; rows: number; page: number }) => {
+        setPage(event.page);
+        setRows(event.rows);
+        fetchCompanies(event.page, event.rows);
     };
 
     return (
         <div>
             <h1>Companies</h1>
-            <button onClick={handleBackToNav}>Back to navigation</button>
+            <button onClick={() => navigate("/main")}>Back to navigation</button>
             <button className="add-button" onClick={handleAdd}>Add Company</button>
             <table>
                 <thead>
@@ -93,8 +107,8 @@ const Company = () => {
                         <td>{formattingDate(company.createdAt)}</td>
                         <td>{formattingDate(company.updatedAt)}</td>
                         <td>
-                            <button className = "edit-button" onClick={() => handleEdit(company)}>Edit</button>
-                            <button className = "delete-button" onClick={() => handleDelete(company.id)}>Delete</button>
+                            <button className="edit-button" onClick={() => handleEdit(company)}>Edit</button>
+                            <button className="delete-button" onClick={() => handleDelete(company.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -115,6 +129,15 @@ const Company = () => {
                     onUpdate={handleUpdateCompany}
                 />
             )}
+
+            <Paginator
+                className="custom-paginator"
+                first={page * rows}
+                rows={rows}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[10, 30, 50]}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

@@ -6,11 +6,14 @@ const useFetchTasks = () => {
     const [data, setData] = useState<TaskData[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string>("");
+    const [totalRecords, setTotalRecords] = useState<number>(0);
+    const [page, setPage] = useState<number>(0);
+    const [rows, setRows] = useState<number>(10);
 
-    const fetchTasks = async () => {
+    const fetchTasks = async (pageNumber = 0, pageSize = 10) => {
         try {
             setLoading(true);
-            const response = await api.get("/api/v1/task");
+            const response = await api.get(`/api/v1/task?page=${pageNumber}&size=${pageSize}`);
             const tasksData = response.data.content;
 
             if (!Array.isArray(tasksData)) {
@@ -18,6 +21,9 @@ const useFetchTasks = () => {
             }
 
             setData(tasksData);
+            setTotalRecords(response.data.totalElements);
+            setPage(response.data.pageable.pageNumber);
+            setRows(response.data.pageable.pageSize);
             setError("");
         } catch (error) {
             console.error("Error fetching tasks:", error);
@@ -32,7 +38,7 @@ const useFetchTasks = () => {
         fetchTasks();
     }, []);
 
-    return {data, loading, error, fetchTasks};
+    return {data, loading, error, fetchTasks, totalRecords, page, rows, setPage, setRows};
 };
 
 export default useFetchTasks;

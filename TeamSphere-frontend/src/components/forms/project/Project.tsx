@@ -7,10 +7,22 @@ import AddProjectDialog from "@/components/forms/project/AddProjectDialog.tsx";
 import '@/components/forms/styles.css'
 import EditProjectDialog from "@/components/forms/project/EditProjectDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
+import "@/styles/PaginatorStyles.css"
+import {Paginator} from "primereact/paginator";
 
 const Project = () => {
     const navigate = useNavigate();
-    const {data: projects, loading, error, fetchProjects} = useFetchProjects();
+    const {
+        data: projects,
+        loading,
+        error,
+        fetchProjects,
+        totalRecords,
+        page,
+        rows,
+        setPage,
+        setRows
+    } = useFetchProjects();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedProject, setSelectedProject] = useState<ProjectData | null>(null);
@@ -61,15 +73,17 @@ const Project = () => {
         }
     };
 
-    const handleBackToNav = () => {
-        navigate('/main');
+    const handlePageChange = (event: { first: number; rows: number; page: number }) => {
+        setPage(event.page);
+        setRows(event.rows);
+        fetchProjects(event.page, event.rows);
     };
 
     return (
         <div>
             <h1>Projects</h1>
-            <button onClick={handleBackToNav}>Back to navigation</button>
-            <button className = "add-button" onClick={handleAdd}>Add Project</button>
+            <button onClick={() => navigate("/main")}>Back to navigation</button>
+            <button className="add-button" onClick={handleAdd}>Add Project</button>
             <table>
                 <thead>
                 <tr>
@@ -96,8 +110,8 @@ const Project = () => {
                         <td>{formattingDate(project.createdAt)}</td>
                         <td>{formattingDate(project.updatedAt)}</td>
                         <td>
-                            <button className = "edit-button" onClick={() => handleEdit(project)}>Edit</button>
-                            <button className = "delete-button" onClick={() => handleDelete(project.id)}>Delete</button>
+                            <button className="edit-button" onClick={() => handleEdit(project)}>Edit</button>
+                            <button className="delete-button" onClick={() => handleDelete(project.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
@@ -118,6 +132,15 @@ const Project = () => {
                     onUpdate={handleUpdateProject}
                 />
             )}
+
+            <Paginator
+                className="custom-paginator"
+                first={page * rows}
+                rows={rows}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[10, 30, 50]}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };

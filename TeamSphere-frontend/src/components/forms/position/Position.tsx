@@ -8,10 +8,22 @@ import '@/components/forms/styles.css'
 import EditPositionDialog from "@/components/forms/position/EditPositionDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import '@/styles/ButtonStyles.css';
+import "@/styles/PaginatorStyles.css"
+import {Paginator} from "primereact/paginator";
 
 const Position = () => {
     const navigate = useNavigate();
-    const {data: positions, loading, error, fetchPositions} = useFetchPositions();
+    const {
+        data: positions,
+        loading,
+        error,
+        fetchPositions,
+        totalRecords,
+        page,
+        rows,
+        setPage,
+        setRows
+    } = useFetchPositions();
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedPosition, setSelectedPosition] = useState<PositionData | null>(null);
@@ -62,14 +74,16 @@ const Position = () => {
         }
     };
 
-    const handleBackToNav = () => {
-        navigate('/main');
+    const handlePageChange = (event: { first: number; rows: number; page: number }) => {
+        setPage(event.page);
+        setRows(event.rows);
+        fetchPositions(event.page, event.rows);
     };
 
     return (
         <div>
             <h1>Positions</h1>
-            <button onClick={handleBackToNav}>Back to navigation</button>
+            <button onClick={() => navigate("/main")}>Back to navigation</button>
             <button className= "add-button" onClick={handleAdd}>Add Position</button>
             <table>
                 <thead>
@@ -111,6 +125,15 @@ const Position = () => {
                     onUpdate={handleUpdatePosition}
                 />
             )}
+
+            <Paginator
+                className="custom-paginator"
+                first={page * rows}
+                rows={rows}
+                totalRecords={totalRecords}
+                rowsPerPageOptions={[10, 30, 50]}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 };
