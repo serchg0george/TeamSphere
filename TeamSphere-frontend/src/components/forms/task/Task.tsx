@@ -88,6 +88,7 @@ const Task = () => {
                 <thead>
                 <tr>
                     <th>Status</th>
+                    <th>Priority</th>
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
                     <th>Task №</th>
@@ -100,6 +101,7 @@ const Task = () => {
                 {tasks.map((task) => (
                     <tr key={task.id}>
                         <td>{task.taskStatus}</td>
+                        <td>{task.taskPriority}</td>
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
                         <td>{task.taskNumber}</td>

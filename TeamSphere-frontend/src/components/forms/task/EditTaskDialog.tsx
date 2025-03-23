@@ -6,6 +6,7 @@ import {InputNumber} from "primereact/inputnumber";
 import {TaskData} from "@/components/models/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
 import {taskStatuses} from "@/components/models/taskStatuses.ts";
+import {taskPriorities} from "@/components/models/taskPriorities.ts";
 
 interface EditTaskDialogProps {
     visible: boolean;
@@ -42,6 +43,13 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
         }));
     };
 
+    const handlePriorityChange = (e: { value: string }) => {
+        setEditedTask(prevTask => ({
+            ...prevTask,
+            taskPriority: e.value
+        }));
+    };
+
     const handleUpdate = () => {
         onUpdate(editedTask);
     };
@@ -73,6 +81,17 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                         options={taskStatuses}
                         onChange={handleStatusChange}
                         placeholder="Select a status"
+                    />
+                </div>
+                <div className="p-field">
+                    <label htmlFor="taskPriority">Priority</label>
+                    <Dropdown
+                        id="taskPriority"
+                        name="taskPriority"
+                        value={editedTask.taskPriority}
+                        options={taskPriorities}
+                        onChange={handlePriorityChange}
+                        placeholder="Select a priority"
                     />
                 </div>
                 <div className="p-field">
