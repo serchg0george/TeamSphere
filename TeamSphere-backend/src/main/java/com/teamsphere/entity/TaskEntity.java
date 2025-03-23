@@ -1,5 +1,6 @@
 package com.teamsphere.entity;
 
+import com.teamsphere.entity.enums.TaskPriority;
 import com.teamsphere.entity.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,10 @@ public class TaskEntity extends BaseEntity {
     @Column(name = "task_status", nullable = false)
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
+
+    @Column(name = "task_priority", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TaskPriority taskPriority;
 
     @Column(name = "time_spent_minutes", length = 10)
     private Integer timeSpentMinutes;
