@@ -1,13 +1,13 @@
 import {useState} from "react";
 import {Dialog} from "primereact/dialog";
-import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
-import {TaskData} from "@/components/models/taskData.ts";
+import {TaskData} from "@/components/models/task/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
-import {taskStatuses} from "@/components/models/taskStatuses.ts";
-import {taskPriorities} from "@/components/models/taskPriorities.ts";
+import {taskStatuses} from "@/components/models/task/taskStatuses.ts";
+import {taskPriorities} from "@/components/models/task/taskPriorities.ts";
 import {InputTextarea} from "primereact/inputtextarea";
+import {taskTypes} from "@/components/models/task/taskTypes.ts";
 
 interface AddTaskDialogProps {
     visible: boolean;
@@ -19,12 +19,11 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
     const [task, setTask] = useState<TaskData>({
         taskStatus: '',
         timeSpentMinutes: 0,
-        taskDescription: '',
-        taskNumber: ''
+        taskDescription: ''
     });
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setTask(prevTask => ({
             ...prevTask,
             [name]: value
@@ -43,8 +42,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
         setTask({
             taskStatus: '',
             timeSpentMinutes: 0,
-            taskDescription: '',
-            taskNumber: ''
+            taskDescription: ''
         });
     };
 
@@ -89,6 +87,17 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
                     />
                 </div>
                 <div className="p-field">
+                    <label htmlFor="taskType">Type</label>
+                    <Dropdown
+                        id="taskType"
+                        name="taskType"
+                        value={task.taskType}
+                        options={taskTypes}
+                        onChange={(e) => setTask({...task, taskType: e.value})}
+                        placeholder="Select a priority"
+                    />
+                </div>
+                <div className="p-field">
                     <label htmlFor="timeSpentMinutes">Spent time (min)</label>
                     <InputNumber
                         id="timeSpentMinutes"
@@ -105,15 +114,6 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
                         value={task.taskDescription}
                         onChange={handleInputChange}
                         rows={4}
-                    />
-                </div>
-                <div className="p-field">
-                    <label htmlFor="taskNumber">Task №</label>
-                    <InputText
-                        id="taskNumber"
-                        name="taskNumber"
-                        value={task.taskNumber}
-                        onChange={handleInputChange}
                     />
                 </div>
             </div>

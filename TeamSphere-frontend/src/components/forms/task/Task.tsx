@@ -1,7 +1,7 @@
 import {useState} from "react";
 import api from '../../../api/api.ts';
 import {useNavigate} from 'react-router-dom';
-import {TaskData} from "../../models/taskData.ts";
+import {TaskData} from "../../models/task/taskData.ts";
 import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import AddTaskDialog from "@/components/forms/task/AddTaskDialog.tsx";
 import '@/components/forms/styles.css'
@@ -133,9 +133,10 @@ const Task = () => {
                             {prioritySortOrder === 'asc' ? <FaSortUp/> : <FaSortDown/>}
                         </button>
                     </th>
+                    <th>Type</th>
+                    <th>Task №</th>
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
-                    <th>Task №</th>
                     <th>Created at</th>
                     <th>Last update</th>
                     <th>Actions</th>
@@ -146,9 +147,10 @@ const Task = () => {
                     <tr key={task.id}>
                         <td>{task.taskStatus}</td>
                         <td>{task.taskPriority}</td>
+                        <td>{task.taskType}</td>
+                        <td>{task.taskNumber}</td>
                         <td>{task.timeSpentMinutes}</td>
                         <td>{task.taskDescription}</td>
-                        <td>{task.taskNumber}</td>
                         <td>{formattingDate(task.createdAt)}</td>
                         <td>{formattingDate(task.updatedAt)}</td>
                         <td>

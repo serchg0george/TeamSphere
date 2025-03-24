@@ -9,7 +9,7 @@ import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
-import {TaskEmployeeModel} from "@/components/models/taskEmployeeModel.ts";
+import {TaskEmployeeModel} from "@/components/models/task/taskEmployeeModel.ts";
 import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
 import '@/styles/EmployeeStyles.css';
 

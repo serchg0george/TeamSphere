@@ -25,6 +25,11 @@ public class TaskDto extends BaseDto {
     @Size(max = 6)
     private String taskPriority;
 
+    @NotBlank
+    @NotNull
+    @Size(max = 8)
+    private String taskType;
+
     @NotNull
     @Min(value = 0, message = "Time can't be negative")
     @Max(value = 480, message = "Value can't be greater than 10 digits")
@@ -35,9 +40,6 @@ public class TaskDto extends BaseDto {
     @Size(min = 1, max = 1000)
     private String taskDescription;
 
-    @NotBlank
-    @NotNull
-    @Size(max = 20)
     private String taskNumber;
 
 }

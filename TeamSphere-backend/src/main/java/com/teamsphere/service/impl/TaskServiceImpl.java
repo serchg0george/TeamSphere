@@ -3,6 +3,9 @@ package com.teamsphere.service.impl;
 import com.teamsphere.dto.task.TaskDto;
 import com.teamsphere.dto.task.TaskSearchRequest;
 import com.teamsphere.entity.TaskEntity;
+import com.teamsphere.entity.enums.TaskPriority;
+import com.teamsphere.entity.enums.TaskStatus;
+import com.teamsphere.entity.enums.TaskType;
 import com.teamsphere.mapper.TaskMapper;
 import com.teamsphere.mapper.base.BaseMapper;
 import com.teamsphere.repository.TaskRepository;
@@ -19,6 +22,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -38,6 +42,26 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
     @Override
     public JpaRepository<TaskEntity, Long> getRepository() {
         return taskRepository;
+    }
+
+    @Override
+    public TaskDto save(TaskDto dto) {
+        Long lastNumber = taskRepository.findLastTaskByTaskType(TaskType.valueOf(dto.getTaskType())).orElse(0L);
+
+        TaskEntity taskEntity = TaskEntity.builder()
+                .taskStatus(TaskStatus.valueOf(dto.getTaskStatus()))
+                .taskPriority(TaskPriority.valueOf(dto.getTaskPriority()))
+                .taskType(TaskType.valueOf(dto.getTaskType()))
+                .timeSpentMinutes(dto.getTimeSpentMinutes())
+                .taskDescription(dto.getTaskDescription())
+                .taskNumber(String.valueOf(lastNumber + 1))
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        TaskEntity saved = taskRepository.save(taskEntity);
+
+        return taskMapper.toDto(saved);
     }
 
     @Override

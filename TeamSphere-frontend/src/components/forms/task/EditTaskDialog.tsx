@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
-import {InputText} from "primereact/inputtext";
 import {InputNumber} from "primereact/inputnumber";
-import {TaskData} from "@/components/models/taskData.ts";
+import {TaskData} from "@/components/models/task/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
-import {taskStatuses} from "@/components/models/taskStatuses.ts";
-import {taskPriorities} from "@/components/models/taskPriorities.ts";
+import {taskStatuses} from "@/components/models/task/taskStatuses.ts";
+import {taskPriorities} from "@/components/models/task/taskPriorities.ts";
 import {InputTextarea} from "primereact/inputtextarea";
+import {taskTypes} from "@/components/models/task/taskTypes.ts";
 
 interface EditTaskDialogProps {
     visible: boolean;
@@ -49,6 +49,13 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
         setEditedTask(prevTask => ({
             ...prevTask,
             taskPriority: e.value
+        }));
+    };
+
+    const handleTypeChange = (e: { value: string }) => {
+        setEditedTask(prevTask => ({
+            ...prevTask,
+            taskType: e.value
         }));
     };
 
@@ -97,6 +104,17 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                     />
                 </div>
                 <div className="p-field">
+                    <label htmlFor="taskType">Type</label>
+                    <Dropdown
+                        id="taskType"
+                        name="taskType"
+                        value={editedTask.taskType}
+                        options={taskTypes}
+                        onChange={handleTypeChange}
+                        placeholder="Select a priority"
+                    />
+                </div>
+                <div className="p-field">
                     <label htmlFor="timeSpentMinutes">Spent time (min)</label>
                     <InputNumber
                         id="timeSpentMinutes"
@@ -113,15 +131,6 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                         value={editedTask.taskDescription}
                         onChange={handleInputChange}
                         rows={4}
-                    />
-                </div>
-                <div className="p-field">
-                    <label htmlFor="taskNumber">Task №</label>
-                    <InputText
-                        id="taskNumber"
-                        name="taskNumber"
-                        value={editedTask.taskNumber}
-                        onChange={handleInputChange}
                     />
                 </div>
             </div>

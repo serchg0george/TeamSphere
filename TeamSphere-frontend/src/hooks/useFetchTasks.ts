@@ -1,6 +1,6 @@
 import {useState, useEffect} from "react";
 import api from "@/api/api";
-import {TaskData} from "@/components/models/taskData.ts";
+import {TaskData} from "@/components/models/task/taskData.ts";
 
 const useFetchTasks = () => {
     const [data, setData] = useState<TaskData[]>([]);

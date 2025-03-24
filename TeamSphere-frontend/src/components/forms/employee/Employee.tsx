@@ -8,7 +8,7 @@ import '@/components/forms/styles.css'
 import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import EmployeeTaskList from "@/components/forms/employee/EmployeeTaskList.tsx";
-import {TaskData} from "@/components/models/taskData.ts";
+import {TaskData} from "@/components/models/task/taskData.ts";
 import '@/styles/EmployeeStyles.css';
 import '@/styles/ButtonStyles.css';
 import "@/styles/PaginatorStyles.css"
