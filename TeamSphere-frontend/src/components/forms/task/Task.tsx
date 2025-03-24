@@ -5,6 +5,7 @@ import {TaskData} from "../../models/taskData.ts";
 import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import AddTaskDialog from "@/components/forms/task/AddTaskDialog.tsx";
 import '@/components/forms/styles.css'
+import {FaSortDown, FaSortUp} from "react-icons/fa";
 import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import {Paginator} from "primereact/paginator";
@@ -26,6 +27,28 @@ const Task = () => {
     const [showAddDialog, setShowAddDialog] = useState<boolean>(false);
     const [showEditDialog, setShowEditDialog] = useState<boolean>(false);
     const [selectedTask, setSelectedTask] = useState<TaskData | null>(null);
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+    const [prioritySortOrder, setPrioritySortOrder] = useState<'asc' | 'desc'>('asc');
+
+    const statusOrder = {
+        asc: ["ACTIVE", "PENDING", "FINISHED"],
+        desc: ["FINISHED", "PENDING", "ACTIVE"]
+    };
+
+    const priorityOrder = {
+        asc: ["HIGH", "MEDIUM", "LOW"],
+        desc: ["LOW", "MEDIUM", "HIGH"]
+    };
+
+    const sortedTasks = [...tasks].sort((a, b) => {
+        const statusComparison = statusOrder[sortOrder]
+            .indexOf(a.taskStatus as string) - statusOrder[sortOrder].indexOf(b.taskStatus as string);
+        if (statusComparison !== 0) return statusComparison;
+
+        return priorityOrder[prioritySortOrder]
+            .indexOf(a.taskPriority as string) - priorityOrder[prioritySortOrder].indexOf(b.taskPriority as string);
+    });
+
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -87,8 +110,18 @@ const Task = () => {
             <table>
                 <thead>
                 <tr>
-                    <th>Status</th>
-                    <th>Priority</th>
+                    <th>
+                        Status
+                        <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                            {sortOrder === 'asc' ? <FaSortUp/> : <FaSortDown/>}
+                        </button>
+                    </th>
+                    <th>
+                        Priority
+                        <button onClick={() => setPrioritySortOrder(prioritySortOrder === 'asc' ? 'desc' : 'asc')}>
+                            {prioritySortOrder === 'asc' ? <FaSortUp/> : <FaSortDown/>}
+                        </button>
+                    </th>
                     <th>Time spent(minutes)</th>
                     <th>Task description</th>
                     <th>Task №</th>
@@ -98,7 +131,7 @@ const Task = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {tasks.map((task) => (
+                {sortedTasks.map((task) => (
                     <tr key={task.id}>
                         <td>{task.taskStatus}</td>
                         <td>{task.taskPriority}</td>
