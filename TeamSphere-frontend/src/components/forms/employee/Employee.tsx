@@ -80,7 +80,7 @@ const Employee = () => {
     const handleUpdateTask = async (updatedTask: TaskData) => {
         try {
             await api.put(`/api/v1/task/${updatedTask.id}`, updatedTask);
-            await fetchEmployees(); // Обновляем задачи у сотрудников
+            await fetchEmployees();
         } catch (error) {
             console.error("Error updating task:", error);
         }

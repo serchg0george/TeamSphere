@@ -76,7 +76,7 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
                     />
                 </div>
                 <div className="p-field">
-                    <label htmlFor="taskStatus">Priority</label>
+                    <label htmlFor="taskPriority">Priority</label>
                     <Dropdown
                         id="taskPriority"
                         name="taskPriority"
