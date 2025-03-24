@@ -7,6 +7,7 @@ import {TaskData} from "@/components/models/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
 import {taskStatuses} from "@/components/models/taskStatuses.ts";
 import {taskPriorities} from "@/components/models/taskPriorities.ts";
+import {InputTextarea} from "primereact/inputtextarea";
 
 interface EditTaskDialogProps {
     visible: boolean;
@@ -22,11 +23,12 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
         setEditedTask(task);
     }, [task]);
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setEditedTask({
-            ...editedTask,
-            [e.target.name]: e.target.value
-        });
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const {name, value} = e.target;
+        setEditedTask(prevTask => ({
+            ...prevTask,
+            [name]: value
+        }));
     };
 
     const handleNumberChange = (e: { value: number | null }) => {
@@ -105,11 +107,12 @@ const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) 
                 </div>
                 <div className="p-field">
                     <label htmlFor="taskDescription">Task Description</label>
-                    <InputText
+                    <InputTextarea
                         id="taskDescription"
                         name="taskDescription"
                         value={editedTask.taskDescription}
                         onChange={handleInputChange}
+                        rows={4}
                     />
                 </div>
                 <div className="p-field">
