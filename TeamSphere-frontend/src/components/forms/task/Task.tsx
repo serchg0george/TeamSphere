@@ -40,13 +40,18 @@ const Task = () => {
         desc: ["LOW", "MEDIUM", "HIGH"]
     };
 
-    const sortedTasks = [...tasks].sort((a, b) => {
-        const statusComparison = statusOrder[sortOrder]
-            .indexOf(a.taskStatus as string) - statusOrder[sortOrder].indexOf(b.taskStatus as string);
-        if (statusComparison !== 0) return statusComparison;
+    const [activeSort, setActiveSort] = useState<'status' | 'priority' | null>(null);
 
-        return priorityOrder[prioritySortOrder]
-            .indexOf(a.taskPriority as string) - priorityOrder[prioritySortOrder].indexOf(b.taskPriority as string);
+    const sortedTasks = [...tasks].sort((a, b) => {
+        if (activeSort === 'status') {
+            return statusOrder[sortOrder]
+                .indexOf(a.taskStatus as string) - statusOrder[sortOrder].indexOf(b.taskStatus as string);
+        }
+        if (activeSort === 'priority') {
+            return priorityOrder[prioritySortOrder]
+                .indexOf(a.taskPriority as string) - priorityOrder[prioritySortOrder].indexOf(b.taskPriority as string);
+        }
+        return 0;
     });
 
     if (loading) {
@@ -112,13 +117,19 @@ const Task = () => {
                 <tr>
                     <th>
                         Status
-                        <button onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                        <button onClick={() =>  {
+                            setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+                            setActiveSort('status');
+                        }}>
                             {sortOrder === 'asc' ? <FaSortUp/> : <FaSortDown/>}
                         </button>
                     </th>
                     <th>
                         Priority
-                        <button onClick={() => setPrioritySortOrder(prioritySortOrder === 'asc' ? 'desc' : 'asc')}>
+                        <button onClick={() => {
+                            setPrioritySortOrder(prioritySortOrder === 'asc' ? 'desc' : 'asc');
+                            setActiveSort('priority');
+                        }}>
                             {prioritySortOrder === 'asc' ? <FaSortUp/> : <FaSortDown/>}
                         </button>
                     </th>
