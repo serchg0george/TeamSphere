@@ -14,10 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -63,20 +60,11 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     public EmployeeEntity toEntity(EmployeeDto dto) {
         EmployeeEntity employee = buildBasicEmployee(dto);
 
-        LinkedHashSet<TaskEntity> tasks = dto.getTasks().stream()
-                .map(taskInfo -> {
-                    TaskEntity task = findTaskById(taskInfo.id());
-                    task.setEmployee(employee);
-                    return task;
-                })
-                .collect(Collectors.toCollection(LinkedHashSet::new));
-
         LinkedHashSet<ProjectEntity> projects = dto.getProjects().stream()
                 .map(projectInfo -> findProjectById(projectInfo.id()))
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
         employee.setProjects(projects);
-        employee.setTasks(tasks);
         return employee;
     }
 
@@ -135,18 +123,33 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     private void updateTasks(EmployeeDto dto, EmployeeEntity entity) {
         if (dto.getTasks() == null) return;
 
-        Set<Long> newTaskIds = dto.getTasks().stream().map(TaskInfo::id).collect(Collectors.toSet());
-        Set<Long> existingTaskIds = entity.getTasks().stream().map(TaskEntity::getId).collect(Collectors.toSet());
+        Set<Long> newTaskIds = dto.getTasks().stream()
+                .map(TaskInfo::id)
+                .collect(Collectors.toSet());
 
-        entity.getTasks().removeIf(task -> !newTaskIds.contains(task.getId()));
+        Set<Long> existingTaskIds = entity.getTasks().stream()
+                .map(TaskEntity::getId)
+                .collect(Collectors.toSet());
 
-        newTaskIds.removeAll(existingTaskIds);
-        for (Long id : newTaskIds) {
+        List<TaskEntity> tasksToUnassign = entity.getTasks().stream()
+                .filter(task -> !newTaskIds.contains(task.getId()))
+                .toList();
+
+        for (TaskEntity task : tasksToUnassign) {
+            task.setEmployee(null);
+        }
+        tasksToUnassign.forEach(entity.getTasks()::remove);
+
+        Set<Long> tasksToAssign = new HashSet<>(newTaskIds);
+        tasksToAssign.removeAll(existingTaskIds);
+
+        for (Long id : tasksToAssign) {
             TaskEntity task = findTaskById(id);
             task.setEmployee(entity);
             entity.getTasks().add(task);
         }
     }
+
 
     private List<ProjectEntity> getProjectsByIds(List<ProjectInfo> ids) {
         return ids != null

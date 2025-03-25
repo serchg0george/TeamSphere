@@ -26,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, EmployeeDto> implements EmployeeService {
 
-    private final EmployeeRepository peopleRepository;
+    private final EmployeeRepository employeeRepository;
     private final EmployeeMapper employeeMapper;
     private final EntityManager entityManager;
 
@@ -37,12 +37,12 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
 
     @Override
     public JpaRepository<EmployeeEntity, Long> getRepository() {
-        return peopleRepository;
+        return employeeRepository;
     }
 
     @Override
     public Page<EmployeeDto> getAll(Pageable page) {
-        List<EmployeeEntity> employees = peopleRepository.findAllWithRelations();
+        List<EmployeeEntity> employees = employeeRepository.findAllWithRelations();
         return new PageImpl<>(employees.stream().map(employeeMapper::toDto).toList(), page, employees.size());
     }
 
