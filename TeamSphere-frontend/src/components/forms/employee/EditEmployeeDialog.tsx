@@ -26,6 +26,18 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
     const {data: projects} = useFetchProjects();
     const {data: departments} = useFetchDepartments();
     const {data: positions} = useFetchPositions();
+    const getTaskPrefix = (type: string | undefined) => {
+        switch (type) {
+            case "FEATURE":
+                return "FTR-";
+            case "REFACTOR":
+                return "REF-";
+            case "BUG":
+                return "FIX-";
+            default:
+                return "";
+        }
+    };
 
     useEffect(() => {
         setEditedEmployee(employee);
@@ -86,7 +98,6 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
         </div>
     );
 
-    // Safely extract the IDs from the employee tasks/projects arrays
     const getTaskIds = () => {
         if (!editedEmployee.tasks) return [];
         return editedEmployee.tasks.map(task => task.id);
@@ -165,11 +176,13 @@ const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeD
                         name="tasks"
                         value={getTaskIds()}
                         options={tasks.map((task) => ({
-                            label: task.taskNumber,
+                            label: `${getTaskPrefix(task.taskType)}${task.taskNumber}`,
                             value: task.id
                         }))}
                         onChange={handleTasksChange}
                         placeholder="Choose tasks"
+                        filter
+                        scrollHeight="400px"
                     />
                 </div>
                 <div className="p-field">
