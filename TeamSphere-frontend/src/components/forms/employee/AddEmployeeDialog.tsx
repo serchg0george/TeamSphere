@@ -5,13 +5,13 @@ import {Button} from "primereact/button";
 import {EmployeeData} from "@/components/models/employeeData.ts";
 import {MultiSelect} from "primereact/multiselect";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
-import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {Dropdown} from "primereact/dropdown";
 import {TaskEmployeeModel} from "@/components/models/task/taskEmployeeModel.ts";
 import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
 import '@/styles/EmployeeStyles.css';
+import useFetchTasksForEmployee from "@/hooks/useFetchTasksForEmployee.ts";
 
 interface AddEmployeeDialogProps {
     visible: boolean;
@@ -32,7 +32,7 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
         projects: []
     });
 
-    const {data: tasks, loading: tasksLoading, error: tasksError} = useFetchTasks();
+    const {data: tasks, loading: tasksLoading, error: tasksError} = useFetchTasksForEmployee();
     const {data: projects, loading: projectsLoading, error: projectsError} = useFetchProjects();
     const {data: departments, loading: departmentsLoading, error: departmentsError} = useFetchDepartments();
     const {data: positions, loading: positionsLoading, error: positionsError} = useFetchPositions();

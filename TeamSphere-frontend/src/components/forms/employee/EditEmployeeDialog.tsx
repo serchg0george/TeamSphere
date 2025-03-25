@@ -6,12 +6,12 @@ import {EmployeeData} from "@/components/models/employeeData.ts";
 import {MultiSelect} from "primereact/multiselect";
 import {Dropdown} from "primereact/dropdown";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
-import useFetchTasks from "@/hooks/useFetchTasks.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {TaskEmployeeModel} from "@/components/models/task/taskEmployeeModel.ts";
 import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
 import '@/styles/EmployeeStyles.css';
+import useFetchTasksForEmployee from "@/hooks/useFetchTasksForEmployee.ts";
 
 interface EditEmployeeDialogProps {
     visible: boolean;
@@ -22,7 +22,7 @@ interface EditEmployeeDialogProps {
 
 const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeDialogProps) => {
     const [editedEmployee, setEditedEmployee] = useState<EmployeeData>(employee);
-    const {data: tasks} = useFetchTasks();
+    const {data: tasks} = useFetchTasksForEmployee();
     const {data: projects} = useFetchProjects();
     const {data: departments} = useFetchDepartments();
     const {data: positions} = useFetchPositions();
