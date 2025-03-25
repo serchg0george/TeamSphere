@@ -45,6 +45,11 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
     }
 
     @Override
+    public Page<TaskDto> getAll(Pageable pageable) {
+        return taskRepository.findAllSorted(pageable).map(taskMapper::toDto);
+    }
+
+    @Override
     public TaskDto save(TaskDto dto) {
         Long lastNumber = taskRepository.findLastTaskByTaskType(TaskType.valueOf(dto.getTaskType())).orElse(0L);
 
