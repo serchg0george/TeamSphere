@@ -2,20 +2,20 @@ import React, {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
-import {ProjectData} from "@/components/models/projectData.ts";
 import {Dropdown} from "primereact/dropdown";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
-import {projectStatuses} from "@/components/models/projectStatuses.ts";
+import {projectStatuses} from "@/components/models/project/projectStatuses.ts";
+import {ProjectEditData} from "@/components/models/project/projectEditData.ts";
 
 interface EditProjectDialogProps {
     visible: boolean;
-    project: ProjectData;
+    project: ProjectEditData;
     onHide: () => void;
-    onUpdate: (project: ProjectData) => void;
+    onUpdate: (project: ProjectEditData) => void;
 }
 
 const EditProjectDialog = ({visible, project, onHide, onUpdate}: EditProjectDialogProps) => {
-    const [editedProject, setEditedProject] = useState<ProjectData>(project);
+    const [editedProject, setEditedProject] = useState<ProjectEditData>(project);
     const {data: companies, loading: companiesLoading, error: companiesError} = useFetchCompanies();
 
     useEffect(() => {

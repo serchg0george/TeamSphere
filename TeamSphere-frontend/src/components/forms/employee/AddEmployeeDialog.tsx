@@ -2,25 +2,23 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {EmployeeData} from "@/components/models/employeeData.ts";
 import {MultiSelect} from "primereact/multiselect";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {Dropdown} from "primereact/dropdown";
-import {TaskEmployeeModel} from "@/components/models/task/taskEmployeeModel.ts";
-import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
+import {ProjectEmployeeModel} from "@/components/models/employee/projectEmployeeModel.ts";
 import '@/styles/EmployeeStyles.css';
-import useFetchTasksForEmployee from "@/hooks/useFetchTasksForEmployee.ts";
+import {EmployeeAddData} from "@/components/models/employee/employeeAddData.ts";
 
 interface AddEmployeeDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (employee: EmployeeData) => void;
+    onAdd: (employee: EmployeeAddData) => void;
 }
 
 const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => {
-    const [employee, setEmployee] = useState<EmployeeData>({
+    const [employee, setEmployee] = useState<EmployeeAddData>({
         firstName: '',
         lastName: '',
         pin: '',
@@ -28,11 +26,9 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
         email: '',
         departmentId: 0,
         positionId: 0,
-        tasks: [],
         projects: []
     });
 
-    const {data: tasks, loading: tasksLoading, error: tasksError} = useFetchTasksForEmployee();
     const {data: projects, loading: projectsLoading, error: projectsError} = useFetchProjects();
     const {data: departments, loading: departmentsLoading, error: departmentsError} = useFetchDepartments();
     const {data: positions, loading: positionsLoading, error: positionsError} = useFetchPositions();
@@ -48,22 +44,6 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
         setEmployee((prev) => ({
             ...prev,
             [key]: e.value ?? 0
-        }));
-    };
-
-    const handleTasksChange = (e: { value: number[] }) => {
-        const selectedTasks: TaskEmployeeModel[] = e.value.map(taskId => {
-            const task = tasks.find(t => t.id === taskId);
-            return {
-                id: taskId,
-                taskNumber: task ? task.taskNumber : '',
-                taskStatus: task ? task.taskStatus : ''
-            };
-        });
-
-        setEmployee(prev => ({
-            ...prev,
-            tasks: selectedTasks
         }));
     };
 
@@ -92,7 +72,6 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
             email: '',
             departmentId: 0,
             positionId: 0,
-            tasks: [],
             projects: []
         });
     };
@@ -103,10 +82,6 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
             <Button label="Cancel" icon="pi pi-times" onClick={onHide} className="p-button-secondary"/>
         </div>
     );
-
-    const getTaskIds = () => {
-        return employee.tasks?.map(task => task.id) || [];
-    };
 
     const getProjectIds = () => {
         return employee.projects?.map(project => project.id) || [];
@@ -196,22 +171,6 @@ const AddEmployeeDialog = ({visible, onHide, onAdd}: AddEmployeeDialogProps) => 
                         loading={positionsLoading}
                     />
                     {positionsError && <p className="error">{positionsError}</p>}
-                </div>
-                <div className="p-field">
-                    <label htmlFor="tasks">Tasks</label>
-                    <MultiSelect
-                        id="tasks"
-                        name="tasks"
-                        value={getTaskIds()}
-                        options={tasks.map((task) => ({
-                            label: task.taskNumber,
-                            value: task.id
-                        }))}
-                        onChange={handleTasksChange}
-                        placeholder="Choose tasks"
-                        loading={tasksLoading}
-                    />
-                    {tasksError && <p className="error">{tasksError}</p>}
                 </div>
                 <div className="p-field">
                     <label htmlFor="projects">Projects</label>

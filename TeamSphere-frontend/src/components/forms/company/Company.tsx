@@ -1,6 +1,6 @@
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {CompanyData} from "@/components/models/companyData.ts";
+import {CompanyData} from "@/components/models/company/companyData.ts";
 import api from "../../../api/api.ts";
 import AddCompanyDialog from "./AddCompanyDialog.tsx";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
@@ -10,6 +10,8 @@ import {formattingDate} from "@/hooks/formattingDate.ts";
 import "@/styles/ButtonStyles.css";
 import {Paginator} from "primereact/paginator";
 import "@/styles/PaginatorStyles.css"
+import {CompanyAddData} from "@/components/models/company/companyAddData.ts";
+import {CompanyEditData} from "@/components/models/company/companyEditData.ts";
 
 const Company = () => {
     const navigate = useNavigate();
@@ -54,7 +56,7 @@ const Company = () => {
         setShowAddDialog(true);
     };
 
-    const handleAddCompany = async (newCompany: CompanyData) => {
+    const handleAddCompany = async (newCompany: CompanyAddData) => {
         try {
             await api.post("/api/v1/company", newCompany);
             await fetchCompanies(page, rows);
@@ -64,7 +66,7 @@ const Company = () => {
         }
     };
 
-    const handleUpdateCompany = async (updatedCompany: CompanyData) => {
+    const handleUpdateCompany = async (updatedCompany: CompanyEditData) => {
         try {
             await api.put(`/api/v1/company/${updatedCompany.id}`, updatedCompany);
             await fetchCompanies(page, rows);

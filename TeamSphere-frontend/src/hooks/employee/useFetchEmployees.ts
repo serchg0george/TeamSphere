@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
-import api from "@/api/api";
-import {EmployeeData} from "@/components/models/employeeData.ts";
+import {useEffect, useState} from "react";
+import api from "@/api/api.ts";
+import {EmployeeData} from "@/components/models/employee/employeeData.ts";
 
 const useFetchEmployees = () => {
     const [data, setData] = useState<EmployeeData[]>([]);

@@ -2,22 +2,24 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {Button} from "primereact/button";
 import {InputNumber} from "primereact/inputnumber";
-import {TaskData} from "@/components/models/task/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
 import {taskStatuses} from "@/components/models/task/taskStatuses.ts";
 import {taskPriorities} from "@/components/models/task/taskPriorities.ts";
 import {InputTextarea} from "primereact/inputtextarea";
 import {taskTypes} from "@/components/models/task/taskTypes.ts";
+import {TaskAddData} from "@/components/models/task/taskAddData.ts";
 
 interface AddTaskDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (position: TaskData) => void;
+    onAdd: (position: TaskAddData) => void;
 }
 
 const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
-    const [task, setTask] = useState<TaskData>({
+    const [task, setTask] = useState<TaskAddData>({
         taskStatus: '',
+        taskPriority: '',
+        taskType: '',
         timeSpentMinutes: 0,
         taskDescription: ''
     });
@@ -41,6 +43,8 @@ const AddTaskDialog = ({visible, onHide, onAdd}: AddTaskDialogProps) => {
         onAdd(task);
         setTask({
             taskStatus: '',
+            taskPriority: '',
+            taskType: '',
             timeSpentMinutes: 0,
             taskDescription: ''
         });

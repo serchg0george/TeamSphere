@@ -1,8 +1,8 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import api from "../../../api/api.ts";
-import useFetchEmployees from "@/hooks/useFetchEmployees.ts";
-import {EmployeeData} from "@/components/models/employeeData.ts";
+import useFetchEmployees from "@/hooks/employee/useFetchEmployees.ts";
+import {EmployeeData} from "@/components/models/employee/employeeData.ts";
 import AddEmployeeDialog from "@/components/forms/employee/AddEmployeeDialog.tsx";
 import '@/components/forms/styles.css'
 import EditEmployeeDialog from "@/components/forms/employee/EditEmployeeDialog.tsx";
@@ -13,6 +13,8 @@ import '@/styles/EmployeeStyles.css';
 import '@/styles/ButtonStyles.css';
 import "@/styles/PaginatorStyles.css"
 import {Paginator} from "primereact/paginator";
+import {EmployeeAddData} from "@/components/models/employee/employeeAddData.ts";
+import {EmployeeEditData} from "@/components/models/employee/employeeEditData.ts";
 
 const Employee = () => {
     const navigate = useNavigate();
@@ -57,7 +59,7 @@ const Employee = () => {
         setShowAddDialog(true);
     };
 
-    const handleAddEmployee = async (newEmployee: EmployeeData) => {
+    const handleAddEmployee = async (newEmployee: EmployeeAddData) => {
         try {
             await api.post("/api/v1/employee", newEmployee);
             await fetchEmployees();
@@ -67,7 +69,7 @@ const Employee = () => {
         }
     };
 
-    const handleUpdateEmployee = async (updatedEmployee: EmployeeData) => {
+    const handleUpdateEmployee = async (updatedEmployee: EmployeeEditData) => {
         try {
             await api.put(`/api/v1/employee/${updatedEmployee.id}`, updatedEmployee);
             await fetchEmployees();

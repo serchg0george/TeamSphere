@@ -1,7 +1,7 @@
 import {useState} from "react";
 import api from '../../../api/api.ts';
 import {useNavigate} from 'react-router-dom';
-import {ProjectData} from "../../models/projectData.ts";
+import {ProjectData} from "../../models/project/projectData.ts";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import AddProjectDialog from "@/components/forms/project/AddProjectDialog.tsx";
 import '@/components/forms/styles.css'
@@ -9,6 +9,8 @@ import EditProjectDialog from "@/components/forms/project/EditProjectDialog.tsx"
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import "@/styles/PaginatorStyles.css"
 import {Paginator} from "primereact/paginator";
+import {ProjectAddData} from "@/components/models/project/projectAddData.ts";
+import {ProjectEditData} from "@/components/models/project/projectEditData.ts";
 
 const Project = () => {
     const navigate = useNavigate();
@@ -53,7 +55,7 @@ const Project = () => {
         setShowAddDialog(true)
     };
 
-    const handleAddProject = async (newProject: ProjectData) => {
+    const handleAddProject = async (newProject: ProjectAddData) => {
         try {
             await api.post("/api/v1/project", newProject);
             await fetchProjects();
@@ -63,7 +65,7 @@ const Project = () => {
         }
     };
 
-    const handleUpdateProject = async (updatedProject: ProjectData) => {
+    const handleUpdateProject = async (updatedProject: ProjectEditData) => {
         try {
             await api.put(`/api/v1/project/${updatedProject.id}`, updatedProject);
             await fetchProjects();

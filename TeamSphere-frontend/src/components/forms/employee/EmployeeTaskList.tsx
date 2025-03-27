@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { TaskData } from "@/components/models/task/taskData.ts";
+import {useState} from "react";
+import {TaskData} from "@/components/models/task/taskData.ts";
 import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
 import '@/styles/EmployeeStyles.css';
 
@@ -11,6 +11,18 @@ type TaskListProps = {
 const EmployeeTaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask }) => {
     const [selectedTask, setSelectedTask] = useState<TaskData | null>(null);
     const [showEditDialog, setShowEditDialog] = useState(false);
+    const getTaskPrefix = (type: string | undefined) => {
+        switch (type) {
+            case "FEATURE":
+                return "FTR-";
+            case "REFACTOR":
+                return "REF-";
+            case "BUG":
+                return "FIX-";
+            default:
+                return "";
+        }
+    };
 
     const handleEditTask = (task: TaskData) => {
         setSelectedTask(task);
@@ -48,7 +60,7 @@ const EmployeeTaskList: React.FC<TaskListProps> = ({ tasks, onUpdateTask }) => {
                             style={{ padding: "5px 0", borderBottom: "1px solid #eee", cursor: "pointer" }}
                             onClick={() => handleEditTask(task)}
                         >
-                            {task.taskNumber} - <strong>{task.taskStatus}</strong>
+                            {`${getTaskPrefix(task.taskType)}${task.taskNumber}`} - <strong>{task.taskStatus}</strong>
                             <br />
                             <small>{task.taskDescription}</small>
                             {task.timeSpentMinutes !== undefined && (

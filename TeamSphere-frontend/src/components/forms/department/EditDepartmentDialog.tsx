@@ -1,18 +1,18 @@
-import {DepartmentData} from "@/components/models/departmentData.ts";
 import React, {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
+import {DepartmentEditData} from "@/components/models/department/departmentEditData.ts";
 
 interface EditDepartmentDialogProps {
     visible: boolean;
-    department: DepartmentData;
+    department: DepartmentEditData;
     onHide: () => void;
-    onUpdate: (department: DepartmentData) => void;
+    onUpdate: (department: DepartmentEditData) => void;
 }
 
 const EditDepartmentDialog = ({visible, department, onHide, onUpdate}: EditDepartmentDialogProps) => {
-    const [editedDepartment, setEditedDepartment] = useState<DepartmentData>(department);
+    const [editedDepartment, setEditedDepartment] = useState<DepartmentEditData>(department);
 
     useEffect(() => {
         setEditedDepartment(department);

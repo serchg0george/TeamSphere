@@ -1,18 +1,18 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {CompanyData} from "@/components/models/companyData.ts";
+import {CompanyEditData} from "@/components/models/company/companyEditData.ts";
 
 interface EditCompanyDialogProps {
     visible: boolean;
-    company: CompanyData;
+    company: CompanyEditData;
     onHide: () => void;
-    onUpdate: (company: CompanyData) => void;
+    onUpdate: (company: CompanyEditData) => void;
 }
 
 const EditCompanyDialog = ({visible, company, onHide, onUpdate}: EditCompanyDialogProps) => {
-    const [editedCompany, setEditedCompany] = useState<CompanyData>(company);
+    const [editedCompany, setEditedCompany] = useState<CompanyEditData>(company);
 
     useEffect(() => {
         setEditedCompany(company);

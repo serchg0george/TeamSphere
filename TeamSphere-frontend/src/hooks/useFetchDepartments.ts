@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import api from "@/api/api";
-import {DepartmentData} from "@/components/models/departmentData";
+import {DepartmentData} from "@/components/models/department/departmentData.ts";
 
 
 const useFetchDepartments = () => {

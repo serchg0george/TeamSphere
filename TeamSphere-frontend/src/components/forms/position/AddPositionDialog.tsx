@@ -2,17 +2,17 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {PositionData} from "@/components/models/positionData.ts";
 import {InputNumber} from "primereact/inputnumber";
+import {PositionAddData} from "@/components/models/position/positionAddData.ts";
 
 interface AddPositionDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (position: PositionData) => void;
+    onAdd: (position: PositionAddData) => void;
 }
 
 const AddPositionDialog = ({visible, onHide, onAdd}: AddPositionDialogProps) => {
-    const [position, setPosition] = useState<PositionData>({
+    const [position, setPosition] = useState<PositionAddData>({
         positionName: '',
         yearsOfExperience: 0
     });

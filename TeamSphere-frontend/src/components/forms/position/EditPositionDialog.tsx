@@ -2,18 +2,18 @@ import React, {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
-import {PositionData} from "@/components/models/positionData.ts";
 import {InputNumber} from "primereact/inputnumber";
+import {PositionEditData} from "@/components/models/position/positionEditData.ts";
 
 interface EditPositionDialogProps {
     visible: boolean;
-    position: PositionData;
+    position: PositionEditData;
     onHide: () => void;
-    onUpdate: (position: PositionData) => void;
+    onUpdate: (position: PositionEditData) => void;
 }
 
 const EditPositionDialog = ({visible, position, onHide, onUpdate}: EditPositionDialogProps) => {
-    const [editedPosition, setEditedPosition] = useState<PositionData>(position);
+    const [editedPosition, setEditedPosition] = useState<PositionEditData>(position);
 
     useEffect(() => {
         setEditedPosition(position);

@@ -2,19 +2,19 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {ProjectData} from "@/components/models/projectData.ts";
 import {Dropdown} from "primereact/dropdown";
 import useFetchCompanies from "@/hooks/useFetchCompanies.ts";
-import {projectStatuses} from "@/components/models/projectStatuses.ts";
+import {projectStatuses} from "@/components/models/project/projectStatuses.ts";
+import {ProjectAddData} from "@/components/models/project/projectAddData.ts";
 
 interface AddProjectDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (position: ProjectData) => void;
+    onAdd: (position: ProjectAddData) => void;
 }
 
 const AddProjectDialog = ({visible, onHide, onAdd}: AddProjectDialogProps) => {
-    const [project, setProject] = useState<ProjectData>({
+    const [project, setProject] = useState<ProjectAddData>({
         name: '',
         description: '',
         startDate: '',

@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import api from "@/api/api";
-import {CompanyData} from "@/components/models/companyData";
+import {CompanyData} from "@/components/models/company/companyData.ts";
 
 const useFetchCompanies = () => {
     const [data, setData] = useState<CompanyData[]>([]);

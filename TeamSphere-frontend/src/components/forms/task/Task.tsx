@@ -10,6 +10,8 @@ import EditTaskDialog from "@/components/forms/task/EditTaskDialog.tsx";
 import {formattingDate} from "@/hooks/formattingDate.ts";
 import {Paginator} from "primereact/paginator";
 import "@/styles/PaginatorStyles.css"
+import {TaskEditData} from "@/components/models/task/taskEditData.ts";
+import {TaskAddData} from "@/components/models/task/taskAddData.ts";
 
 const Task = () => {
     const navigate = useNavigate();
@@ -80,7 +82,7 @@ const Task = () => {
         setShowAddDialog(true);
     };
 
-    const handleAddTask = async (newTask: TaskData) => {
+    const handleAddTask = async (newTask: TaskAddData) => {
         try {
             await api.post("/api/v1/task", newTask);
             await fetchTasks(page, rows);
@@ -90,7 +92,7 @@ const Task = () => {
         }
     };
 
-    const handleUpdateTask = async (updatedTask: TaskData) => {
+    const handleUpdateTask = async (updatedTask: TaskEditData) => {
         try {
             await api.put(`/api/v1/task/${updatedTask.id}`, updatedTask);
             await fetchTasks(page, rows);
@@ -117,7 +119,7 @@ const Task = () => {
                 <tr>
                     <th>
                         Status
-                        <button onClick={() =>  {
+                        <button onClick={() => {
                             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
                             setActiveSort('status');
                         }}>

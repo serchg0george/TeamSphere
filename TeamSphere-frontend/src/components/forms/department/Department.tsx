@@ -1,6 +1,6 @@
 import {useNavigate} from "react-router-dom";
 import api from "../../../api/api.ts";
-import {DepartmentData} from "../../models/departmentData.ts";
+import {DepartmentData} from "../../models/department/departmentData.ts";
 import AddDepartmentDialog from "./AddDepartmentDialog.tsx";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts"
 import '@/components/forms/styles.css'
@@ -10,6 +10,8 @@ import {formattingDate} from "@/hooks/formattingDate.ts";
 import '@/styles/ButtonStyles.css';
 import "@/styles/PaginatorStyles.css"
 import {Paginator} from "primereact/paginator";
+import {DepartmentAddData} from "@/components/models/department/departmentAddData.ts";
+import {DepartmentEditData} from "@/components/models/department/departmentEditData.ts";
 
 const Department = () => {
     const navigate = useNavigate();
@@ -54,7 +56,7 @@ const Department = () => {
         setShowAddDialog(true)
     };
 
-    const handleAddDepartment = async (newDepartment: DepartmentData) => {
+    const handleAddDepartment = async (newDepartment: DepartmentAddData) => {
         try {
             await api.post("/api/v1/department", newDepartment);
             await fetchDepartments();
@@ -64,7 +66,7 @@ const Department = () => {
         }
     };
 
-    const handleUpdateDepartment = async (updatedDepartment: DepartmentData) => {
+    const handleUpdateDepartment = async (updatedDepartment: DepartmentEditData) => {
         try {
             await api.put(`/api/v1/department/${updatedDepartment.id}`, updatedDepartment);
             await fetchDepartments();

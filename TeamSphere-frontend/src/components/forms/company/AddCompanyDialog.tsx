@@ -2,16 +2,16 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {CompanyData} from "@/components/models/companyData.ts";
+import {CompanyAddData} from "@/components/models/company/companyAddData.ts";
 
 interface AddCompanyDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (company: CompanyData) => void;
+    onAdd: (company: CompanyAddData) => void;
 }
 
 const AddCompanyDialog = ({visible, onHide, onAdd}: AddCompanyDialogProps) => {
-    const [company, setCompany] = useState<CompanyData>({
+    const [company, setCompany] = useState<CompanyAddData>({
         name: '',
         industry: '',
         address: '',

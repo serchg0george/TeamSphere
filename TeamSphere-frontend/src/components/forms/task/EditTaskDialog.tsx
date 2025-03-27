@@ -2,22 +2,22 @@ import React, {useEffect, useState} from "react";
 import {Button} from "primereact/button";
 import {Dialog} from "primereact/dialog";
 import {InputNumber} from "primereact/inputnumber";
-import {TaskData} from "@/components/models/task/taskData.ts";
 import {Dropdown} from "primereact/dropdown";
 import {taskStatuses} from "@/components/models/task/taskStatuses.ts";
 import {taskPriorities} from "@/components/models/task/taskPriorities.ts";
 import {InputTextarea} from "primereact/inputtextarea";
 import {taskTypes} from "@/components/models/task/taskTypes.ts";
+import {TaskEditData} from "@/components/models/task/taskEditData.ts";
 
 interface EditTaskDialogProps {
     visible: boolean;
-    task: TaskData;
+    task: TaskEditData;
     onHide: () => void;
-    onUpdate: (position: TaskData) => void;
+    onUpdate: (position: TaskEditData) => void;
 }
 
 const EditTaskDialog = ({visible, task, onHide, onUpdate}: EditTaskDialogProps) => {
-    const [editedTask, setEditedTask] = useState<TaskData>(task);
+    const [editedTask, setEditedTask] = useState<TaskEditData>(task);
 
     useEffect(() => {
         setEditedTask(task);

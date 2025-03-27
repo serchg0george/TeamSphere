@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import api from "@/api/api";
-import {PositionData} from "@/components/models/positionData";
+import {PositionData} from "@/components/models/position/positionData.ts";
 
 const useFetchPositions = () => {
     const [data, setData] = useState<PositionData[]>([]);

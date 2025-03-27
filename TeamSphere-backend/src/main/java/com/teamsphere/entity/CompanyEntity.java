@@ -31,7 +31,7 @@ public class CompanyEntity extends BaseEntity {
     private String industry;
 
     @NotBlank
-    @Column(name = "address", length = 50)
+    @Column(name = "address", nullable = false, length = 50)
     private String address;
 
     @NotBlank

@@ -2,16 +2,16 @@ import {useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {DepartmentData} from "@/components/models/departmentData.ts";
+import {DepartmentAddData} from "@/components/models/department/departmentAddData.ts";
 
 interface AddDepartmentDialogProps {
     visible: boolean;
     onHide: () => void;
-    onAdd: (department: DepartmentData) => void;
+    onAdd: (department: DepartmentAddData) => void;
 }
 
 const AddDepartmentDialog = ({visible, onHide, onAdd}: AddDepartmentDialogProps) => {
-    const [department, setDepartment] = useState<DepartmentData>({
+    const [department, setDepartment] = useState<DepartmentAddData>({
         departmentName: '',
         description: ''
     });
@@ -51,11 +51,13 @@ const AddDepartmentDialog = ({visible, onHide, onAdd}: AddDepartmentDialogProps)
             <div className="p-fluid">
                 <div className="p-field">
                     <label htmlFor="departmentName">Department Name</label>
-                    <InputText id="departmentName" name="departmentName" value={department.departmentName} onChange={handleInputChange}/>
+                    <InputText id="departmentName" name="departmentName" value={department.departmentName}
+                               onChange={handleInputChange}/>
                 </div>
                 <div className="p-field">
                     <label htmlFor="description">Description</label>
-                    <InputText id="description" name="description" value={department.description} onChange={handleInputChange}/>
+                    <InputText id="description" name="description" value={department.description}
+                               onChange={handleInputChange}/>
                 </div>
             </div>
         </Dialog>

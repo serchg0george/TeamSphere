@@ -1,6 +1,6 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import api from "@/api/api";
-import {ProjectData} from "@/components/models/projectData.ts";
+import {ProjectData} from "@/components/models/project/projectData.ts";
 
 const useFetchProjects = () => {
     const [data, setData] = useState<ProjectData[]>([]);

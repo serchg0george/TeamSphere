@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useState} from "react";
 import api from "../../../api/api.ts";
-import {PositionData} from "../../models/positionData.ts";
+import {PositionData} from "../../models/position/positionData.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import AddPositionDialog from "@/components/forms/position/AddPositionDialog.tsx";
 import '@/components/forms/styles.css'
@@ -10,6 +10,8 @@ import {formattingDate} from "@/hooks/formattingDate.ts";
 import '@/styles/ButtonStyles.css';
 import "@/styles/PaginatorStyles.css"
 import {Paginator} from "primereact/paginator";
+import {PositionAddData} from "@/components/models/position/positionAddData.ts";
+import {PositionEditData} from "@/components/models/position/positionEditData.ts";
 
 const Position = () => {
     const navigate = useNavigate();
@@ -54,7 +56,7 @@ const Position = () => {
         setShowAddDialog(true);
     };
 
-    const handleAddPosition = async (newPosition: PositionData) => {
+    const handleAddPosition = async (newPosition: PositionAddData) => {
         try {
             await api.post("/api/v1/position", newPosition);
             await fetchPositions();
@@ -64,7 +66,7 @@ const Position = () => {
         }
     };
 
-    const handleUpdatePosition = async (updatedPosition: PositionData) => {
+    const handleUpdatePosition = async (updatedPosition: PositionEditData) => {
         try {
             await api.put(`/api/v1/position/${updatedPosition.id}`, updatedPosition);
             await fetchPositions();

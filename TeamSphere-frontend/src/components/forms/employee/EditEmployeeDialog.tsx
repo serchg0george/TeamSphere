@@ -2,26 +2,27 @@ import {useEffect, useState} from "react";
 import {Dialog} from "primereact/dialog";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
-import {EmployeeData} from "@/components/models/employeeData.ts";
+import {EmployeeData} from "@/components/models/employee/employeeData.ts";
 import {MultiSelect} from "primereact/multiselect";
 import {Dropdown} from "primereact/dropdown";
 import useFetchProjects from "@/hooks/useFetchProjects.ts";
 import useFetchPositions from "@/hooks/useFetchPositions.ts";
 import useFetchDepartments from "@/hooks/useFetchDepartments.ts";
 import {TaskEmployeeModel} from "@/components/models/task/taskEmployeeModel.ts";
-import {ProjectEmployeeModel} from "@/components/models/projectEmployeeModel.ts";
+import {ProjectEmployeeModel} from "@/components/models/employee/projectEmployeeModel.ts";
 import '@/styles/EmployeeStyles.css';
-import useFetchTasksForEmployee from "@/hooks/useFetchTasksForEmployee.ts";
+import useFetchTasksForEmployee from "@/hooks/employee/useFetchTasksForEmployee.ts";
+import {EmployeeEditData} from "@/components/models/employee/employeeEditData.ts";
 
 interface EditEmployeeDialogProps {
     visible: boolean;
     employee: EmployeeData;
     onHide: () => void;
-    onUpdate: (employee: EmployeeData) => void;
+    onUpdate: (employee: EmployeeEditData) => void;
 }
 
 const EditEmployeeDialog = ({visible, employee, onHide, onUpdate}: EditEmployeeDialogProps) => {
-    const [editedEmployee, setEditedEmployee] = useState<EmployeeData>(employee);
+    const [editedEmployee, setEditedEmployee] = useState<EmployeeEditData>(employee);
     const {data: tasks} = useFetchTasksForEmployee();
     const {data: projects} = useFetchProjects();
     const {data: departments} = useFetchDepartments();
