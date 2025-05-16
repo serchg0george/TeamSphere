@@ -51,16 +51,16 @@ Before you begin, ensure you have met the following requirements:
     ```yaml
     spring:
       datasource:
-        url: jdbc:postgresql://localhost:5432/teamsphere
         username: <your_username>
         password: <your_password>
+        url: <your_database_connection_url>
       jpa:
         hibernate:
           ddl-auto: update
 
     jwt:
       secret: <your_secret_key>
-      expiration-time: 86400000 # Example: 1 day in milliseconds
+      expiration-time: 4d # Example: 4 days
     ```
 
    - Replace `<your_username>`, `<your_password>`, and `<your_secret_key>` with your actual PostgreSQL credentials and a secure secret key for JWT.
