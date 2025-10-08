@@ -71,16 +71,26 @@ public class JwtService {
     }
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
-        final String username = extractUsername(token);
-        boolean isValid = (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
-        log.info("Token validation result for user {}: {}", userDetails.getUsername(), isValid);
-        return isValid;
+        try {
+            final String username = extractUsername(token);
+            boolean isValid = (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
+            log.info("Token validation result for user {}: {}", userDetails.getUsername(), isValid);
+            return isValid;
+        } catch (io.jsonwebtoken.JwtException e) {
+            log.warn("Invalid JWT: {}", e.getMessage());
+            return false;
+        }
     }
 
     private boolean isTokenExpired(String token) {
-        boolean expired = extractExpiration(token).before(new Date());
-        log.info("Token expired: {}", expired);
-        return expired;
+        try {
+            boolean expired = extractExpiration(token).before(new Date());
+            log.info("Token expired: {}", expired);
+            return expired;
+        } catch (io.jsonwebtoken.ExpiredJwtException e) {
+            log.info("Token expired: true");
+            return true;
+        }
     }
 
     private Date extractExpiration(String token) {
