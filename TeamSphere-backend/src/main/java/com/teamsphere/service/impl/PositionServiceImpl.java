@@ -47,7 +47,7 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
         Root<PositionEntity> root = criteriaQuery.from(PositionEntity.class);
 
         String query = "%" + request.query() + "%";
-        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root);
+        Predicate mainPredicate = buildPredicates(criteriaBuilder, query, root, request.query());
         criteriaQuery.where(mainPredicate);
 
         TypedQuery<PositionEntity> tQuery = entityManager.createQuery(criteriaQuery)
@@ -61,7 +61,7 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
 
         CriteriaQuery<Long> countQuery = criteriaBuilder.createQuery(Long.class);
         Root<PositionEntity> countRoot = countQuery.from(PositionEntity.class);
-        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot);
+        Predicate countPredicate = buildPredicates(criteriaBuilder, query, countRoot, request.query());
 
         countQuery.select(criteriaBuilder.count(countRoot))
                 .where(countPredicate);
@@ -78,16 +78,16 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
-    private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<PositionEntity> root) {
+    private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<PositionEntity> root, final String rawQuery) {
         Predicate roleName = criteriaBuilder.like(root.get("positionName"), query);
 
         try {
-            Integer yearsOfExperienceQuery = Integer.parseInt(query);
+            Integer yearsOfExperienceQuery = Integer.parseInt(rawQuery);
             Predicate yearsOfExperience = criteriaBuilder.equal(root.get("yearsOfExperience"), yearsOfExperienceQuery);
             return criteriaBuilder.or(roleName, yearsOfExperience);
         } catch (NumberFormatException e) {
-            log.info("Query '{} is not a valid year of experience", e.getMessage());
+            log.info("Query '{}' is not a valid year of experience", e.getMessage());
         }
-        return criteriaBuilder.or(roleName);
+        return roleName;
     }
 }
