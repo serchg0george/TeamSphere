@@ -1,0 +1,159 @@
+package com.teamsphere.mapper;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.when;
+import com.teamsphere.dto.employee.EmployeeDto;
+import com.teamsphere.dto.employee.ProjectInfo;
+import com.teamsphere.entity.*;
+import com.teamsphere.entity.enums.ProjectStatus;
+import com.teamsphere.entity.enums.TaskPriority;
+import com.teamsphere.entity.enums.TaskStatus;
+import com.teamsphere.entity.enums.TaskType;
+import com.teamsphere.repository.DepartmentRepository;
+import com.teamsphere.repository.PositionRepository;
+import com.teamsphere.repository.ProjectRepository;
+import com.teamsphere.repository.TaskRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Optional;
+
+@ExtendWith(MockitoExtension.class)
+class EmployeeMapperTest {
+
+    @Mock
+    private ProjectRepository projectRepository;
+    @Mock
+    private DepartmentRepository departmentRepository;
+    @Mock
+    private PositionRepository positionRepository;
+    @Mock
+    private TaskRepository taskRepository;
+
+    @InjectMocks
+    private EmployeeMapper employeeMapper;
+
+    private EmployeeEntity employeeEntity;
+    private DepartmentEntity departmentEntity;
+    private PositionEntity positionEntity;
+    private ProjectEntity projectEntity;
+    private TaskEntity taskEntity;
+
+    @BeforeEach
+    void setUp() {
+        departmentEntity = new DepartmentEntity();
+        departmentEntity.setId(1L);
+        departmentEntity.setDepartmentName("Engineering");
+
+        positionEntity = new PositionEntity();
+        positionEntity.setId(1L);
+        positionEntity.setPositionName("Developer");
+
+        projectEntity = ProjectEntity.builder()
+                .id(1L)
+                .name("Project Alpha")
+                .description("Description")
+                .startDate(LocalDate.now())
+                .status(ProjectStatus.IN_PROGRESS)
+                .company(new CompanyEntity())
+                .build();
+
+        taskEntity = TaskEntity.builder()
+                .id(1L)
+                .taskNumber("TASK-001")
+                .taskStatus(TaskStatus.PENDING)
+                .taskType(TaskType.FEATURE)
+                .taskPriority(TaskPriority.HIGH)
+                .taskDescription("Description")
+                .timeSpentMinutes(0)
+                .build();
+
+        employeeEntity = new EmployeeEntity();
+        employeeEntity.setId(1L);
+        employeeEntity.setFirstName("John");
+        employeeEntity.setLastName("Doe");
+        employeeEntity.setDepartment(departmentEntity);
+        employeeEntity.setPosition(positionEntity);
+        employeeEntity.setProjects(new LinkedHashSet<>(Collections.singletonList(projectEntity)));
+        employeeEntity.setTasks(new LinkedHashSet<>(Collections.singletonList(taskEntity)));
+        employeeEntity.setCreatedAt(LocalDateTime.now());
+        employeeEntity.setUpdatedAt(LocalDateTime.now());
+    }
+
+    @Test
+    void toDto_shouldMapEntityToDto() {
+        // When
+        EmployeeDto dto = employeeMapper.toDto(employeeEntity);
+
+        // Then
+        assertEquals(employeeEntity.getId(), dto.getId());
+        assertEquals(employeeEntity.getFirstName(), dto.getFirstName());
+        assertEquals(employeeEntity.getLastName(), dto.getLastName());
+        assertEquals(departmentEntity.getId(), dto.getDepartmentId());
+        assertEquals(positionEntity.getId(), dto.getPositionId());
+        assertEquals(1, dto.getProjects().size());
+        assertEquals(1, dto.getTasks().size());
+    }
+
+    @Test
+    void toEntity_shouldMapDtoToEntity() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(List.of(new ProjectInfo(1L, "Project Alpha")))
+                .tasks(Collections.emptyList())
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+        when(projectRepository.findById(1L)).thenReturn(Optional.of(projectEntity));
+
+        // When
+        EmployeeEntity entity = employeeMapper.toEntity(dto);
+
+        // Then
+        assertEquals(dto.getFirstName(), entity.getFirstName());
+        assertEquals(dto.getLastName(), entity.getLastName());
+        assertNotNull(entity.getDepartment());
+        assertNotNull(entity.getPosition());
+        assertEquals(1, entity.getProjects().size());
+    }
+
+    @Test
+    void updateFromDto_shouldUpdateEntityFromDto() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(Collections.emptyList())
+                .tasks(Collections.emptyList())
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+
+        // When
+        employeeMapper.updateFromDto(dto, employeeEntity);
+
+        // Then
+        assertEquals(dto.getFirstName(), employeeEntity.getFirstName());
+        assertEquals(dto.getLastName(), employeeEntity.getLastName());
+        assertEquals(0, employeeEntity.getProjects().size());
+        assertEquals(0, employeeEntity.getTasks().size());
+    }
+}
