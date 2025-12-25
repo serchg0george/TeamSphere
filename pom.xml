@@ -17,7 +17,7 @@
         A Java-based API for a project, employment and companies management
     </description>
     <properties>
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <lombok.version>1.18.36</lombok.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <springboot.version>3.4.2</springboot.version>
@@ -91,7 +91,7 @@
     </dependencies>
 
     <build>
-        <testSourceDirectory>test/java</testSourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
         <testResources>
             <testResource>
                 <directory>test/resources</directory>
