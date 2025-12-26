@@ -22,10 +22,10 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    @Value("${jwt.secret:NOT_SET}")
+    @Value("${SECRET_KEY}")
     private String key;
 
-    @Value("${jwt.expiration-time:NOT_SET}")
+    @Value("${jwt.expiration-time}")
     Duration expirationTime;
 
     public String extractUsername(String token) {

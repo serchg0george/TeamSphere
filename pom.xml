@@ -18,13 +18,14 @@
     </description>
     <properties>
         <java.version>21</java.version>
-        <lombok.version>1.18.36</lombok.version>
+        <lombok.version>1.18.42</lombok.version>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
         <springboot.version>3.4.2</springboot.version>
         <springboot.security.version>3.4.2</springboot.security.version>
         <springboot.maven.plugin.version>3.3.1</springboot.maven.plugin.version>
         <springdoc.version>2.8.4</springdoc.version>
         <jwt.version>0.11.5</jwt.version>
+        <postgresql.version>42.7.7</postgresql.version>
     </properties>
     <dependencies>
         <dependency>
@@ -70,6 +71,7 @@
         <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
             <scope>runtime</scope>
         </dependency>
         <dependency>
@@ -91,7 +93,7 @@
     </dependencies>
 
     <build>
-        <testSourceDirectory>test/java</testSourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
         <testResources>
             <testResource>
                 <directory>test/resources</directory>
