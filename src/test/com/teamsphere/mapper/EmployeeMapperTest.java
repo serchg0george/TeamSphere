@@ -1,20 +1,20 @@
 package com.teamsphere.mapper;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
 import com.teamsphere.dto.employee.EmployeeDto;
 import com.teamsphere.dto.employee.ProjectInfo;
+import com.teamsphere.dto.employee.TaskInfo;
 import com.teamsphere.entity.*;
 import com.teamsphere.entity.enums.ProjectStatus;
 import com.teamsphere.entity.enums.TaskPriority;
 import com.teamsphere.entity.enums.TaskStatus;
 import com.teamsphere.entity.enums.TaskType;
+import com.teamsphere.exception.NotFoundException;
 import com.teamsphere.repository.DepartmentRepository;
 import com.teamsphere.repository.PositionRepository;
 import com.teamsphere.repository.ProjectRepository;
 import com.teamsphere.repository.TaskRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +27,9 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class EmployeeMapperTest {
@@ -155,5 +158,172 @@ class EmployeeMapperTest {
         assertEquals(dto.getLastName(), employeeEntity.getLastName());
         assertEquals(0, employeeEntity.getProjects().size());
         assertEquals(0, employeeEntity.getTasks().size());
+    }
+
+    @Test
+    @DisplayName("toEntity should throw NotFoundException when department not found")
+    void toEntity_shouldThrowNotFoundException_whenDepartmentNotFound() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .departmentId(999L)
+                .positionId(1L)
+                .projects(Collections.emptyList())
+                .tasks(Collections.emptyList())
+                .build();
+
+        when(departmentRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NotFoundException.class, () -> employeeMapper.toEntity(dto));
+    }
+
+    @Test
+    @DisplayName("toEntity should throw NotFoundException when position not found")
+    void toEntity_shouldThrowNotFoundException_whenPositionNotFound() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .departmentId(1L)
+                .positionId(999L)
+                .projects(Collections.emptyList())
+                .tasks(Collections.emptyList())
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NotFoundException.class, () -> employeeMapper.toEntity(dto));
+    }
+
+    @Test
+    @DisplayName("toEntity should throw NotFoundException when project not found")
+    void toEntity_shouldThrowNotFoundException_whenProjectNotFound() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Doe")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(List.of(new ProjectInfo(999L, "Non-existent Project")))
+                .tasks(Collections.emptyList())
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+        when(projectRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NotFoundException.class, () -> employeeMapper.toEntity(dto));
+    }
+
+    @Test
+    @DisplayName("updateFromDto should handle null departmentId")
+    void updateFromDto_shouldHandleNullDepartmentId() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .departmentId(null)
+                .positionId(null)
+                .projects(Collections.emptyList())
+                .tasks(Collections.emptyList())
+                .build();
+
+        DepartmentEntity existingDepartment = employeeEntity.getDepartment();
+        PositionEntity existingPosition = employeeEntity.getPosition();
+
+        // When
+        employeeMapper.updateFromDto(dto, employeeEntity);
+
+        // Then
+        assertEquals(existingDepartment, employeeEntity.getDepartment());
+        assertEquals(existingPosition, employeeEntity.getPosition());
+    }
+
+    @Test
+    @DisplayName("updateFromDto should handle null projects list")
+    void updateFromDto_shouldHandleNullProjectsList() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(null)
+                .tasks(null)
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+
+        int originalProjectsSize = employeeEntity.getProjects().size();
+
+        // When
+        employeeMapper.updateFromDto(dto, employeeEntity);
+
+        // Then
+        assertEquals(originalProjectsSize, employeeEntity.getProjects().size());
+    }
+
+    @Test
+    @DisplayName("updateFromDto should assign new tasks and unassign old tasks")
+    void updateFromDto_shouldAssignNewTasksAndUnassignOldTasks() {
+        // Given
+        TaskEntity newTask = TaskEntity.builder()
+                .id(2L)
+                .taskNumber("TASK-002")
+                .taskStatus(TaskStatus.ACTIVE)
+                .taskType(TaskType.BUG)
+                .taskPriority(TaskPriority.MEDIUM)
+                .taskDescription("New Task")
+                .timeSpentMinutes(0)
+                .build();
+
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(Collections.emptyList())
+                .tasks(List.of(new TaskInfo(2L, "TASK-002", "IN_PROGRESS", "BUG", "MEDIUM", "New Task", 0)))
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+        when(taskRepository.findById(2L)).thenReturn(Optional.of(newTask));
+
+        // When
+        employeeMapper.updateFromDto(dto, employeeEntity);
+
+        // Then
+        assertEquals(1, employeeEntity.getTasks().size());
+        assertTrue(employeeEntity.getTasks().contains(newTask));
+        assertEquals(employeeEntity, newTask.getEmployee());
+        assertNull(taskEntity.getEmployee());
+    }
+
+    @Test
+    @DisplayName("updateFromDto should throw NotFoundException when task not found")
+    void updateFromDto_shouldThrowNotFoundException_whenTaskNotFound() {
+        // Given
+        EmployeeDto dto = EmployeeDto.builder()
+                .firstName("Jane")
+                .lastName("Smith")
+                .departmentId(1L)
+                .positionId(1L)
+                .projects(Collections.emptyList())
+                .tasks(List.of(new TaskInfo(999L, "TASK-999", "PENDING", "FEATURE", "HIGH", "Non-existent", 0)))
+                .build();
+
+        when(departmentRepository.findById(1L)).thenReturn(Optional.of(departmentEntity));
+        when(positionRepository.findById(1L)).thenReturn(Optional.of(positionEntity));
+        when(taskRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // When & Then
+        assertThrows(NotFoundException.class, () -> employeeMapper.updateFromDto(dto, employeeEntity));
     }
 }

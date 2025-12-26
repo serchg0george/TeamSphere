@@ -1,12 +1,10 @@
 package com.teamsphere.service.impl;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import com.teamsphere.dto.position.PositionDto;
 import com.teamsphere.dto.position.PositionSearchRequest;
 import com.teamsphere.entity.PositionEntity;
 import com.teamsphere.mapper.PositionMapper;
+import com.teamsphere.repository.PositionRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -14,6 +12,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -26,11 +25,19 @@ import org.springframework.data.domain.Pageable;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 @ExtendWith(MockitoExtension.class)
 class PositionServiceImplTest {
 
     @Mock
     private PositionMapper positionMapper;
+
+    @Mock
+    private PositionRepository positionRepository;
 
     @Mock
     private EntityManager entityManager;
@@ -83,7 +90,9 @@ class PositionServiceImplTest {
                 .positionName("Developer")
                 .yearsOfExperience(5)
                 .build();
+    }
 
+    private void setupCriteriaQueryMocks() {
         when(entityManager.getCriteriaBuilder()).thenReturn(criteriaBuilder);
         when(criteriaBuilder.createQuery(PositionEntity.class)).thenReturn(criteriaQuery);
         when(criteriaBuilder.createQuery(Long.class)).thenReturn(countQuery);
@@ -96,6 +105,7 @@ class PositionServiceImplTest {
     @Test
     void find_shouldReturnPagedPositions_whenQueryMatchesName() {
         // Given
+        setupCriteriaQueryMocks();
         String query = "dev";
         PositionSearchRequest request = new PositionSearchRequest(query);
         Pageable pageable = PageRequest.of(0, 10);
@@ -128,6 +138,7 @@ class PositionServiceImplTest {
     @Test
     void find_shouldReturnPagedPositions_whenQueryMatchesExperience() {
         // Given
+        setupCriteriaQueryMocks();
         String query = "5";
         PositionSearchRequest request = new PositionSearchRequest(query);
         Pageable pageable = PageRequest.of(0, 10);
@@ -164,6 +175,7 @@ class PositionServiceImplTest {
     @Test
     void find_shouldReturnEmptyPage_whenNoPositionsMatch() {
         // Given
+        setupCriteriaQueryMocks();
         String query = "nonexistent";
         PositionSearchRequest request = new PositionSearchRequest(query);
         Pageable pageable = PageRequest.of(0, 10);
@@ -189,5 +201,21 @@ class PositionServiceImplTest {
         // Then
         assertEquals(0, result.getTotalElements());
         assertEquals(0, result.getContent().size());
+    }
+
+    @Test
+    @DisplayName("getMapper should return PositionMapper")
+    void testGetMapper() {
+        com.teamsphere.mapper.base.BaseMapper<PositionEntity, PositionDto> mapper = positionService.getMapper();
+        assertNotNull(mapper);
+        assertEquals(positionMapper, mapper);
+    }
+
+    @Test
+    @DisplayName("getRepository should return PositionRepository")
+    void testGetRepository() {
+        org.springframework.data.jpa.repository.JpaRepository<PositionEntity, Long> repository = positionService.getRepository();
+        assertNotNull(repository);
+        assertEquals(positionRepository, repository);
     }
 }
