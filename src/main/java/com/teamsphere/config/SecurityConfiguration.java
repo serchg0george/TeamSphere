@@ -20,6 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Security configuration class for the application.
+ * Configures HTTP security, CORS, authentication, and authorization rules for all endpoints.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -40,6 +44,12 @@ public class SecurityConfiguration {
     public static final String SEARCH_URL = BASE_URL + "search";
     public static final String ROLE_ADMIN = "ADMIN";
 
+    /**
+     * Configures CORS settings for the application.
+     * Allows all origins, credentials, headers, and common HTTP methods.
+     *
+     * @return CorsConfigurationSource with configured CORS settings
+     */
     @Bean
     public CorsConfigurationSource corsConfigurer() {
         final CorsConfiguration corsConfiguration = new CorsConfiguration();
@@ -54,6 +64,14 @@ public class SecurityConfiguration {
         return source;
     }
 
+    /**
+     * Configures the security filter chain with authorization rules for all endpoints.
+     * Sets up JWT authentication, CORS, CSRF protection, and role-based access control.
+     *
+     * @param http the HttpSecurity to configure
+     * @return the configured SecurityFilterChain
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -118,6 +136,13 @@ public class SecurityConfiguration {
         return http.build();
     }
 
+    /**
+     * Creates an authentication manager bean from the authentication configuration.
+     *
+     * @param authenticationConfiguration the authentication configuration
+     * @return the configured AuthenticationManager
+     * @throws Exception if an error occurs during configuration
+     */
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration authenticationConfiguration) throws Exception {

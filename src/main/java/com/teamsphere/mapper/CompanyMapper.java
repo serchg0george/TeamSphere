@@ -8,10 +8,19 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Mapper for converting between CompanyEntity and CompanyDto.
+ */
 @Component
 @RequiredArgsConstructor
 public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
 
+    /**
+     * Converts a CompanyEntity to a CompanyDto.
+     *
+     * @param entity the company entity to convert
+     * @return the converted company DTO
+     */
     @Override
     public CompanyDto toDto(CompanyEntity entity) {
         return CompanyDto.builder()
@@ -25,6 +34,12 @@ public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
                 .build();
     }
 
+    /**
+     * Converts a CompanyDto to a CompanyEntity.
+     *
+     * @param dto the company DTO to convert
+     * @return the converted company entity
+     */
     @Override
     public CompanyEntity toEntity(CompanyDto dto) {
         return CompanyEntity.builder()
@@ -37,6 +52,12 @@ public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
                 .build();
     }
 
+    /**
+     * Updates a CompanyEntity from a CompanyDto.
+     *
+     * @param dto the company DTO containing updated data
+     * @param entity the company entity to update
+     */
     @Override
     public void updateFromDto(CompanyDto dto, CompanyEntity entity) {
         entity.setName(dto.getName());

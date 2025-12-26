@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object for Task information.
+ * Contains task details including status, priority, type, time spent, and description.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

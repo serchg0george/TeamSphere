@@ -13,11 +13,20 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Global exception handler for the application.
+ * Handles various exceptions and returns appropriate error responses.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-
+    /**
+     * Handles NotFoundException and returns a NOT_FOUND response.
+     *
+     * @param e the NotFoundException that was thrown
+     * @return ResponseEntity containing the error response with NOT_FOUND status
+     */
     @ExceptionHandler({NotFoundException.class})
     ResponseEntity<ErrorResponse> handleNotFoundException(NotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND, e.getMessage(), LocalDateTime.now());
@@ -25,6 +34,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
+    /**
+     * Handles SQL integrity constraint violations and returns a CONFLICT response.
+     *
+     * @param sqlIntegrityConstraintViolationException the SQL constraint violation exception
+     * @return ResponseEntity containing the error response with CONFLICT status
+     */
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> onSQLIntegrityConstraintViolation(SQLIntegrityConstraintViolationException sqlIntegrityConstraintViolationException) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.CONFLICT, sqlIntegrityConstraintViolationException.getMessage(), LocalDateTime.now());
@@ -32,7 +47,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, errorResponse.getStatus());
     }
 
-
+    /**
+     * Handles validation exceptions and returns a BAD_REQUEST response with field-level errors.
+     *
+     * @param methodArgumentNotValidException the validation exception containing field errors
+     * @return ResponseEntity containing the error response with BAD_REQUEST status and validation errors
+     */
     @ExceptionHandler({MethodArgumentNotValidException.class})
     public ResponseEntity<ErrorResponse> onMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
 

@@ -7,6 +7,10 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object for Department information.
+ * Contains department name and description.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

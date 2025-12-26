@@ -8,6 +8,10 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object for Position information.
+ * Contains position name and required years of experience.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

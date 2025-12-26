@@ -11,11 +11,19 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Mapper for converting between TaskEntity and TaskDto.
+ */
 @Component
 @RequiredArgsConstructor
 public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
 
-
+    /**
+     * Converts a TaskEntity to a TaskDto.
+     *
+     * @param entity the task entity to convert
+     * @return the converted task DTO
+     */
     @Override
     public TaskDto toDto(TaskEntity entity) {
         return TaskDto.builder()
@@ -31,6 +39,12 @@ public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
                 .build();
     }
 
+    /**
+     * Converts a TaskDto to a TaskEntity.
+     *
+     * @param dto the task DTO to convert
+     * @return the converted task entity
+     */
     @Override
     public TaskEntity toEntity(TaskDto dto) {
 
@@ -46,6 +60,12 @@ public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
                 .build();
     }
 
+    /**
+     * Updates a TaskEntity from a TaskDto.
+     *
+     * @param dto the task DTO containing updated data
+     * @param entity the task entity to update
+     */
     @Override
     public void updateFromDto(TaskDto dto, TaskEntity entity) {
         entity.setTaskStatus(TaskStatus.valueOf(dto.getTaskStatus()));

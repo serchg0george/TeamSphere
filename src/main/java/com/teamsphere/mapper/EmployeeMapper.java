@@ -17,6 +17,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Mapper for converting between EmployeeEntity and EmployeeDto.
+ * Handles complex mappings including projects, tasks, departments, and positions.
+ */
 @Component
 @RequiredArgsConstructor
 public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
@@ -26,6 +30,12 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     private final PositionRepository positionRepository;
     private final TaskRepository taskRepository;
 
+    /**
+     * Converts an EmployeeEntity to an EmployeeDto.
+     *
+     * @param entity the employee entity to convert
+     * @return the converted employee DTO
+     */
     @Override
     public EmployeeDto toDto(EmployeeEntity entity) {
         return EmployeeDto.builder()
@@ -56,6 +66,12 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .build();
     }
 
+    /**
+     * Converts an EmployeeDto to an EmployeeEntity.
+     *
+     * @param dto the employee DTO to convert
+     * @return the converted employee entity
+     */
     @Override
     public EmployeeEntity toEntity(EmployeeDto dto) {
         EmployeeEntity employee = buildBasicEmployee(dto);
@@ -68,6 +84,12 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
         return employee;
     }
 
+    /**
+     * Updates an EmployeeEntity from an EmployeeDto.
+     *
+     * @param dto the employee DTO containing updated data
+     * @param entity the employee entity to update
+     */
     @Override
     public void updateFromDto(EmployeeDto dto, EmployeeEntity entity) {
         updateBasicFields(dto, entity);
@@ -77,6 +99,12 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
         updateTasks(dto, entity);
     }
 
+    /**
+     * Builds a basic EmployeeEntity from an EmployeeDto.
+     *
+     * @param dto the employee DTO
+     * @return the basic employee entity
+     */
     private EmployeeEntity buildBasicEmployee(EmployeeDto dto) {
         return EmployeeEntity.builder()
                 .firstName(dto.getFirstName())
@@ -93,6 +121,12 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
                 .build();
     }
 
+    /**
+     * Updates basic fields of an employee entity.
+     *
+     * @param dto the employee DTO with new data
+     * @param entity the employee entity to update
+     */
     private void updateBasicFields(EmployeeDto dto, EmployeeEntity entity) {
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
@@ -101,18 +135,36 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
         entity.setAddress(dto.getAddress());
     }
 
+    /**
+     * Updates the department of an employee entity.
+     *
+     * @param dto the employee DTO with new department ID
+     * @param entity the employee entity to update
+     */
     private void updateDepartment(EmployeeDto dto, EmployeeEntity entity) {
         if (dto.getDepartmentId() != null) {
             entity.setDepartment(findDepartmentById(dto.getDepartmentId()));
         }
     }
 
+    /**
+     * Updates the position of an employee entity.
+     *
+     * @param dto the employee DTO with new position ID
+     * @param entity the employee entity to update
+     */
     private void updatePosition(EmployeeDto dto, EmployeeEntity entity) {
         if (dto.getPositionId() != null) {
             entity.setPosition(findPositionById(dto.getPositionId()));
         }
     }
 
+    /**
+     * Updates the projects assigned to an employee entity.
+     *
+     * @param dto the employee DTO with new project assignments
+     * @param entity the employee entity to update
+     */
     private void updateProjects(EmployeeDto dto, EmployeeEntity entity) {
         if (dto.getProjects() != null) {
             entity.getProjects().clear();
@@ -120,6 +172,13 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
         }
     }
 
+    /**
+     * Updates the tasks assigned to an employee entity.
+     * Handles both task assignment and unassignment.
+     *
+     * @param dto the employee DTO with new task assignments
+     * @param entity the employee entity to update
+     */
     private void updateTasks(EmployeeDto dto, EmployeeEntity entity) {
         if (dto.getTasks() == null) return;
 
@@ -150,25 +209,58 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
         }
     }
 
-
+    /**
+     * Retrieves project entities by their IDs.
+     *
+     * @param ids list of project info containing IDs
+     * @return list of project entities
+     */
     private List<ProjectEntity> getProjectsByIds(List<ProjectInfo> ids) {
         return ids != null
                 ? ids.stream().map(project -> findProjectById(project.id())).toList()
                 : Collections.emptyList();
     }
 
+    /**
+     * Finds a project entity by its ID.
+     *
+     * @param id the project ID
+     * @return the project entity
+     * @throws NotFoundException if project is not found
+     */
     private ProjectEntity findProjectById(Long id) {
         return projectRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
+    /**
+     * Finds a department entity by its ID.
+     *
+     * @param id the department ID
+     * @return the department entity
+     * @throws NotFoundException if department is not found
+     */
     private DepartmentEntity findDepartmentById(Long id) {
         return departmentRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
+    /**
+     * Finds a position entity by its ID.
+     *
+     * @param id the position ID
+     * @return the position entity
+     * @throws NotFoundException if position is not found
+     */
     private PositionEntity findPositionById(Long id) {
         return positionRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }
 
+    /**
+     * Finds a task entity by its ID.
+     *
+     * @param id the task ID
+     * @return the task entity
+     * @throws NotFoundException if task is not found
+     */
     private TaskEntity findTaskById(Long id) {
         return taskRepository.findById(id).orElseThrow(() -> new NotFoundException(id));
     }

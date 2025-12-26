@@ -13,6 +13,10 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
+/**
+ * Entity representing a department in the system.
+ * Contains department name and description.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

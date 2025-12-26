@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of EmployeeService.
+ * Provides employee management operations including search functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -40,12 +44,26 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
         return employeeRepository;
     }
 
+    /**
+     * Retrieves all employees with their relations (tasks, projects, department, position).
+     *
+     * @param page pagination information
+     * @return page of all employees with relations
+     */
     @Override
     public Page<EmployeeDto> getAll(Pageable page) {
         List<EmployeeEntity> employees = employeeRepository.findAllWithRelations();
         return new PageImpl<>(employees.stream().map(employeeMapper::toDto).toList(), page, employees.size());
     }
 
+    /**
+     * Searches for employees using criteria query.
+     * Searches across first name, last name, email, and PIN fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching employees
+     */
     @Override
     public Page<EmployeeDto> find(final EmployeeSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -84,6 +102,15 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for employee fields.
+     * Attempts to parse query as PIN number if possible.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query
+     * @param root the root entity
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<EmployeeEntity> root) {
         Predicate firstName = criteriaBuilder.like(root.get("firstName"), query);
         Predicate lastName = criteriaBuilder.like(root.get("lastName"), query);

@@ -13,6 +13,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service responsible for user authentication and registration operations.
+ * Handles JWT token generation and user credential validation.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -23,6 +27,12 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
+    /**
+     * Registers a new user in the system.
+     *
+     * @param request the registration request containing user details
+     * @return AuthenticationResponse containing the JWT token for the newly registered user
+     */
     public AuthenticationResponse register(RegisterRequestDto request) {
         log.info("Registering new user: {}", request.email());
         var user = User.builder()
@@ -41,6 +51,13 @@ public class AuthenticationService {
                 .build();
     }
 
+    /**
+     * Authenticates an existing user with their credentials.
+     *
+     * @param request the authentication request containing email and password
+     * @return AuthenticationResponse containing the JWT token for the authenticated user
+     * @throws org.springframework.security.authentication.BadCredentialsException if credentials are invalid
+     */
     public AuthenticationResponse authenticate(AuthenticationRequestDto request) {
         log.info("Authenticating user: {}", request.email());
         authenticationManager.authenticate(

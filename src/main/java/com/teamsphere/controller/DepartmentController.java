@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
+/**
+ * REST controller for department management operations.
+ * Provides endpoints for CRUD operations and search functionality for departments.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/department")
@@ -22,12 +26,25 @@ public class DepartmentController {
 
     private final DepartmentService departmentService;
 
+    /**
+     * Searches for departments based on search criteria with pagination.
+     *
+     * @param findDepartment the search criteria for departments
+     * @param pageable pagination information
+     * @return ResponseEntity containing a page of matching departments
+     */
     @PostMapping("/search")
     public ResponseEntity<Page<DepartmentDto>> searchDepartment(@RequestBody DepartmentSearchRequest findDepartment,
                                                                 Pageable pageable) {
         return ResponseEntity.ok(departmentService.find(findDepartment, pageable));
     }
 
+    /**
+     * Creates a new department.
+     *
+     * @param department the department data to create
+     * @return ResponseEntity containing the created department with location header
+     */
     @PostMapping
     public ResponseEntity<DepartmentDto> createDepartment(@Valid @RequestBody DepartmentDto department) {
         DepartmentDto created = departmentService.save(department);
@@ -35,16 +52,35 @@ public class DepartmentController {
         return ResponseEntity.created(location).body(created);
     }
 
+    /**
+     * Retrieves a department by its ID.
+     *
+     * @param departmentId the ID of the department to retrieve
+     * @return ResponseEntity containing the department data
+     */
     @GetMapping("{id}")
     public ResponseEntity<DepartmentDto> getDepartmentById(@PathVariable("id") Long departmentId) {
         return ResponseEntity.ok(departmentService.get(departmentId));
     }
 
+    /**
+     * Retrieves all departments with pagination.
+     *
+     * @param pageable pagination information
+     * @return ResponseEntity containing a page of all departments
+     */
     @GetMapping
     public ResponseEntity<Page<DepartmentDto>> getAllDepartments(Pageable pageable) {
         return ResponseEntity.ok(departmentService.getAll(pageable));
     }
 
+    /**
+     * Updates an existing department.
+     *
+     * @param departmentId the ID of the department to update
+     * @param department the updated department data
+     * @return ResponseEntity with no content
+     */
     @PutMapping("{id}")
     public ResponseEntity<Void> updateDepartment(@PathVariable("id") Long departmentId,
                                                  @Valid @RequestBody DepartmentDto department) {
@@ -52,6 +88,12 @@ public class DepartmentController {
         return ResponseEntity.noContent().build();
     }
 
+    /**
+     * Deletes a department by its ID.
+     *
+     * @param departmentId the ID of the department to delete
+     * @return ResponseEntity with no content or not found status
+     */
     @DeleteMapping("{id}")
     public ResponseEntity<String> deleteDepartment(@PathVariable("id") Long departmentId) {
         try {

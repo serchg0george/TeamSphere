@@ -26,6 +26,10 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementation of ProjectService.
+ * Provides project management operations including search functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -45,12 +49,26 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
         return projectRepository;
     }
 
+    /**
+     * Retrieves all projects with their associated companies.
+     *
+     * @param page pagination information
+     * @return page of all projects with companies
+     */
     @Override
     public Page<ProjectDto> getAll(Pageable page) {
         List<ProjectEntity> projects = projectRepository.findAllWithCompanies();
         return new PageImpl<>(projects.stream().map(projectMapper::toDto).toList(), page, projects.size());
     }
 
+    /**
+     * Searches for projects using criteria query.
+     * Searches across name, description, dates, and status fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching projects
+     */
     @Override
     public Page<ProjectDto> find(final ProjectSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -89,6 +107,15 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for project fields.
+     * Attempts to parse query as date or project status if possible.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query
+     * @param root the root entity
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<ProjectEntity> root) {
         Predicate name = criteriaBuilder.like(root.get("name"), query);
         Predicate description = criteriaBuilder.like(root.get("description"), query);

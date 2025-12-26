@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of CompanyService.
+ * Provides company management operations including search functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -40,6 +44,14 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
         return companyRepository;
     }
 
+    /**
+     * Searches for companies using criteria query.
+     * Searches across name, industry, address, and email fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching companies
+     */
     @Override
     public Page<CompanyDto> find(final CompanySearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -79,6 +91,14 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for company fields.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query
+     * @param countRoot the root entity
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(CriteriaBuilder criteriaBuilder, String query, Root<CompanyEntity> countRoot) {
         Predicate nameCount = criteriaBuilder.like(countRoot.get("name"), query);
         Predicate industryCount = criteriaBuilder.like(countRoot.get("industry"), query);
