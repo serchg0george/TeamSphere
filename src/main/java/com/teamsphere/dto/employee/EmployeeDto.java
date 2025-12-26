@@ -10,6 +10,10 @@ import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
+/**
+ * Data Transfer Object for Employee information.
+ * Contains employee personal details, department, position, tasks, and projects.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

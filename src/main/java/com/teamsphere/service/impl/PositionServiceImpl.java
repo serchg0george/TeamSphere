@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of PositionService.
+ * Provides position management operations including search functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -40,6 +44,14 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
         return positionRepository;
     }
 
+    /**
+     * Searches for positions using criteria query.
+     * Searches across position name and years of experience fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching positions
+     */
     @Override
     public Page<PositionDto> find(final PositionSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -78,6 +90,16 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for position fields.
+     * Attempts to parse query as years of experience if possible.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query with wildcards
+     * @param root the root entity
+     * @param rawQuery the raw search query without wildcards
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<PositionEntity> root, final String rawQuery) {
         Predicate roleName = criteriaBuilder.like(root.get("positionName"), query);
 

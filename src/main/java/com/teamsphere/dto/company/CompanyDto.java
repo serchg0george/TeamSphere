@@ -8,6 +8,10 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object for Company information.
+ * Contains company details including name, industry, address, and email.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

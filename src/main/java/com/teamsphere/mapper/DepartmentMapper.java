@@ -8,9 +8,18 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
+/**
+ * Mapper for converting between DepartmentEntity and DepartmentDto.
+ */
 @Component
 @RequiredArgsConstructor
 public class DepartmentMapper implements BaseMapper<DepartmentEntity, DepartmentDto> {
+    /**
+     * Converts a DepartmentEntity to a DepartmentDto.
+     *
+     * @param entity the department entity to convert
+     * @return the converted department DTO
+     */
     @Override
     public DepartmentDto toDto(DepartmentEntity entity) {
         return DepartmentDto.builder()
@@ -22,6 +31,12 @@ public class DepartmentMapper implements BaseMapper<DepartmentEntity, Department
                 .build();
     }
 
+    /**
+     * Converts a DepartmentDto to a DepartmentEntity.
+     *
+     * @param dto the department DTO to convert
+     * @return the converted department entity
+     */
     @Override
     public DepartmentEntity toEntity(DepartmentDto dto) {
         return DepartmentEntity.builder()
@@ -32,6 +47,12 @@ public class DepartmentMapper implements BaseMapper<DepartmentEntity, Department
                 .build();
     }
 
+    /**
+     * Updates a DepartmentEntity from a DepartmentDto.
+     *
+     * @param dto the department DTO containing updated data
+     * @param entity the department entity to update
+     */
     @Override
     public void updateFromDto(DepartmentDto dto, DepartmentEntity entity) {
         entity.setDepartmentName(dto.getDepartmentName());

@@ -13,6 +13,10 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entity representing a company in the system.
+ * Contains company information and relationships to projects.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

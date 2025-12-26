@@ -14,6 +14,10 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Entity representing an employee in the system.
+ * Contains employee personal information and relationships to department, position, tasks, and projects.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

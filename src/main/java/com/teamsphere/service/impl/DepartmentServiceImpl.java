@@ -21,6 +21,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementation of DepartmentService.
+ * Provides department management operations including search functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -40,6 +44,14 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
         return departmentRepository;
     }
 
+    /**
+     * Searches for departments using criteria query.
+     * Searches across department name and description fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching departments
+     */
     @Override
     public Page<DepartmentDto> find(final DepartmentSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -79,6 +91,14 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for department fields.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query
+     * @param root the root entity
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(CriteriaBuilder criteriaBuilder, String query, Root<DepartmentEntity> root) {
         Predicate name = criteriaBuilder.like(root.get("departmentName"), query);
         Predicate description = criteriaBuilder.like(root.get("description"), query);

@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+/**
+ * Data Transfer Object for Project information.
+ * Contains project details including name, description, dates, status, and company.
+ */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)

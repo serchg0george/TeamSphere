@@ -25,6 +25,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/**
+ * Implementation of TaskService.
+ * Provides task management operations including search and auto-numbering functionality.
+ */
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -44,11 +48,24 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
         return taskRepository;
     }
 
+    /**
+     * Retrieves all tasks sorted by status priority and update time.
+     *
+     * @param pageable pagination information
+     * @return page of all tasks sorted by priority
+     */
     @Override
     public Page<TaskDto> getAll(Pageable pageable) {
         return taskRepository.findAllSorted(pageable).map(taskMapper::toDto);
     }
 
+    /**
+     * Saves a new task with auto-generated sequential task number.
+     * Task number is generated based on the task type.
+     *
+     * @param dto the task DTO to save
+     * @return the saved task DTO
+     */
     @Override
     public TaskDto save(TaskDto dto) {
         Long lastNumber = taskRepository.findLastTaskByTaskType(TaskType.valueOf(dto.getTaskType())).orElse(0L);
@@ -69,6 +86,14 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
         return taskMapper.toDto(saved);
     }
 
+    /**
+     * Searches for tasks using criteria query.
+     * Searches across description, number, status, and time spent fields.
+     *
+     * @param request the search criteria
+     * @param pageable pagination information
+     * @return page of matching tasks
+     */
     @Override
     public Page<TaskDto> find(final TaskSearchRequest request, Pageable pageable) {
         final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -107,6 +132,15 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
         return new PageImpl<>(dtoList, sorted, totalCount);
     }
 
+    /**
+     * Builds search predicates for task fields.
+     * Attempts to parse query as time spent minutes if possible.
+     *
+     * @param criteriaBuilder the criteria builder
+     * @param query the search query
+     * @param root the root entity
+     * @return combined predicate for all searchable fields
+     */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<TaskEntity> root) {
         Predicate taskDescription = criteriaBuilder.like(root.get("taskDescription"), query);
         Predicate taskNumber = criteriaBuilder.like(root.get("taskNumber"), query);

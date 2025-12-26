@@ -12,6 +12,10 @@ import org.hibernate.proxy.HibernateProxy;
 import java.time.LocalDate;
 import java.util.Objects;
 
+/**
+ * Entity representing a project in the system.
+ * Contains project details including dates, status, and relationship to company.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

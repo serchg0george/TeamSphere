@@ -13,12 +13,21 @@ import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+/**
+ * Mapper for converting between ProjectEntity and ProjectDto.
+ */
 @Component
 @RequiredArgsConstructor
 public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
 
     private final CompanyRepository companyRepository;
 
+    /**
+     * Converts a ProjectEntity to a ProjectDto.
+     *
+     * @param entity the project entity to convert
+     * @return the converted project DTO
+     */
     @Override
     public ProjectDto toDto(ProjectEntity entity) {
 
@@ -43,6 +52,12 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .build();
     }
 
+    /**
+     * Converts a ProjectDto to a ProjectEntity.
+     *
+     * @param dto the project DTO to convert
+     * @return the converted project entity
+     */
     @Override
     public ProjectEntity toEntity(ProjectDto dto) {
         CompanyEntity company = findCompanyById(dto);
@@ -61,6 +76,12 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
                 .build();
     }
 
+    /**
+     * Updates a ProjectEntity from a ProjectDto.
+     *
+     * @param dto the project DTO containing updated data
+     * @param entity the project entity to update
+     */
     @Override
     public void updateFromDto(ProjectDto dto, ProjectEntity entity) {
         CompanyEntity company = findCompanyById(dto);
@@ -75,6 +96,13 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
         entity.setCompany(company);
     }
 
+    /**
+     * Finds a company entity by ID from the project DTO.
+     *
+     * @param dto the project DTO containing company ID
+     * @return the company entity
+     * @throws NotFoundException if company is not found
+     */
     private CompanyEntity findCompanyById(ProjectDto dto) {
         return companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new NotFoundException(dto.getCompanyId()));

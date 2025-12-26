@@ -12,6 +12,10 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
+/**
+ * Entity representing a job position in the system.
+ * Contains position name and required years of experience.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

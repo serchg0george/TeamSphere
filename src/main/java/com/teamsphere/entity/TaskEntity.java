@@ -13,6 +13,10 @@ import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
 
+/**
+ * Entity representing a task in the system.
+ * Contains task details including status, priority, type, time spent, and relationship to employee.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

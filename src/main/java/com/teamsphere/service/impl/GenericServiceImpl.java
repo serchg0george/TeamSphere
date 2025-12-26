@@ -14,9 +14,24 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
 
-public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto> implements GenericService<E, D> {
+/**
+ * Abstract base implementation of GenericService providing common CRUD operations.
+ *
+ * @param <D> the DTO type extending BaseDto
+ */
+public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto> implements GenericService<D> {
+    /**
+     * Gets the mapper for converting between entity and DTO.
+     *
+     * @return the mapper instance
+     */
     public abstract BaseMapper<E, D> getMapper();
 
+    /**
+     * Gets the repository for database operations.
+     *
+     * @return the repository instance
+     */
     public abstract JpaRepository<E, Long> getRepository();
 
     @Override
@@ -32,6 +47,12 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
                 .map(entity -> getMapper().toDto(entity));
     }
 
+    /**
+     * Saves a new entity to the database.
+     *
+     * @param dto the DTO to save
+     * @return the saved DTO
+     */
     @Override
     @Transactional
     public D save(D dto) {
@@ -40,12 +61,25 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
         return getMapper().toDto(entityForSave);
     }
 
+    /**
+     * Retrieves an entity by its ID.
+     *
+     * @param id the entity ID
+     * @return the DTO
+     * @throws NotFoundException if entity not found
+     */
     @Override
     public D get(Long id) {
         E entity = getRepository().findById(id).orElseThrow(() -> new NotFoundException(id));
         return getMapper().toDto(entity);
     }
 
+    /**
+     * Deletes an entity by its ID.
+     *
+     * @param id the entity ID to delete
+     * @throws NotFoundException if entity not found
+     */
     @Override
     public void delete(Long id) {
         if (getRepository().existsById(id)) {
@@ -55,6 +89,14 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
         }
     }
 
+    /**
+     * Updates an existing entity.
+     *
+     * @param dto the DTO with updated data
+     * @param id the entity ID to update
+     * @return the updated DTO
+     * @throws NotFoundException if entity not found
+     */
     @Override
     @Transactional
     public D update(D dto, Long id) {
