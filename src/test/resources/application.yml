@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:testdb
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=PostgreSQL
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -9,9 +9,22 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: false
   sql:
     init:
       mode: never
 
 jwt:
-  secret: test-secret-key-for-testing-purposes-only-and-should-be-long-enough
+  secret: dGVzdC1zZWNyZXQta2V5LWZvci10ZXN0aW5nLXB1cnBvc2VzLW9ubHktYW5kLXNob3VsZC1iZS1sb25nLWVub3VnaC1mb3ItaHMyNTY=
+  expiration-time: 1d
+
+# Environment variable overrides for tests
+SECRET_KEY: dGVzdC1zZWNyZXQta2V5LWZvci10ZXN0aW5nLXB1cnBvc2VzLW9ubHktYW5kLXNob3VsZC1iZS1sb25nLWVub3VnaC1mb3ItaHMyNTY=
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    com.teamsphere: DEBUG
