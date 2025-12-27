@@ -48,7 +48,7 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
      * Searches for departments using criteria query.
      * Searches across department name and description fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching departments
      */
@@ -95,8 +95,8 @@ public class DepartmentServiceImpl extends GenericServiceImpl<DepartmentEntity, 
      * Builds search predicates for department fields.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query
-     * @param root the root entity
+     * @param query           the search query
+     * @param root            the root entity
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(CriteriaBuilder criteriaBuilder, String query, Root<DepartmentEntity> root) {

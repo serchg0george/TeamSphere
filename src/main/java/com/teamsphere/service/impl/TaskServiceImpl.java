@@ -90,7 +90,7 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
      * Searches for tasks using criteria query.
      * Searches across description, number, status, and time spent fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching tasks
      */
@@ -137,8 +137,8 @@ public class TaskServiceImpl extends GenericServiceImpl<TaskEntity, TaskDto> imp
      * Attempts to parse query as time spent minutes if possible.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query
-     * @param root the root entity
+     * @param query           the search query
+     * @param root            the root entity
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<TaskEntity> root) {

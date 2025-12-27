@@ -9,12 +9,12 @@ public enum TaskStatus {
      * Task is pending and not yet started.
      */
     PENDING,
-    
+
     /**
      * Task is currently being worked on.
      */
     ACTIVE,
-    
+
     /**
      * Task has been completed.
      */

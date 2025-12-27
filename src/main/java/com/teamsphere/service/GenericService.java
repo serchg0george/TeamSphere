@@ -47,7 +47,7 @@ public interface GenericService<D> {
      * Updates an existing entity.
      *
      * @param dto the DTO with updated data
-     * @param id the entity ID to update
+     * @param id  the entity ID to update
      * @return the updated DTO
      * @throws com.teamsphere.exception.NotFoundException if entity not found
      */

@@ -55,7 +55,7 @@ public class CompanyMapper implements BaseMapper<CompanyEntity, CompanyDto> {
     /**
      * Updates a CompanyEntity from a CompanyDto.
      *
-     * @param dto the company DTO containing updated data
+     * @param dto    the company DTO containing updated data
      * @param entity the company entity to update
      */
     @Override

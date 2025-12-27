@@ -7,9 +7,9 @@ import jakarta.validation.constraints.Email;
  * Contains user details for creating a new account.
  *
  * @param firstName user's first name
- * @param lastName user's last name
- * @param email user's email address
- * @param password user's password
+ * @param lastName  user's last name
+ * @param email     user's email address
+ * @param password  user's password
  */
 public record RegisterRequestDto(String firstName,
                                  String lastName,

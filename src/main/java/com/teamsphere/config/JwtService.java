@@ -46,8 +46,8 @@ public class JwtService {
     /**
      * Extracts a specific claim from the JWT token using the provided claims resolver function.
      *
-     * @param <T> the type of the claim to extract
-     * @param token the JWT token
+     * @param <T>            the type of the claim to extract
+     * @param token          the JWT token
      * @param claimsResolver function to extract the desired claim from the claims
      * @return the extracted claim value
      */
@@ -116,7 +116,7 @@ public class JwtService {
      * Validates the JWT token against the provided user details.
      * Checks if the token's username matches and if the token is not expired.
      *
-     * @param token the JWT token to validate
+     * @param token       the JWT token to validate
      * @param userDetails the user details to validate against
      * @return true if the token is valid, false otherwise
      */

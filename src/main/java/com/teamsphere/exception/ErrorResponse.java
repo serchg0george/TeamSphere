@@ -26,8 +26,8 @@ public class ErrorResponse {
     /**
      * Constructs an ErrorResponse with status, message, and timestamp.
      *
-     * @param status the HTTP status
-     * @param message the error message
+     * @param status    the HTTP status
+     * @param message   the error message
      * @param timestamp the timestamp when the error occurred
      */
     public ErrorResponse(HttpStatus status, String message, LocalDateTime timestamp) {
@@ -39,7 +39,7 @@ public class ErrorResponse {
     /**
      * Constructs an ErrorResponse with status and list of sub-errors.
      *
-     * @param httpStatus the HTTP status
+     * @param httpStatus        the HTTP status
      * @param subErrorResponses list of detailed sub-errors
      */
     public ErrorResponse(HttpStatus httpStatus, List<SubErrorResponse> subErrorResponses) {

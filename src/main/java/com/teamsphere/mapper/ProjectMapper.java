@@ -79,7 +79,7 @@ public class ProjectMapper implements BaseMapper<ProjectEntity, ProjectDto> {
     /**
      * Updates a ProjectEntity from a ProjectDto.
      *
-     * @param dto the project DTO containing updated data
+     * @param dto    the project DTO containing updated data
      * @param entity the project entity to update
      */
     @Override

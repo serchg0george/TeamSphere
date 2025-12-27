@@ -87,7 +87,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     /**
      * Updates an EmployeeEntity from an EmployeeDto.
      *
-     * @param dto the employee DTO containing updated data
+     * @param dto    the employee DTO containing updated data
      * @param entity the employee entity to update
      */
     @Override
@@ -124,7 +124,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     /**
      * Updates basic fields of an employee entity.
      *
-     * @param dto the employee DTO with new data
+     * @param dto    the employee DTO with new data
      * @param entity the employee entity to update
      */
     private void updateBasicFields(EmployeeDto dto, EmployeeEntity entity) {
@@ -138,7 +138,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     /**
      * Updates the department of an employee entity.
      *
-     * @param dto the employee DTO with new department ID
+     * @param dto    the employee DTO with new department ID
      * @param entity the employee entity to update
      */
     private void updateDepartment(EmployeeDto dto, EmployeeEntity entity) {
@@ -150,7 +150,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     /**
      * Updates the position of an employee entity.
      *
-     * @param dto the employee DTO with new position ID
+     * @param dto    the employee DTO with new position ID
      * @param entity the employee entity to update
      */
     private void updatePosition(EmployeeDto dto, EmployeeEntity entity) {
@@ -162,7 +162,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
     /**
      * Updates the projects assigned to an employee entity.
      *
-     * @param dto the employee DTO with new project assignments
+     * @param dto    the employee DTO with new project assignments
      * @param entity the employee entity to update
      */
     private void updateProjects(EmployeeDto dto, EmployeeEntity entity) {
@@ -176,7 +176,7 @@ public class EmployeeMapper implements BaseMapper<EmployeeEntity, EmployeeDto> {
      * Updates the tasks assigned to an employee entity.
      * Handles both task assignment and unassignment.
      *
-     * @param dto the employee DTO with new task assignments
+     * @param dto    the employee DTO with new task assignments
      * @param entity the employee entity to update
      */
     private void updateTasks(EmployeeDto dto, EmployeeEntity entity) {

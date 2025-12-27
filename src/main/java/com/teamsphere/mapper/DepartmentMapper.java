@@ -50,7 +50,7 @@ public class DepartmentMapper implements BaseMapper<DepartmentEntity, Department
     /**
      * Updates a DepartmentEntity from a DepartmentDto.
      *
-     * @param dto the department DTO containing updated data
+     * @param dto    the department DTO containing updated data
      * @param entity the department entity to update
      */
     @Override

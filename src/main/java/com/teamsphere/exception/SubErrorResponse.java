@@ -23,12 +23,12 @@ public class SubErrorResponse {
      */
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
-    
+
     /**
      * Error message describing the validation failure.
      */
     private String message;
-    
+
     /**
      * Field name that caused the validation error.
      */

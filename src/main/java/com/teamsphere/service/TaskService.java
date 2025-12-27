@@ -14,7 +14,7 @@ public interface TaskService extends GenericService<TaskDto> {
     /**
      * Searches for tasks based on search criteria.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching tasks
      */

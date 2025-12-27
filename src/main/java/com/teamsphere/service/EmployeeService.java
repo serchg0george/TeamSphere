@@ -14,7 +14,7 @@ public interface EmployeeService extends GenericService<EmployeeDto> {
     /**
      * Searches for employees based on search criteria.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching employees
      */

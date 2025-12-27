@@ -30,7 +30,7 @@ public class ProjectController {
      * Searches for projects based on search criteria with pagination.
      *
      * @param findProject the search criteria for projects
-     * @param pageable pagination information
+     * @param pageable    pagination information
      * @return ResponseEntity containing a page of matching projects
      */
     @PostMapping("/search")
@@ -78,7 +78,7 @@ public class ProjectController {
      * Updates an existing project.
      *
      * @param projectId the ID of the project to update
-     * @param project the updated project data
+     * @param project   the updated project data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

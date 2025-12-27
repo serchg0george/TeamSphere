@@ -14,7 +14,7 @@ public interface BaseMapper<E, D> {
      * @return the converted DTO
      */
     D toDto(E entity);
-    
+
     /**
      * Converts a DTO to an entity.
      *
@@ -22,11 +22,11 @@ public interface BaseMapper<E, D> {
      * @return the converted entity
      */
     E toEntity(D dto);
-    
+
     /**
      * Updates an entity from a DTO.
      *
-     * @param dto the DTO containing updated data
+     * @param dto    the DTO containing updated data
      * @param entity the entity to update
      */
     void updateFromDto(D dto, E entity);
