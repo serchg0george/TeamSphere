@@ -14,7 +14,7 @@ public interface CompanyService extends GenericService<CompanyDto> {
     /**
      * Searches for companies based on search criteria.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching companies
      */

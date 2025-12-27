@@ -93,7 +93,7 @@ public abstract class GenericServiceImpl<E extends BaseEntity, D extends BaseDto
      * Updates an existing entity.
      *
      * @param dto the DTO with updated data
-     * @param id the entity ID to update
+     * @param id  the entity ID to update
      * @return the updated DTO
      * @throws NotFoundException if entity not found
      */

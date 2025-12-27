@@ -9,12 +9,12 @@ public enum TaskType {
      * New feature implementation.
      */
     FEATURE,
-    
+
     /**
      * Bug fix task.
      */
     BUG,
-    
+
     /**
      * Code refactoring task.
      */

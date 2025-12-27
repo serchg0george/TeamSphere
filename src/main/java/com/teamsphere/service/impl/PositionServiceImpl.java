@@ -48,7 +48,7 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
      * Searches for positions using criteria query.
      * Searches across position name and years of experience fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching positions
      */
@@ -95,9 +95,9 @@ public class PositionServiceImpl extends GenericServiceImpl<PositionEntity, Posi
      * Attempts to parse query as years of experience if possible.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query with wildcards
-     * @param root the root entity
-     * @param rawQuery the raw search query without wildcards
+     * @param query           the search query with wildcards
+     * @param root            the root entity
+     * @param rawQuery        the raw search query without wildcards
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<PositionEntity> root, final String rawQuery) {

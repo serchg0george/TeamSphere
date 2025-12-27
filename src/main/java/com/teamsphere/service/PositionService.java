@@ -15,7 +15,7 @@ public interface PositionService extends GenericService<PositionDto> {
      * Searches for positions based on search criteria.
      *
      * @param searchRequest the search criteria
-     * @param pageable pagination information
+     * @param pageable      pagination information
      * @return page of matching positions
      */
     Page<PositionDto> find(PositionSearchRequest searchRequest, Pageable pageable);

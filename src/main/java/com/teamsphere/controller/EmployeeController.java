@@ -30,7 +30,7 @@ public class EmployeeController {
      * Searches for employees based on search criteria with pagination.
      *
      * @param findEmployee the search criteria for employees
-     * @param pageable pagination information
+     * @param pageable     pagination information
      * @return ResponseEntity containing a page of matching employees
      */
     @PostMapping("/search")
@@ -78,7 +78,7 @@ public class EmployeeController {
      * Updates an existing employee.
      *
      * @param employeeId the ID of the employee to update
-     * @param employee the updated employee data
+     * @param employee   the updated employee data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

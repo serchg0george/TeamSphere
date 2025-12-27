@@ -20,12 +20,12 @@ public abstract class BaseDto {
      * Unique identifier.
      */
     private Long id;
-    
+
     /**
      * Timestamp when the entity was created.
      */
     private LocalDateTime createdAt;
-    
+
     /**
      * Timestamp when the entity was last updated.
      */

@@ -65,7 +65,7 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
      * Searches for projects using criteria query.
      * Searches across name, description, dates, and status fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching projects
      */
@@ -112,8 +112,8 @@ public class ProjectServiceImpl extends GenericServiceImpl<ProjectEntity, Projec
      * Attempts to parse query as date or project status if possible.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query
-     * @param root the root entity
+     * @param query           the search query
+     * @param root            the root entity
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<ProjectEntity> root) {

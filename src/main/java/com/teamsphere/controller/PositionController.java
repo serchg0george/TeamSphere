@@ -30,7 +30,7 @@ public class PositionController {
      * Searches for positions based on search criteria with pagination.
      *
      * @param findPosition the search criteria for positions
-     * @param pageable pagination information
+     * @param pageable     pagination information
      * @return ResponseEntity containing a page of matching positions
      */
     @PostMapping("/search")
@@ -78,7 +78,7 @@ public class PositionController {
      * Updates an existing position.
      *
      * @param positionId the ID of the position to update
-     * @param position the updated position data
+     * @param position   the updated position data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

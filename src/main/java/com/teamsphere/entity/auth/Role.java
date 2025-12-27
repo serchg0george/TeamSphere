@@ -9,7 +9,7 @@ public enum Role {
      * Administrator role with full system access.
      */
     ROLE_ADMIN,
-    
+
     /**
      * Regular user role with limited access.
      */

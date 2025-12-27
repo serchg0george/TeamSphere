@@ -48,7 +48,7 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
      * Searches for companies using criteria query.
      * Searches across name, industry, address, and email fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching companies
      */
@@ -95,8 +95,8 @@ public class CompanyServiceImpl extends GenericServiceImpl<CompanyEntity, Compan
      * Builds search predicates for company fields.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query
-     * @param countRoot the root entity
+     * @param query           the search query
+     * @param countRoot       the root entity
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(CriteriaBuilder criteriaBuilder, String query, Root<CompanyEntity> countRoot) {

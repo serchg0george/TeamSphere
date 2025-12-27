@@ -14,7 +14,7 @@ public interface ProjectService extends GenericService<ProjectDto> {
     /**
      * Searches for projects based on search criteria.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching projects
      */

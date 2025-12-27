@@ -30,7 +30,7 @@ public class CompanyController {
      * Searches for companies based on search criteria with pagination.
      *
      * @param findCompany the search criteria for companies
-     * @param pageable pagination information
+     * @param pageable    pagination information
      * @return ResponseEntity containing a page of matching companies
      */
     @PostMapping("/search")
@@ -78,7 +78,7 @@ public class CompanyController {
      * Updates an existing company.
      *
      * @param companyId the ID of the company to update
-     * @param company the updated company data
+     * @param company   the updated company data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

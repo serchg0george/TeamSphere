@@ -50,7 +50,7 @@ public class PositionMapper implements BaseMapper<PositionEntity, PositionDto> {
     /**
      * Updates a PositionEntity from a PositionDto.
      *
-     * @param dto the position DTO containing updated data
+     * @param dto    the position DTO containing updated data
      * @param entity the position entity to update
      */
     @Override

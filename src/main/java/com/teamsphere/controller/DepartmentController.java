@@ -30,7 +30,7 @@ public class DepartmentController {
      * Searches for departments based on search criteria with pagination.
      *
      * @param findDepartment the search criteria for departments
-     * @param pageable pagination information
+     * @param pageable       pagination information
      * @return ResponseEntity containing a page of matching departments
      */
     @PostMapping("/search")
@@ -78,7 +78,7 @@ public class DepartmentController {
      * Updates an existing department.
      *
      * @param departmentId the ID of the department to update
-     * @param department the updated department data
+     * @param department   the updated department data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

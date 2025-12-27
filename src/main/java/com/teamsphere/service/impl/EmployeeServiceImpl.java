@@ -60,7 +60,7 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
      * Searches for employees using criteria query.
      * Searches across first name, last name, email, and PIN fields.
      *
-     * @param request the search criteria
+     * @param request  the search criteria
      * @param pageable pagination information
      * @return page of matching employees
      */
@@ -107,8 +107,8 @@ public class EmployeeServiceImpl extends GenericServiceImpl<EmployeeEntity, Empl
      * Attempts to parse query as PIN number if possible.
      *
      * @param criteriaBuilder the criteria builder
-     * @param query the search query
-     * @param root the root entity
+     * @param query           the search query
+     * @param root            the root entity
      * @return combined predicate for all searchable fields
      */
     private Predicate buildPredicates(final CriteriaBuilder criteriaBuilder, final String query, final Root<EmployeeEntity> root) {

@@ -78,7 +78,7 @@ public class TaskController {
      * Updates an existing task.
      *
      * @param taskId the ID of the task to update
-     * @param task the updated task data
+     * @param task   the updated task data
      * @return ResponseEntity with no content
      */
     @PutMapping("{id}")

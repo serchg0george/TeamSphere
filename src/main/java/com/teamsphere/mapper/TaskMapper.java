@@ -63,7 +63,7 @@ public class TaskMapper implements BaseMapper<TaskEntity, TaskDto> {
     /**
      * Updates a TaskEntity from a TaskDto.
      *
-     * @param dto the task DTO containing updated data
+     * @param dto    the task DTO containing updated data
      * @param entity the task entity to update
      */
     @Override
